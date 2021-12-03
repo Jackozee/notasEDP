@@ -1,0 +1,1311 @@
+\documentclass[11pt,letterpaper,draft]{report}
+\usepackage[left=3.5cm,right=3.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage[english]{isodate}
+
+\usepackage{amsmath,amsfonts,amsthm,bm,stmaryrd,amssymb}
+\usepackage{enumitem,mathtools,multicol}
+\setenumerate[1]{label=(\alph*)}
+\setenumerate[0]{label=\roman*.}
+\allowdisplaybreaks
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\newtheorem{defn}{Definición}
+\newtheorem{example}{Ejemplo}[section]
+\newtheorem{exe}{Ejercicio}
+\newtheorem{lemma}{Lema}
+\newtheorem{rem}{Recordatorio}
+\newtheorem*{sol}{Solución}
+
+\newcommand\R{\mathbb R}
+\newcommand\C{\mathbb C}
+\newcommand\Z{\mathbb Z}
+\newcommand\N{\mathbb N}
+\newcommand\norm[1]{\left\|#1\right\|}
+\newcommand\<{\langle}
+\renewcommand\>{\rangle}
+\renewcommand\phi\varphi
+\let\cal\mathcal
+\let\ol\overline
+\DeclareMathOperator{\erf}{erf}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\csch}{csch}
+\title{Notas}
+\author{Jorge Alfredo Álvarez Contreras}
+
+\renewcommand\contentsname{Contenido}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+\chapter{Series de Fourier}
+
+\begin{defn}
+  Dos funciones son ortogonales en $[a,b]$ si $\int_a^bfg=0$.
+\end{defn}
+\begin{example}
+  \begin{enumerate}
+    \item si $f(x)=2x^2$ y $g(x)=4x^3$, ambas definidas en
+    $[-1,1]$, entonces
+    \begin{align*}
+      \int_{-1}^12x^2\cdot 4x^3\,dx
+      &= 8\int_{-1}^1x^5\,dx \\
+      &= \frac{8}{6}x^6|_{-1}^1 \\
+      &= 0
+    \end{align*}
+    \item Sea $f(x)=4x-1$ y $g(x)=x^2-2x$ definidas en $[0,2]$.
+    Entonces
+    \begin{align*}
+      \int_0^2(4x-1)(x^2-2x)\,dx
+      &= \int_0^2(4x^3-9x^2+2x)\,dx \\
+      &= x^4-3x^3+x^2 |_0^2 \\
+      &= -4 \\
+      &\neq 0.
+    \end{align*}
+  \end{enumerate}
+\end{example}
+
+\begin{defn}
+  Un conjunto infinito de funciones $\{\phi_n\}_{n=0}^\infty$ se
+  dice que es ortogonal en $[a,b]$ si
+  \begin{align*}
+    \int_a^b\phi_n\phi_m &= 0 & \text{ para } n\neq m.
+  \end{align*}
+  Si $n=m$, entonces
+  \[
+    \<\phi_n,\phi_m\> = \int_a^b \phi_n^2
+  \]
+  es la norma cuadrada de $\phi_n$ que se denotará como
+  $\norm{\phi_n}$.
+\end{defn}
+
+\begin{example}
+  \begin{enumerate}
+    \item   
+    El conjunto $\{1,\cos x,\cos 2x,\cos 3x,\dots\}$ es ortogonal
+    en $[-\pi,\pi]$, ya que, si $\phi_n(x)=\cos nx$,
+    $n=1,2,3,\dots$ y $\phi_0(x)=1$, entonces
+    \begin{align*}
+      \int_{-\pi}^\pi \phi_n\phi_m
+      &= \int_{-\pi}^\pi \cos nx \cos mx \,dx \\
+      &= \frac{1}{2}
+        \int_{-\pi}^\pi [\cos((m+n)x) + \cos((m-n)x)] \,dx \\
+      &= \frac{1}{2(m+n)}\sin((m+n)x) + \frac{1}{2(m-n)}\sin((m-n)x)
+      |_{-\pi}^\pi \\
+      &= 0.
+    \end{align*}
+    para $n,m\geq 0$, $n\neq m$.
+
+    \item Determine si el conjunto $\{\sin x,\sin 2x,\sin
+    3x,\dots\}$ es ortogonal en $[0,2\pi]$.
+    Tenemos
+    \begin{align*}
+      \int_0^\pi \sin nx\sin mx \,dx
+      &= \frac{1}{2}\int_0^\pi[\cos((m-n)x)-\cos((m+n)x)] \,dx \\
+      &= \frac{1}{2(m-n)}\sin((m-n)x)
+        - \frac{1}{2(m+n)}\sin((m+n)x) |_0^\pi \\
+      &= 0.
+    \end{align*}
+  \end{enumerate}
+\end{example}
+
+\chapter{Métodos de solución. (Mie 10 nov 2021)}
+
+Los métodos más usuales para resolver los P.F. son
+\begin{enumerate}
+  \item Separación de variables
+  \item Por transformadas integrales
+  \begin{itemize}
+    \item   Laplace
+    \item Fourier   
+  \end{itemize}
+  \item Funciones de Green
+  \item Funciones variacionales
+  \item Métodos numéricos
+\end{enumerate}
+
+\section{Método por separación de variables}
+
+\subsection{Problemas de calor}
+
+\subsubsection{Problemas con temperatura cero}
+Considérese el problema de determinar la distribución de
+temperatura en una varilla delgada lateralmente aislada de
+longitudo $L$ en donde la temperatura en los extremos es cero y
+con temperatur ainicial dada por $f(x)$ a lo largo de la varilla.
+
+\paragraph{Modelo}
+Sea $u=u(x,t)$ la función que describe la temperatura sobre la
+varilla. Entonces la ecuación diferencial es
+\[
+  \frac{\partial u}{\partial t}
+  = k
+  \frac{\partial^2 u}{\partial x^2},
+  \hspace{10mm} 0<x<L, t>0
+.\]
+\begin{align*}
+  C.F. && u(0,t) &= 0 & u(L,t) &= 0 &t&>0 \\
+  C.I. && u(x,0) &= f(x) & &&& 0<x<L
+\end{align*}
+
+\paragraph{Solución}
+El método de separación de variables supone como solución a
+\[
+  u(x,t) = X(x)T(t)
+.\]
+Sustituyendo en la ecuación diferencial, tenemos $XT'=kX''T$.
+Dividiendo entre $ku=kXT$, tenemos
+\[
+  \frac{XT'}{kXT} = k \frac{X''T}{kXT}
+.\]
+Es decir,
+\[
+  \frac{T'}{kT} = \frac{X''}{X}
+.\]
+Como el lado izquierdo depende solo de $t$ y el lado derecho
+depende solo de $X$, la igualdad anterior solo es posible cuando
+ambos lados son iguales a una constante. La denotaremos como
+$-\lambda$ por conveniencia.
+Así,
+\[
+  \frac{T'}{kT} = \frac{X''}{X} = -\lambda
+.\]
+A $\lambda$ la llamaremos la constante de separación.
+Por lo tanto, obtenemos dos EDO
+\begin{align*}
+  X'' + \lambda X &= 0
+  &
+  T' + kT &= 0
+\end{align*}
+Ahora, aplicando las condiciones de frontera a $u(x,t)$:
+\begin{align*}
+  \text{Si } u(0,t)&=0
+  & &\implies &
+  X(0)T(t)&=0
+  & &\text{ ssi } &
+  X(0)&=0 \\
+  \text{Si } u(L,t)&=0
+  & &\implies &
+  X(L)T(t)&=0
+  & &\text{ ssi } &
+  X(L)&=0
+\end{align*}
+Así, obtenemos un problema de Strum-Liouville cuya solución
+depende de $\lambda$.
+
+\begin{itemize}
+  \item \emph{Caso $\lambda=0$.}
+  Entonces la ecuación diferencial $X''=0$ tiene solución
+  \[
+    X(x)=c_1+c_2x
+  .\]
+  \begin{itemize}
+    \item
+    Como $X(0)=0$, entonces $c_1+0=0$, por lo cual $c_1=0$.
+    \item
+    Como $X(L)=0$, entonces $c_2L=0$, por lo cual $c_2=0$.
+  \end{itemize}
+  Concluimos que $X(x)=0$ para todo $x$: la solución es trivial.
+
+  \item \emph{Caso $\lambda<0$.}
+  Entonces la ecuación diferencial tiene solución
+  \[
+    X(x) = c_1e^{\alpha x} + c_2 e^{-\alpha x}
+  ,\]
+  donde $\alpha=\sqrt{-\lambda}$.
+  \begin{itemize}
+    \item
+    Como $X(0)=0$, entonces $c_1+c_2=0$, por lo cual $c_1=-c_2$.
+    \item
+    Como $X(L)=0$, entonces $c_1e^{\alpha L}+c_2e^{-\alpha L}=0$,
+    por lo cual $c_1(e^{\alpha L}-e^{-\alpha L})=0$. Esto implica
+    que $c_1=0$.
+  \end{itemize}
+  Concluimos que $X(x)=0$ para todo $x$: la solución es trivial.
+
+  \item \emph{Caso $\lambda>0$.}
+  Entonces la ecuación diferencial tiene solución
+  \[
+    X(x)= c_1\cos(\beta x)+c_2\sin(\beta x)
+  ,\]
+  donde $\beta=\sqrt{\lambda}$.
+  \begin{itemize}
+    \item Como $X(0)=0$, entonces $c_1=0$.
+    \item Como $X(L)=0$, entonces $c_2\sin(\beta L)=0$.
+  \end{itemize}
+  Considerando $c_1=0$, concluimos que $\beta L=\pi n$ con $n$
+  entero positivo. Así,
+  \[
+    \beta= \frac{n\pi}{L}, \hspace{10mm} n=1,2,3,\dots
+  .\]
+  Concluimos que
+  $X(x)=c_2\sin(\tfrac{n\pi}{L}x)$ para $n=1,2,3,\dots$.
+\end{itemize}
+
+Ahora, sustituyendo $\lambda=(\tfrac{n\pi}{L})^2$ en la ecuación
+para $T(t)$, tenemos
+\[
+  T' + k (\tfrac{n\pi}{L})^2 T = 0
+.\]
+La cual tiene solución $T(t)=c_3\exp(-k(\tfrac{n\pi}{L})^2t)$.
+Por lo tanto, tenemos una familia de soluciones
+\begin{align*}
+  u_n(x,t)
+  &= X(x)T(t) \\
+  &= c_2\sin(\tfrac{n\pi}{L}x)c_3\exp(-k(\tfrac{n\pi}{L})^2t) \\
+  &= b\sin(\tfrac{n\pi}{L}x)\exp(-k(\tfrac{n\pi}{L})^2t),
+\end{align*}
+donde $b=c_2c_3$.
+
+Si tomamos una de estas soluciones y le aplicamos la condición
+inicial $u(x,0)=f(x)$, obtenemos la ecuación
+\[
+  f(x) = b \sin(\tfrac{n\pi}{L}x)
+,\]
+la cual no se puede satisfacer para cualquier función $f(x)$.
+
+Sin embargo, si tomamos una constante $b_n$ para cada $n$ y
+sumamos las soluciones $u_n(x,t)$ resultantes, obtenemos
+\begin{equation}
+  u(x,t)
+  = \sum_{n=1}^{\infty}
+  b_n\sin(\tfrac{n\pi}{L}x)\exp(-k(\tfrac{n\pi}{L})^2t),
+\end{equation}
+la cual sigue siendo una solución de la ecuación diferencial, ya
+que la linealidad de la E.D. nos permite aplicar
+el principio de superposición.
+
+Ahora sí, aplicando la condición inicial $u(x,0)=f(x)$, tenemos
+\[
+  f(x)
+  = \sum_{n=1}^{\infty}
+  b_n\sin(\tfrac{n\pi}{L}x),
+,\]
+lo cual tiene solución exactamente cuando $f$ se puede expresar
+como una serie de Fourier en senos en $[0,L]$. En este caso, los
+coeficientes son
+\[
+  b_n = \frac{2}{L}\int_0^L f(x)\sin(\tfrac{n\pi}{L}x)\,dx
+.\]
+En particular, una condición necesaria para que $f$ se pueda
+expresar de esta manera es la llamada condición de
+compatibilidad:
+\[
+  f(0)=f(L)=0
+.\]
+
+\begin{example}
+  Considérese una varilla de longitud $L=\pi$ y
+  \begin{align*}
+    f(x)&=x(\pi-x)
+    &
+    k&=1.
+  \end{align*}
+  Notemos que $f$ cumple las condiciones de compatibilidad.
+
+  Además, $f$ tiene transformada de Fourier en senos en
+  $[0,\pi]$, así que la solución está dada por
+  \[
+    u(x,t)
+    = \sum_{n=1}^{\infty} b_n\sin(nx)\exp(-kn^2t),
+  .\]
+  donde
+  \begin{align*}
+    b_n
+    &= \frac{2}{\pi}\int_0^\pi x(\pi-x)\sin(nx)\,dx
+  \end{align*}
+  Empleando el método tabular
+  \[
+    \begin{array}{c|c|c|c}
+      & u & &  dv \\
+      (+) & x(\pi-x) & & \sin(nx) \\
+      && \searrow \\
+      (-) & \pi - 2x && -\frac{\cos(nx)}{n} \\
+      && \searrow \\
+      (+) & -2 && -\frac{\sin(nx)}{n^2}\\
+      && \searrow \\
+      (-) & 0 && \frac{\cos(nx)}{n^3}
+    \end{array}
+  .\]
+  Obtenemos
+  \begin{align*}
+    b_n
+    &= \frac{2}{\pi}\left[ -x(\pi-x)\frac{\cos(nx)}{n}
+    + (\pi-2x)\frac{\sin(nx)}{n^2}
+    - \frac{2\cos(nx)}{n^3}
+    \right]_{x=0}^{x=\pi} \\
+    &= \frac{2}{\pi}\left[
+    -\frac{2\cos(n\pi)}{n^3}+\frac{2\cos(n0)}{n^3}
+    \right] \\
+    &= \frac{4(1-(-1)^n)}{n^3\pi} \\
+    &=
+    \begin{cases}
+      \displaystyle\frac{8}{n^3\pi} & n \text{ impar } \\
+      0 & n \text{ par.}
+    \end{cases}
+  \end{align*}
+  o bien
+  \begin{align*}
+    b_{2n-1} &= \frac{8}{(2n-1)^3\pi}
+    &
+    b_{2n}&=0
+  \end{align*}
+  para $n=1,2,3,\dots$. Así,
+  \begin{align*}
+    u(x,t)
+    &= \frac{8}{\pi}\sum_{n=1}^{\infty}
+    \frac{1}{(2n-1)^3}\sin((2n-1)x)\exp(-k(2n-1)^2t).
+  \end{align*}
+\end{example}
+
+\subsubsection{Extremos aislados}
+Consideremos ahora el problema de la distribución de temperatura
+sobre una varilla de longitud $L$ donde los extremos son aislados
+con temperatura inicial dada por $f(x)$ a lo largo de la varilla
+
+\paragraph{Modelo}
+Sea $u=u(x,t)$ la función deseada. La ecuación diferencial
+\[
+  \frac{\partial u}{\partial u}
+  =k
+  \frac{\partial^2u}{\partial^2x}
+  \hspace{10mm} 0<x<L, t>0
+.\]
+\begin{align*}
+  C.F. && u_x(0,t) &= 0 & u_x(L,t) &= 0 &t&>0 \\
+  C.I. && u(x,0) &= f(x) & &&& 0<x<L
+\end{align*}
+Queda de tarea.
+
+\subsubsection{Extremos con temperatura constante (mie 17 nov
+2021)}
+
+Determinar la función que determina la distribución de
+temperatura sobre una varilla de longitud $L$ laterlamente
+aislada en donde los extremos tienen temperatura constante en el
+extremo izquierdo $T_1$ y en el extremo derecho $T_2$, con
+temperatura inicial dada por $f(x), 0\leq x\leq L$.
+
+\paragraph{Modelo}
+Sea $u=u(x,t)$. Entonces la EDP es
+\[
+  \frac{\partial u}{\partial t}
+  = k
+  \frac{\partial ^2 u}{\partial x^2}
+  \hspace{10mm} 0<x<L,
+  \hspace{5mm} t>0.
+\]
+con
+\begin{align*}
+  C.F. && u(0,t) &= T_1 & u(L,t) &= T_2 &t&>0 \\
+  C.I. && u(x,0) &= f(x) & &&& 0\leq x\leq L
+\end{align*}
+
+\paragraph{Solución}
+Obsevemos que, si $v$ es una solución del problema con
+temperatura cero en los extremos
+\[
+  \frac{\partial v}{\partial t}
+  = k
+  \frac{\partial ^2 v}{\partial x^2}
+  \hspace{10mm} 0<x<L,
+  \hspace{5mm} t>0.
+\]
+con
+\begin{align*}
+  C.F. && v(0,t) &= 0 & v(L,t) &= 0 &t&>0 \\
+  C.I. && v(x,0) &= g(x) & &&& 0\leq x\leq L
+\end{align*}
+entonces $u(x,t)=v(x,t)+a_1+a_2x$ es solución de
+\[
+  \frac{\partial u}{\partial t}
+  = k
+  \frac{\partial ^2 u}{\partial x^2}
+  \hspace{10mm} 0<x<L,
+  \hspace{5mm} t>0.
+\]
+con
+\begin{align*}
+  C.F. && u(0,t) &= a_1 & u(L,t) &= a_1+a_2L &t&>0 \\
+  C.I. && u(x,0) &= g(x)+a_1+a_2x & &&& 0\leq x\leq L
+\end{align*}
+Por lo tanto, podemos tomar $a_1=T_1$, $a_2=(T_2-T_1)/L$ y
+$g(x)=f(x)-a_1-a_2x$ para reducir este problema al problema
+anterior, obteniendo
+
+\[
+  u(x,t) = v(x,t) + T_1 + \frac{T_2-T_1}{L}x
+\]
+donde
+\begin{equation}
+  v(x,t)
+  = \sum_{n=1}^{\infty}
+  b_n\sin(\tfrac{n\pi}{L}x)\exp(-k(\tfrac{n\pi}{L})^2t),
+\end{equation}
+
+\[
+  g(x)
+  = f(x)-T_1-\frac{T_2-T_1}{L}
+  = \sum_{n=1}^{\infty}
+  b_n\sin(\tfrac{n\pi}{L}x),
+,\]
+lo cual tiene solución exactamente cuando los coeficientes de
+Fourier
+\[
+  b_n = \frac{2}{L}\int_0^L
+    \left[f(x) - T_1 - \frac{T_2-T_1}{L}x\right]
+    \sin(\tfrac{n\pi}{L}x)\,dx
+\]
+existen. En particular, es necesario que se cumpla
+la condición de compatibildad
+\begin{align*}
+  f(0) &= T_1 & f(L) &= T_2.
+\end{align*}
+
+\begin{example}
+  Caso particular: $L=\pi$, $f(x)=x$, $T_1=50$, $T_2=100$.
+
+  Entonces
+  \begin{align*}
+    b_n
+    = \frac{2}{\pi}\int_0^\pi(x-50-\tfrac{50}{\pi}x)\sin(nx)\,dx.
+  \end{align*}
+  Usando el método tabular
+  \[
+    \begin{array}{c|c|c|c}
+      & u & &  dv \\
+      (+) & x-50-\tfrac{50}{\pi}x & & \sin(nx) \\
+      && \searrow \\
+      (-) & 1-\tfrac{50}{\pi} && -\frac{\cos(nx)}{n} \\
+      && \searrow \\
+      (+) & 0 && -\frac{\sin(nx)}{n^2}\\
+    \end{array}
+  .\]
+  tenemos
+  \begin{align*}
+    b_n
+    &= \frac{2}{\pi}\int_0^\pi(x-50-\tfrac{50}{\pi}x)\sin(nx)\,dx
+    \\
+    &= \frac{2}{\pi}\left[
+    -\left(x-50-\frac{50}{\pi}x\right)\frac{\cos(nx)}{n}
+    + \left(1-\frac{50}{\pi}\right)\frac{\sin(nx)}{n^2}
+    \right]_{x=0}^\pi \\
+    &= \frac{2}{\pi}
+    \left[
+    (100-\pi)\frac{\cos(n\pi)}{n}
+    \right]
+    -
+    \frac{2}{\pi} \frac{50}{n} \\
+    &= \frac{2}{\pi}\frac{(100-\pi)(-1)^n-50}{n}.
+  \end{align*}
+  Luego,
+  \begin{align*}
+    u(x,t)
+    &= v(x,t) + 50+\frac{50}{\pi}x \\
+    &= 50+\frac{50}{\pi}x
+      + \frac{2}{\pi}\sum_{n=1}^{\infty}
+      \frac{(100-\pi)(-1)^n-50}{n}
+      \sin(nx)\exp(-kn^2t),
+  \end{align*}
+\end{example}
+
+\subsubsection{Modelo con extremos que irradian temperatura}
+
+Si en el problema anterior las condiciones de frontera fueran de
+la forma
+\begin{align*}
+  u_x(0,t) &= A[u(0,t) + T] \\
+  u_x(L,t) &= -A[u(L,t) + T]
+\end{align*}
+se dice que hay irradiación de temperatura en los extremos.
+
+\paragraph{Modelo}
+Resolveremos el problema en el cual la temperatura en el extremo
+izquier\-do es cero y en el derecho hay irradiación tomando $T=0$.
+Esto es
+\[
+  \frac{\partial u}{\partial t}
+  = k
+  \frac{\partial ^2 u}{\partial x^2}
+  \hspace{10mm} 0<x<L,
+  \hspace{5mm} t>0.
+\]
+con
+\begin{align*}
+  C.F. && u(0,t) &= 0 & u_x(L,t) + Au(L,t) &= 0 &t&>0 \\
+  C.I. && u(x,0) &= f(x) & &&& 0\leq x\leq L
+\end{align*}
+\paragraph{Solución}
+Separando variables con el supuesto $u(x,t)=X(x)T(t)$,
+obtenemos las ecuaciones
+\begin{align*}
+  X''+\lambda X &= 0
+  &
+  T'+k\lambda T &= 0.
+\end{align*}
+
+Aplicando las condiciones de frontera, tenemos
+\begin{align*}
+  \text{Si } u(0,t)&=0
+  & &\implies &
+  X(0)T(t)&=0 \\
+  && &\text{ ssi } &
+  X(0)&=0 \\
+  \text{Si } u_x(L,t)+A(L,t)&=0
+  & &\implies &
+  X'(L)T(t)+AX(L)T(t)&=0 \\
+  && &\text{ ssi } &
+  X'(L)+AX(L)&=0.
+\end{align*}
+Así, obtenemos un problema de Strum-Liouville completo:
+\begin{align*}
+  X''+\lambda X &= 0 \\
+  X(0) &= 0 \\
+  X'(L) + AX(L) &= 0.
+\end{align*}
+\begin{itemize}
+  \item Caso $\lambda=0$.
+  Entonces $X$ tiene solución
+  \[
+    X(x) = c_1 + c_2x
+  .\]
+  Aplicando las condiciones de frontera, tenemos
+  \begin{align*}
+    X(0)&=0
+    &\implies &&
+    c_1&=0
+    \\
+    X'(L)+AX(L)&=0
+    &\implies &&
+    c_2+Ac_2L&=0
+    &\implies &&
+    c_2 &= 0,
+  \end{align*}
+  por lo cual la solución es trivial.
+
+  \item Caso $\lambda<0$.
+  Entonces
+  \[
+    X(x) = c_1e^{\alpha x} + c_2e^{-\alpha x}
+  \]
+  con $\alpha=\sqrt{-\lambda}$.
+
+  \item Caso $\lambda>0$.
+  Entonces
+  \[
+    X(x) = c_1\cos(\beta x) + c_2\sin(\beta x)
+  \]
+  donde $\beta = \sqrt\lambda$.
+  Aplicando $X(0)=0$, obtenemos $c_1=0$, por lo cual
+  \begin{align*}
+    X(x) &= c_2\sin(\beta x) \\
+    X'(x) &= \beta c_2\cos(\beta x)
+  \end{align*}
+  Aplicando la otra condición de frontera, tenemos
+  \begin{align*}
+    \beta c_2\cos(\beta L)+Ac_2\sin(\beta L) &= 0.
+  \end{align*}
+  Suponiendo $c_2\neq 0$ (de otro modo la solución es trivial),
+  tenemos
+  \begin{align*}
+    \beta\cos(\beta L)+A\sin(\beta L) &= 0.
+  \end{align*}
+  Esta ecuación no se puede resolver algebraicamente para
+  $\beta$, pero sí tiene infinitas soluciones
+  $\beta_1,\beta_2,\beta_3,\beta_4,\dots$.
+  Luego, tenemos valores para $\lambda$ dados como
+  $\lambda_n=\beta_n^2$, lo cual nos da soluciones
+  \[
+    X(x) = b\sin(\beta_n x)
+  \]
+  con $n\in\N$ y $c\in\R$.
+
+  Así,
+  \[
+    T(t) = b\exp(-k\beta_n^2 t)
+  \]
+  por lo cual obtenemos soluciones
+  \[
+    u(x,t)
+    =b\sin(\beta_n x)\exp(-k\beta_n^2 t)
+  .\]
+\end{itemize}
+
+\begin{example}
+  Considérese el caso con $L=6$, $k=4$, $A=\frac{1}{2}$ y $f(x)=x(6-x)$.
+\end{example}
+
+\subsubsection{Problema de calor no homogéneo}
+
+Consideremos el problema de distribución de temperatura sobre una varilla
+delgada de longitud $L$ lateralmente aislada con temperatura cero en los
+extremos y temperatura inicial dada por $f(x)$ para $0\leq x\leq L$ y en el cual
+existe una fuerza externa dada por $F(x,t)$.
+
+\paragraph{Modelo}
+
+Sea $u=u(x,t)$ la temperatura. La ecuación diferencial que gobierna a este
+fenómeno es
+\begin{equation}\label{eqn:uno}
+  \frac{\partial u}{\partial x}
+  =k \frac{\partial^2 u}{\partial x^2} + F(x,t)
+\end{equation}
+\begin{align*}
+  C.F. && u(0,t) &= 0, & u(L,t)&= 0 && t>0 \\
+  C.I. && u(x,0) &= f(x), &&&& 0\leq x\leq L
+\end{align*}
+
+\paragraph{Solución}
+Dado que la ecuación es lineal y no homogénea, la solución general
+está dada como
+\[
+  u(x,t) = u_h(x,t)+u_p(x,t)
+\]
+donde $u_p(x,t)$ es una solución particular y
+$u_h(x,t)$ es la solución de la ecuación homogénea correspondiente
+\begin{align*}
+  && \frac{\partial u}{\partial x^2}
+  &=k \frac{\partial^2 u}{\partial x^2} \\
+  C.F. && u(0,t) &= 0, & u(L,t)&= 0 && t>0 \\
+  C.I. && u(x,0) &= f(x), &&&& 0\leq x\leq L.
+\end{align*}
+Recordemos que este modelo homogéneo tiene solución
+\[
+  u(x,t)
+  =
+  \sum_{n=1}^{\infty}b_n\sin(\tfrac{n\pi}{L}x)
+  \exp(-k(\tfrac{n\pi}{L})^2t)
+\]
+con
+\[
+  b_n=\frac{2}{L}\int_{0}^{L}f(x)\sin(\tfrac{n\pi}{L}x)\,dx
+.\]
+Esto sugiere que, para determinar la solución de \eqref{eqn:uno},
+es razonable suponer que $u$ tiene la forma
+\begin{equation}\label{eqn:dos}
+  u(x,t) = \sum_{n=1}^{\infty}T_n(t)\sin(\tfrac{n\pi}{L}x),
+\end{equation}
+donde $T_n(t)$ es una función desconocida que, en el caso homogéneo,
+se reduce a $T_n(t)=b_n\exp(-k(\tfrac{n\pi}{L})^2t)$).
+La ecuación \eqref{eqn:dos} representa la serie en senos de $u(x,t)$,
+por lo cual tenemos
+\begin{equation}\label{eqn:tres}
+  T_n(t) = \frac{2}{L} \int_{0}^{L}u(x,t)\sin(\tfrac{n\pi}{L}x)\,dx.
+\end{equation}
+Ahora supongamos que $F(x,t)$ tiene serie de Fourier en senos
+\begin{align*}
+  F(x,t)
+  &= \sum_{n=1}^{\infty}B_n(t)\sin(\tfrac{n\pi}{L}x),
+  &B_n(t)
+  &= \frac{2}{L}\int_{0}^{L}F(x,t)\sin(\tfrac{n\pi}{L}x)\,dx.
+\end{align*}
+En este caso, al derivar \eqref{eqn:tres} con respecto a $t$, obtenemos
+\begin{align*}
+  T'_n(t)
+  &=
+  \frac{2}{L}\int_{0}^{L}\frac{\partial u}{\partial t}(x,t)
+  \sin(\tfrac{n\pi}{L}x)\,dx \\
+  &=
+  \frac{2}{L}\int_{0}^{L}
+  \left[
+  k \frac{\partial^2u}{\partial x^2}(x,t)+F(x,t)
+          \right]
+  \sin(\tfrac{n\pi}{L}x)\,dx \\
+  &=
+  \frac{2k}{L}\int_{0}^{L}
+  \frac{\partial^2u}{\partial x^2}(x,t)
+  \sin(\tfrac{n\pi}{L}x)\,dx
+  +
+  \frac{2}{L}\int_{0}^{L}
+  F(x,t)
+  \sin(\tfrac{n\pi}{L}x)\,dx \\
+  &=
+  \frac{2k}{L}\left[
+    \frac{\partial u}{\partial x}(x,t)\sin(\tfrac{n\pi}{L}x)\Big|_{x=0}^L
+    -
+    \frac{n\pi}{L}\int_{0}^{L}\frac{\partial u}{\partial x}(x,t)
+    \cos(\tfrac{n\pi}{L}x)\,dx
+  \right]
+  +B_n(t) \\
+  &=
+  -\frac{2kn^2\pi^2}{L^3}\int_{0}^{L}u(x,t)\sin(\tfrac{n\pi}{L}x)\,dx
+  +B_n(t) \\
+  &= -k(\tfrac{n\pi}{L})^2T_n(t)+B_n(t).
+\end{align*}
+Es decir,
+\[
+  T'_n(t)
+  +k(\tfrac{n\pi}{L})^2T_n(t)
+  =B_n(t)
+,\]
+lo cual es una EDO lineal de primer orden, cuya solución es
+\[
+  T_n(t)
+  =
+  \exp(-k(\tfrac{n\pi}{L})^2t)
+  \left[
+  \int_{0}^{t}\exp(k(\tfrac{n\pi}{L})^2\xi)
+  B_n(\xi)\,d\xi + C\right]
+.\]
+En $t=0$ tenemos que $T_n(0)=C$ es una constante, pero $T_n(0)=b_n$,
+así que $C=b_n$.
+
+Así, sustituyendo en \eqref{eqn:dos}, tenemos
+\[
+  u(x,t)
+  =
+  \sum_{n=1}^{\infty}\exp(-k(\tfrac{n\pi}{L})^2t)
+  \left[
+    \int_{0}^{t}\exp(k(\tfrac{n\pi}{L})^2\xi)B_n(\xi)\,d\xi + b_n
+  \right]\sin(\tfrac{n\pi}{L}x)
+.\]
+Es decir,
+\begin{align*}
+  u(x,t)
+  &=
+  \sum_{n=1}^{\infty}\exp(-k(\tfrac{n\pi}{L})^2t)
+  \int_{0}^{t}\exp(k(\tfrac{n\pi}{L})^2\xi)
+  B_n(\xi)\,d\xi\sin(\tfrac{n\pi}{L}x) \\
+  &\hspace{10mm} +
+  \sum_{n=}^{\infty}b_n\sin(\tfrac{n\pi}{L}x)
+  \exp(-k(\tfrac{n\pi}{L})^2t)
+\end{align*}
+
+\begin{exe}
+  Consideremos el caso particular de $L=5$, $k=1$, $f(x)=x$, $F(x,t)=x\sin t$.
+\end{exe}
+
+\subsection{Problemas de vibraciones}
+
+Considérese el problema de determinar las vibraciones en una varilla
+de longitud $L$ fija en los extremos con un desplazamiento inicial dado
+por $f(x)$ y una velocidad inicial dada por $g(x)$ para $0\leq x\leq
+L$.
+
+Primero trataremos el modelo ideal en que la cuerda o varilla no tiene
+nada que lo impida.
+
+\paragraph{Modelo}
+Sea $u=u(x,t)$ la función que describa las vibraciones. Entonces la
+ecuación diferencial que domina la evolución del sistema es la
+ecuación de onda:
+
+\[
+    \frac{\partial^2u}{\partial t^2 }
+    =c^2   \frac{\partial^2u}{\partial x^2}
+    \quad 0<x<L \quad t>0
+\]
+con
+\begin{align*}
+  C.F.&& u(0,t)&=0 & u(L,t)&=0 & t>0 \\
+  C.I.&& u(x,0)&=f(x) & u_t(x,0)&=g(x) & 0\leq x\leq L.
+\end{align*}
+
+\paragraph{Solución}
+El método de separación de variables supone que la solución $u$ es de
+la forma $u(x,t)=X(x)T(t)$. Sustituyendo en la ecuación, obtenemos
+\[
+  XT''=c^2X''T
+,\]
+de donde
+\[
+  \frac{T''}{c^2T} = \frac{X''}{X} = -\lambda
+,\]
+por lo cual obtenemos las EDO
+\begin{align*}
+  X''+\lambda X &= 0
+  &
+  T''+c^2\lambda T &= 0.
+\end{align*}
+Ahora apliquemos las condiciones
+\begin{itemize}
+  \item Dado que $u(0,t)=0$, entonces $X(0)T(t)=0$, por lo cual
+    $X(0)=0$.
+  \item Dado que $u(L,t)=0$, entonces $X(L)T(t)=0$, por lo cual
+    $X(L)=0$.
+\end{itemize}
+Así, obtenemos el problema de Strum-Liouville
+\[
+  X''+\lambda X = 0, \quad X(0)=X(L)=0
+\]
+que tiene un espacio de soluciones generado por
+\[
+  X(x)=c\sin(\tfrac{n\pi}{L}x), \quad \text{ con }
+  \lambda=(\tfrac{n\pi}{L})^2
+\]
+y $c\in\R$.
+Luego, la solución de $T''+(\tfrac{cn\pi}{L})^2T=0$ es 
+\[
+  T(t)=k_1\cos(\tfrac{cn\pi}{L}t)+k_2\sin(\tfrac{cn\pi}{L}t)
+\]
+donde $k_1,k_2\in\R$.
+Luego, tenemos soluciones
+\[
+  u_n(x,t)=\sin(\tfrac{n\pi}{L}x) \left[
+    a\cos(\tfrac{cn\pi}{L}t)+b\sin(\tfrac{cn\pi}{L}t)
+  \right]
+.\]
+Tomando coeficientes distintos $a_n,b_n$ para cada $n$ y sumando,
+obtenemos una solución
+\[
+  u(x,t)
+  =
+  \sum_{n=1}^{\infty}\sin(\tfrac{n\pi}{L}x) \left[
+    a_n\cos(\tfrac{cn\pi}{L}t)
+    +b_n\sin(\tfrac{cn\pi}{L}t)
+  \right]
+\]
+con derivada
+\[
+  \frac{\partial u}{\partial t}
+  =
+  \sum_{n=1}^{\infty}\sin(\tfrac{n\pi}{L}x) \left[
+    -a_n \tfrac{cn\pi}{L}\sin(\tfrac{cn\pi}{L}t)
+    +b_n \tfrac{cn\pi}{L}\cos(\tfrac{cn\pi}{L}t)
+  \right]
+.\]
+Al aplicar las condiciones iniciales, tenemos
+\begin{itemize}
+  \item Como $u(x,0)=f(x)$, entonces
+    \[
+      f(x)=\sum_{n=1}^{\infty}a_n\sin(\tfrac{n\pi}{L}x)
+    .\]
+  \item Como $u_t(x,0)=g(x)$, entonces
+    \[
+      g(x) = \sum_{n=1}^{\infty}b_n
+      \tfrac{cn\pi}{L}\sin(\tfrac{n\pi}{L}x)
+    .\]
+\end{itemize}
+Estas dos ecuaciones tienen solución cuando $f$ y $g$ tienen serie de
+Fourier en senos, en cuyo caso los
+coeficientes se pueden obtener como
+\begin{align*}
+  a_n &= \frac{2}{l}\int_{0}^{L}f(x)\sin(\tfrac{n\pi}{L}x)\,dx
+      &
+  b_n \tfrac{cn\pi}{L} &=
+  \frac{2}{L}\int_{0}^{L}g(x)\sin(\tfrac{n\pi}{L}x)\,dx.
+\end{align*}
+Es decir,
+\begin{align*}
+  a_n &= \frac{2}{l}\int_{0}^{L}f(x)\sin(\tfrac{n\pi}{L}x)\,dx
+      &
+  b_n &=
+  \frac{2}{cn\pi}\int_{0}^{L}g(x)\sin(\tfrac{n\pi}{L}x)\,dx.
+\end{align*}
+
+\begin{example}
+  Consideremos el caso particular con $L=\pi$, $c=1$ y condiciones
+  iniciales
+  \begin{align*}
+    f(x) &=
+    \begin{cases}
+      x, &0\leq x\leq \frac{\pi}{2} \\
+      \pi-x, & \frac{\pi}{2}<x\leq\pi.
+    \end{cases} \\
+    g(x) &= x(1+\cos x).
+  \end{align*}.
+
+\paragraph{Solución}
+
+  La solución es
+  \[
+    u(x,t)
+    =
+    \sum_{n=1}^{\infty}\sin(nx)
+    \left[ a_n\cos(cnt) +b_n\sin(cnt) \right]
+  \]
+  con
+  \begin{align*}
+    a_n &= \frac{2}{\pi}\int_{0}^{\pi}f(x)\sin(nx)\,dx, \\
+    b_n &= \frac{2}{cn\pi}\int_{0}^{\pi}g(x)\sin(nx)\,dx.
+  \end{align*}
+
+  Tenemos
+  \begin{align*}
+    a_n
+    &= \frac{2}{\pi}\int_{0}^{\pi}f(x)\sin(nx)\,dx \\
+    &= \frac{2}{\pi}\int_{0}^{\pi /2} x\sin(nx)\,dx
+     + \frac{2}{\pi}\int_{\pi /2}^{\pi}(\pi-x)\sin(nx)\,dx \\
+    &= \frac{2}{\pi n}\int_{0}^{\pi /2} \cos(nx)\,dx
+      - \frac{2x\cos(nx)}{\pi n} \Big|_{0}^{\pi /2}
+     \\ & \hspace{10mm}
+     - \frac{2}{\pi n}\int_{\pi /2}^{\pi}\cos(nx)\,dx
+     - \frac{2(\pi-x)\cos(nx)}{\pi n} \Big|_{\pi /2}^{\pi} \\
+    &= \frac{2}{\pi n^2} \sin(nx) \Big|_{0}^{\pi /2}
+      - \frac{\cos(n\pi /2)}{n}
+     \\ & \hspace{10mm}
+     - \frac{2}{\pi n^2}\sin(nx)\Big|_{\pi /2}^{\pi}
+     + \frac{\cos(n\pi /2)}{n} \\
+    &= \frac{2}{\pi n^2} \sin(nx) \Big|_{0}^{\pi /2}
+     - \frac{2}{\pi n^2}\sin(nx)\Big|_{\pi /2}^{\pi} \\
+    &= \frac{4}{\pi n^2}\sin(n\pi /2).
+  \end{align*}
+
+  Y haciendo la otra integral (yo la hice con Wolfram) obtenemos
+  \begin{align*}
+    b_1 &= \frac{3}{2} \\
+    b_n
+    &= \frac{2(-1)^n}{n^2(n^2-1)}, \quad n\geq 2.
+  \end{align*}
+\end{example}
+Así,
+\begin{align*}
+  u(x,t)
+  &= \sin(x)[a_1\cos(t)+b_1\sin(t)]
+  \\ &\hspace{10mm}
+  + \sum_{n=2}^{\infty}\sin(nx)
+    \left[
+      a_n\cos(nt)+b_n\sin(nt)
+    \right] \\
+  &= \sin(x)[\tfrac{4}{\pi}\cos(t)+\tfrac{3}{2}\sin(t)]
+  \\ &\hspace{10mm}
+  + \sum_{n=2}^{\infty}\sin(nx)
+    \left[
+      \frac{4}{n^2\pi}\cos(nt)+\frac{2(-1)^n}{n^2(n^2-1)}\sin(nt)
+    \right] \\
+\end{align*}
+
+\subsubsection{Vibraciones con perturbación}
+Consideremos el problema anterior en donde ahora existe una fuerza
+externa $h(x)$ que impide que la cuerda vibre libremente.
+
+\paragraph{Modelo}
+La ecuación diferencial que gobierna a este fenóneno está dada como
+\[
+  \frac{\partial ^2u}{\partial t^2}
+  = c^2 \frac{\partial ^2u}{\partial x^2} + h(x)
+\]
+con
+\begin{align*}
+  C.F.&& u(0,t)&=0 & u(L,t)&=0 & t>0 \\
+  C.I.&& u(x,0)&=f(x) & u_t(x,0)&=g(x) & 0\leq x\leq L.
+\end{align*}
+
+\paragraph{Solución}
+El método de separación de variables supone que la solución es de la
+forma $u(x,t)=X(x)T(t)$. Sustituyendo esto en la ecuación, tenemos
+\[
+  XT''=c^2X''T+h(x)
+\]
+dividiendo entre $XT$, tenemos
+\[
+  \frac{T''}{T} = c^2 \frac{X''}{X} + \frac{h(x)}{XT}
+.\]
+Así, las variables no se pueden separar.
+
+Para resolver esto, introducimos una perturbación $\phi$ para
+considerar soluciones de la forma $u(x,t)=v(x,t)+\phi(x)$.
+Sustituyendo en la EDP, tenemos
+\[
+  \frac{\partial ^2v}{\partial t^2}
+  = c^2 \frac{\partial ^2v}{\partial x^2} + c^2\phi''(x)+ h(x)
+.\]
+Supongamos que podemos resolver las ecuaciones
+\begin{align*}
+  c^2\phi''+h &= 0 \\
+  \frac{\partial ^2v}{\partial t^2}
+  &= c^2 \frac{\partial ^2v}{\partial x^2}.
+\end{align*}
+Donde las condiciones para $v$ y de $\phi$ se obtienen de las de $u$:
+\begin{itemize}
+  \item Como $u(0,t) = 0$, entonces $v(0,t)+\phi(0)=0$, por lo cual
+    $v(0,t)=0$ y $\phi(0)=0$.
+  \item Como $u(L,t)=0$, entonces $v(L,t)+\phi(L)=0$, por lo cual
+    $v(L,t)=0$ y $\phi(L)=0$.
+  \item Como $u(x,0)=f(x)$, entonces
+    $v(x,0)=u(x,0)-\phi(x)=f(x)-\phi(x)$.
+  \item Como $u_t(x,0)=g(x)$, entonces $v_t(x,0)=g(x)$.
+\end{itemize}
+Por lo cual $v$ es la solución del problema
+\[
+  \frac{\partial ^2v}{\partial t^2}
+  = c^2 \frac{\partial ^2v}{\partial x^2}
+\]
+con
+\begin{align*}
+  C.F.&& v(0,t)&=0 & v(L,t)&=0 & t>0 \\
+  C.I.&& v(x,0)&=f(x)-\phi(x) & v_t(x,0)&=g(x) & 0\leq x\leq L.
+\end{align*}
+
+Además, la ecuación $c^2\phi''+h=0$ tiene solución general
+\[
+  \phi(x) = -\frac{1}{c^2}\int_{0}^{x}H(\xi)\,d\xi+c_1x+c_2,
+  \quad H(\xi) = \int_{0}^{x}h(\xi)\,d\xi
+.\]
+Por lo tanto,
+\[
+  \phi(x)=-\frac{1}{c}\int_{0}^{x}H(\xi)\,d\xi
+  + \frac{x}{c^2L}\int_{0}^{L}H(\xi)\,d\xi
+.\]
+
+\begin{exe}
+  Consideremos el caso particular $L=\pi$, $c=1$, $h(x)=ax$, $f(x)=0$
+  y $g(x)=x$.
+\end{exe}
+
+\subsection{Vibraciones en dos dimensiones}
+
+\subsubsection{Vibraciones en una membrana rectangular}
+
+\subsubsection{Vibraciones en una membrana circular}
+Supongamos que se desea determinar la función que describe las
+vibraciones sobre una membrana circular de radio $r=a$ fija a lo largo
+de toda la frontera.
+Dado que la ecuación de onda está dada en la forma
+\[
+  \frac{\partial^{2} u}{\partial t^{2}}
+  = c^{2} \left(
+    \frac{\partial ^{2}u}{\partial x^{2}}
+    +\frac{\partial ^{2}u}{\partial y^{2}}
+  \right)
+.\]
+debemos expresarla en coordenadas polares:
+\begin{align*}
+  x &= r\cos\theta \\
+  y &= r\sin\theta \\
+\end{align*}
+por lo cual
+\begin{align*}
+  r^2 &= x^{2}+y^{2} \\
+  \theta &= \tan^{-1}(\tfrac{y}{x})
+\end{align*}
+Por la regla de la cadena, tenemos
+\begin{align*}
+  \begin{bmatrix}
+    \frac{\partial u}{\partial x} \\[1mm]
+    \frac{\partial u}{\partial y}
+  \end{bmatrix}
+  &=
+  \begin{bmatrix}
+    \frac{\partial r}{\partial x} &
+    \frac{\partial \theta}{\partial x} \\[1mm]
+    \frac{\partial r}{\partial y} &
+    \frac{\partial \theta}{\partial y}
+  \end{bmatrix}
+  \begin{bmatrix}
+    \frac{\partial u}{\partial r} \\[1mm]
+    \frac{\partial u}{\partial \theta}
+  \end{bmatrix}
+  \\
+  Hu
+  &=
+  \begin{bmatrix}
+    \frac{\partial r}{\partial x} & \frac{\partial r}{\partial y}
+  \end{bmatrix}
+  \begin{bmatrix}
+    \frac{\partial ^{2}u}{\partial r^{2}} & 
+    \frac{\partial ^{2}u}{\partial r\partial\theta} \\[1mm]
+    \frac{\partial ^{2}u}{\partial \theta\partial r} & 
+    \frac{\partial ^{2}u}{\partial \theta^{2}}
+  \end{bmatrix}
+\end{align*}
+
+\begin{align*}
+  \frac{\partial^{2} u}{\partial x^{2}}
+  +
+  \frac{\partial^{2} u}{\partial y^{2}}
+  &=
+  \frac{\partial u}{\partial r^{2}}
+  +
+  \frac{1}{r^{2}}\frac{\partial u}{\partial \theta^{2}}
+  +
+  \frac{1}{r}\frac{\partial u}{\partial r}
+\end{align*}
+Así, la ecuación queda como
+\[
+  \frac{\partial u}{\partial t^{2}}
+  =c^{2}
+  \left(
+    \frac{\partial u}{\partial r^{2}}
+    +
+    \frac{1}{r^{2}}\frac{\partial u}{\partial \theta^{2}}
+    +
+    \frac{1}{r}\frac{\partial u}{\partial r}
+  \right)
+.\]
+con $u=u(r,\theta,t)$.
+Como la membrana está fija en la frontera, tenemos
+\begin{align*}
+  u(0,\theta,t)&= 0 & u(a,\theta,t)&= 0 \\
+  u(r,\pi,t)&=u(r,-\pi,t) & u_\theta(r,\pi,t)&=u_\theta(r,-\pi,t).
+\end{align*}
+Consideremos también que el desplazamiento inicial está dado por
+$f(r,\theta)$ y la velocidad inicial por $g(r,\theta)$ para todo
+$0\leq r\leq a$ y para $-\pi\leq\theta\leq\pi$.
+
+\paragraph{Solución}
+Por separación de variables.
+Sea $u(r,\theta,t)=R(r)\Phi(\theta)T(t)$.
+Sustituyendo en la ecuación, tenemos
+\[
+  R\Phi T''
+  = c^{2}
+  (R''\Phi T
+  +\frac{1}{r}R'\Phi T
+  +\frac{1}{r^{2}}R\Phi''T)
+.\]
+Dividiendo entre $u$, esto es
+\[
+  \frac{T''}{c^{2}T}
+  =
+  \left(
+    \frac{R''}{R}
+    +\frac{1}{r}\frac{R'}{R}
+    +\frac{1}{r^{2}}\frac{\Phi''}{\Phi}
+  \right)
+  =-\lambda^{2}
+.\]
+De aquí, obtenemos las EDO
+\begin{align*}
+  T''+\lambda^{2}c^{2}T &= 0 \\
+  r^{2}\frac{R''}{R}
+  +r\frac{R'}{R}
+  +r^{2}\lambda^{2}
+  &=
+  -\frac{\Phi''}{\Phi}
+  = \mu
+\end{align*}
+Esta última ecuación se puede escindir en otras dos ecuaciones, para
+obtener el sistema de tres EDO:
+\begin{align*}
+  T''+\lambda^{2}c^{2}T &= 0 \\
+  r^{2}R'' +rR' +(r^{2}\lambda^{2}-\mu)R &= 0 \\
+  \Phi'' +\mu\Phi &= 0.
+\end{align*}
+Aplicando las condiciones de frontera
+\begin{itemize}
+  \item
+    $u(0,\theta,t)=0$ implica que $R(0)=0$.
+  \item
+    $u(a,\theta,t)=0$ implica que $R(a)=0$.
+  \item
+    $u(r,\pi,t)=u(r,-\pi,t)$ implica que $\Phi(\pi)=\Phi(-\phi)$.
+  \item
+    $u_\theta(r,\pi,t)=u_\theta(r,-\pi,t)$ implica que
+    $\Phi'(\phi)=\Phi'(-\pi)$.
+\end{itemize}
+Resolviendo para $\Phi$, tenemos
+\begin{itemize}
+  \item
+    Si $\mu=0$, entonces $\Phi(\theta)=c_1+c_2\theta$, así que
+    $\Phi'(\theta)=c_2$.
+
+    Como $\Phi(\pi)=\Phi(-\pi)$, entonces $c_1+c_2\pi=c_1-c_2\pi$,
+    por lo cual $c_2=0$.
+    
+    Como $\Phi'(\pi)=\Phi'(-\pi)$, entonces $c_2=c_2$. Por
+    lo tanto, $\Phi(\theta)=c_1$.
+  
+  \item
+    Si $\mu<0$, entonces
+    \[
+       \Phi(\theta)
+       =c_1e^{\alpha\theta}+
+       c_2e^{-\alpha\theta}
+    \]
+    donde $\alpha=\sqrt{-\mu}$.
+
+    Como $\Phi(\pi)=\Phi(-\pi)$, entonces
+    $c_1e^{\alpha\pi}+c_2e^{-\alpha\pi}
+    =c_1e^{-\alpha\pi}+c_2e^{\alpha\pi}$. Se sigue que
+    $c_1=c_2$.
+
+    Como $\Phi'(\pi)=\Phi'(-\pi)$, entonces
+    $\alpha c_1e^{\alpha\pi}+\alpha c_2e^{-\alpha\pi}
+    = \alpha c_1e^{-\alpha\pi}-\alpha c_2e^{\alpha\pi}$. Se
+    sigue que $c_1=-c_2$. Luego, $c_1=c_2=0$.
+    
+    Concluimos que la única solución es la trivial.
+
+  \item
+    Si $\mu>0$. Entonces
+    \begin{align*}
+      \Phi(\theta) &=
+      c_1\cos(\beta\theta)+c_2\sin(\beta\theta) \\
+      \Phi'(\theta) &=
+      -\beta c_1\sin(\beta\theta)+\beta c_2\cos(\beta\theta)
+    \end{align*}
+    donde $\beta=\sqrt\mu$.
+    
+    Como $\Phi(\pi)=\Phi(-\pi)$, entonces
+    \[
+      c_1\cos(\beta\pi)+c_2\sin(\beta\pi)
+      =
+      c_1\cos(-\beta\pi)+c_2\sin(-\beta\pi)
+    .\]
+    Luego, $\sin(\beta\pi)=0$.
+
+    Como $\Phi(\pi)=\Phi(-\pi)$, entonces
+    \[
+      -\beta c_1\sin(\beta\pi)+\beta c_2\cos(\beta\pi)
+      =
+      -\beta c_1\sin(-\beta\pi)+\beta c_2\cos(-\beta\pi)
+    .\]
+    Luego, $\sin(\beta\pi)=0$.
+
+    En ambos casos, tenemos que $\beta=1,2,3,\dots$, por lo
+    cual $\mu=\beta^{2}=n^{2}$ con $n=1,2,3,\dots$.
+    
+\end{itemize}
+
+Ahora resolvemos para $R(r)$ de la ecuación
+\[
+  r^{2}R'' +rR' +(r^{2}\lambda^{2}-\mu)R = 0
+\]
+donde $\mu=0$ o $\mu=n^{2}$ para $n=1,2,3,\dots$.
+
+\begin{itemize}
+  \item Si $\lambda=0$, la ecuación es de Cauchy-Euler,
+    \[
+      r^{2}R''+rR'-n^{2}R = 0
+    .\]
+    Sustituyendo $R=r^m$ obtenemos soluciones $m=\pm n$, por lo
+    cual obtenemos la solución
+    \[
+      R(r) = K_1r^n+K_2r^{-n}
+    .\]
+    La condición inicial $R(0)=0$ se convierte en $\lim_{r\to
+    0}R(r)=0$, lo cual solo se satisface si $K_2=0$.
+    Por otro lado, la condición $R(a)=0$ nos da que $0=K_1a^n$,
+    lo cual solo se satisface con $K_1=0$.
+    Luego, la solución es trivial.
+
+  \item Si $\lambda\neq 0$ y $\mu=n^{2}$ con
+    $n=0,1,2,3\dots$, entonces la ecuación es de
+    Bessel de orden $n$:
+    \[
+      r^{2}R'' +rR' +((\lambda r)^{2}-n^{2})R = 0
+    .\]
+    Entonces la solución es
+    \[
+      R(r)
+      =
+      K_1J_n(\lambda r)
+      +
+      K_2Y_n(\lambda r)
+    ,\]
+    donde $J_n$ y $Y_n$ son las $n$-ésimas funciones de
+    Bessel de 1er y segundo tipo (o especie).
+    \begin{align*}
+      J_n(\lambda r)
+      &= \sum_{m=0}^{\infty}\frac{(-1)^m}{m!\Gamma(m+n+1)}
+      \left(
+        \frac{\lambda x}{2}
+      \right)^{2m+n}
+    \end{align*}
+
+    Las $Y_n(\lambda r)$ no son acotadas cuando $r\to 0$,
+    así que la condición $\lim_{r\to r}R(r)=0$ nos hace
+    elegir $K_2=0$, por lo cual
+    \[
+      R(r)=K_1J_n(\lambda r)
+    .\]
+    Por otro lado, la condición $R(a)=0$ nos da
+    $K_1J_n(\lambda a)=0$.
+    Así, $\lambda$ son las soluciones de $J_n(\lambda a)=0$.
+\end{itemize}
+
+\end{document}
