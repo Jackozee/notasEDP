@@ -1065,7 +1065,7 @@ Dado que la ecuación de onda está dada en la forma
 debemos expresarla en coordenadas polares:
 \begin{align*}
   x &= r\cos\theta \\
-  y &= r\sin\theta \\
+  y &= r\sin\theta
 \end{align*}
 por lo cual
 \begin{align*}
@@ -1143,9 +1143,9 @@ Sustituyendo en la ecuación, tenemos
 \[
   R\Phi T''
   = c^{2}
-  (R''\Phi T
+  \left(R''\Phi T
   +\frac{1}{r}R'\Phi T
-  +\frac{1}{r^{2}}R\Phi''T)
+  +\frac{1}{r^{2}}R\Phi''T\right)
 .\]
 Dividiendo entre $u$, esto es
 \[
@@ -1247,11 +1247,14 @@ Resolviendo para $\Phi$, tenemos
     Luego, $\sin(\beta\pi)=0$.
 
     En ambos casos, tenemos que $\beta=1,2,3,\dots$, por lo
-    cual $\mu=\beta^{2}=n^{2}$ con $n=1,2,3,\dots$.
+    cual $\mu=\beta^{2}=n^{2}$ con $n=1,2,3,\dots$, y así la solución es
+    \[
+      \Phi(\theta) = c_1\cos(n\theta) + c_2\sin(n\theta).
+    \] 
     
 \end{itemize}
 
-Ahora resolvemos para $R(r)$ de la ecuación
+\noindent Ahora resolvemos para $R(r)$ de la ecuación
 \[
   r^{2}R'' +rR' +(r^{2}\lambda^{2}-\mu)R = 0
 \]
@@ -1305,7 +1308,130 @@ donde $\mu=0$ o $\mu=n^{2}$ para $n=1,2,3,\dots$.
     .\]
     Por otro lado, la condición $R(a)=0$ nos da
     $K_1J_n(\lambda a)=0$.
-    Así, $\lambda$ son las soluciones de $J_n(\lambda a)=0$.
+    Así, $\lambda$ son las soluciones de $J_n(\lambda a)=0$. La ecuación $J_n(\lambda a) = 0$ es una ecuación algebráica en $\lambda a$ de grado $\infty$ por lo tanto se tienen $\infty^2$ raíces (¿qué?). Ordenamos el conjunto de raíces $\{ \xi_{n_0}, \xi_{n_1}, \xi_{n_2}, \dots\}$ de manera que
+    \[
+      0 < \xi_{n_0} < \xi_{n_1} < \xi_{n_2} < \dots
+    \] Entonces
+    \[
+    \lambda a = \xi \implies \lambda = \frac{\xi}{a},
+    \] es decir
+    \[
+      \lambda_{nm} = \frac{\xi_{nm}}{a}, \quad \text{ para } m = 0,1,2,\dots
+    \] Entonces la solución es
+    \[
+      R(r) = K_{nm} J_n\left(\frac{\xi_{nm}}{a}r\right), \quad m = 0,1,2, \dots
+    \] 
 \end{itemize}
+
+\noindent Ahora resolvemos para $T(t)$ de la ecuación
+\[
+  T'' + c^2\lambda^2T = 0, \quad \text{ donde } \quad \lambda = \frac{\xi}{a}.
+\] La solución es de la forma
+\[
+  T(t) = d_1 \cos\left(\frac{c\xi}{a}t\right) + d_2 \sin\left(\frac{c\xi}{a} t\right).
+\] De lo anterior tenemos que $u(r,\theta,t)$ está dada por
+\begin{align*}
+  u(r,\theta,t) &= K_{nm} J_n\left(\frac{\xi_{nm}}{a}r\right)\left[c_1 \cos(n\theta) + c_2 \sin(n\theta)\right]\\
+                &\quad\quad \cdot \left[d_1 \cos\left(\frac{c\xi_{nm}}{a}t\right) + d_2 \sin\left(\frac{c\xi_{nm}}{a}t\right)\right],
+\end{align*}
+ó equivalentemente
+\begin{align*}
+  u(r,\theta,t) &= J_n\left(\frac{\xi_{nm}}{a}r\right)\left[A_{nm}\cos(n\theta) + B_{nm}\sin(n\theta)\right]\cos\left(\frac{c\xi_{nm}}{a}t\right)\\
+                &\quad\quad + J_n\left(\frac{\xi_{nm}}{a}r\right)\left[A_{nm}^{\ast}\cos(n\theta) + B_{nm}^{\ast}\sin(n\theta)\right]\sin\left(\frac{c\xi_{nm}}{a}t\right).
+\end{align*} 
+Por el principio de superposición se sigue que la solución general de la ecuación diferncial está dada por
+\begin{align*}
+  u(r,\theta,t) &= \sum_{n=0}^{\infty}\sum_{m=0}^{\infty} \left\{ J_n\left(\frac{\xi_{nm}}{a}r\right)\left[A_{nm}\cos(n\theta) + B_{nm}\sin(n\theta)\right]\cos\left(\frac{c\xi_{nm}}{a}t\right)\right.\\
+                &\quad\quad\quad\quad + \left.J_n\left(\frac{\xi_{nm}}{a}r\right)\left[A_{nm}^{\ast}\cos(n\theta) + B_{nm}^{\ast}\sin(n\theta)\right]\sin\left(\frac{c\xi_{nm}}{a}t\right)\right\}.
+\end{align*} 
+Enseguida aplicamos la condición inicial $u(r,\theta,0) = f(r,\theta)$, pero para facilitar la notación introducimos las siguientes funciones
+\begin{align*}
+  \phi_{nm}^{(c)}(r,\theta) &= J_n\left(\frac{\xi_{nm}}{a} r\right)\cos(n\theta)\\
+  \phi_{nm}^{(s)}(r,\theta) &= J_n\left(\frac{\xi_{nm}}{a}r\right)\sin(n\theta).
+\end{align*} Así podemos escribir a $u$ de la siguiente manera
+\begin{align*}
+  u(r,\theta,t) &= \sum_{n=0}^{\infty}\sum_{m=0}^{\infty}
+              \left[
+              A_{nm}\phi_{nm}^{(c)}(r,\theta)
+              + B_{nm}\phi_{nm}^{(s)}(r,\theta)
+              \right]
+              \cos
+              \left(
+              \frac{c\xi_{nm}}{a}t
+              \right)\\
+           &\quad\quad + \sum_{n=0}^{\infty}\sum_{m=0}^{\infty}
+              \left[
+              A_{nm}^{\ast}\phi_{nm}^{(c)}(r,\theta)
+              + B_{nm}^{\ast}\phi_{nm}^{(s)}(r,\theta)
+              \right]
+              \sin
+              \left(
+              \frac{c\xi_{nm}}{a}t
+              \right).
+\end{align*}
+Aplicando la condición inicial tenemos
+\[
+  u(r,\theta,0) = f(r,\theta)
+  \implies
+  f(r,\theta) = \sum_{n=0}^\infty\sum_{m=0}^\infty
+            \left(
+            A_{nm}\phi_{nm}^{(c)}
+            + B_{nm}\phi_{nm}^{(s)}
+            \right).
+\] La igualdad anterior se le conoce como la \textit{Serie de Fourier-Bessel} de la función $f$. Es necesario determinar los coeficientes $A_{nm}$ y $B_{nm}$. Sea $(p,q)$ una pareja de enteros positivos fija, entonces multiplicamos la serie de Fourier-Bessel de la función $f(r,\theta)$ por el término $r\phi_{pq}^{(c)}$:
+\[
+  rf(r,\theta)\phi_{pq}^{(c)} =
+  \sum_{n=0}^\infty\sum_{m=0}^\infty
+  \left[
+  A_{nm}\phi_{pq}^{(c)}\phi_{nm}^{(c)}
+  + B_{nm}\phi_{pq}^{(c)}\phi_{nm}^{(s)}
+  \right].
+\] Integrando el producto anterior sobre $0 < r < a$ y $0 < \theta < 2\pi$ obtenemos
+\begin{align*}
+  \int_{0}^{a} \int_{0}^{2\pi} rf(r,\theta)\phi_{pq}^{(c)} \, d\theta \, dr &= 
+  \sum_{n=0}^\infty\sum_{m=0}^\infty
+  r \left[
+    A_{nm} \int_{0}^{a} \int_{0}^{2\pi} \phi_{pq}^{(c)}\phi_{nm}^{(c)} \, d\theta \, dr \right.\\
+  &\quad\quad + \left.
+B_{nm} \int_{0}^{a} \int_{0}^{2\pi} \phi_{pq}^{(c)}\phi_{nm}^{(s)} \, d\theta \, dr\right]
+\end{align*}
+Observemos que
+\[
+  \int \int r\phi_{pq}^{(c)}\phi_{nm}^{(c)} \, d\theta \, dr = \int r J_p J_n \, dr \int \cos(q\theta)\cos(m\theta) \, d\theta \, dr,
+\] pero dado que el conjunto $\{\cos(n\theta), \sin(m\theta)\}$ es un conjunto ortogonal en $0 < \theta < 2\pi$, la integral anterior es igual 0 para todo $m \neq q$, así
+\begin{align*}
+  \int_{0}^{a} \int_{0}^{2\pi} rf(r,\theta)\phi_{pq}^{(c)} \, d\theta \, dr &=
+  A_{pq} \int_{0}^{a} \int_{0}^{2\pi} r\left(\phi_{pq}^{(s)}\right)^2 \, d\theta \, dr\\
+  &= A_{pq} \int_{0}^{a} \int_{0}^{2\pi} r J_p^2\left(\frac{\xi_{nm}}{a}r\right)\cos^2(q\theta) \, d\theta \, dr\\
+  &= A_{pq} \int_{0}^{a} r J_p^2\left(\frac{x_{pq}}{a}r\right) \, dr \int_{0}^{2\pi} \cos^2(q\theta) \, d\theta.
+\end{align*}
+Ahora observemos que
+\[
+  \int_{0}^{2\pi} \cos^2(q\theta) \, d\theta = \frac{1}{2}\theta\bigg|_0^{2\pi} = \pi.
+\] y por propiedades de la función de Bessel
+\[
+  \int_{0}^{a} r J_p^2\left(\frac{\xi_{pq}}{a}r\right) \, dr = \frac{a^2}{2} J_{p\pm1}^2\left(\xi_{pq}\right).
+\] Por lo tanto
+\[
+  A_{pq} = \frac{\int_{0}^{a} \int_{0}^{2\pi} f(r,\theta)\phi_{pq}^{(c)} \, d\theta \, dr}{\pi \frac{a^2}{2} J_{p\pm1}^2(\xi_{pq})}.
+\] Y en general tenemos
+\[
+  A_{nm} = \frac{2\int_{0}^{a} \int_{0}^{2\pi} f(r,\theta) J_n\left(\frac{\xi_{nm}}{a}r\right)\cos(n\theta) \, d\theta \, dr}{\pi a^2 J_{p\pm1}^2(\xi_{pq})}.
+\] Haciendo un procedimiento similar, pero multiplicando a $u(r,\theta,t)$ por $r\phi_{pq}^{(s)}$ se obtiene
+\[
+  B_{nm} = \frac{2\int_{0}^{a} \int_{0}^{2\pi} f(r,\theta) J_n\left(\frac{\xi_{nm}}{a}r\right)\sin(n\theta) \, d\theta \, dr}{\pi a^2 J_{p\pm1}^2(\xi_{pq})}.
+\] Aplicando la segunda condición inicial $u_t(r,\theta,0) = g(r,\theta)$ y el haciendo el procdimineto anterior obtenemos los coeficientes $A_{nm}^{\ast}$, sin olvidarnos del factor $\frac{a}{c\xi_{nm}}$ que aparece en la derivada parcial respecto $t$.
+
+\begin{exe}
+  Resolver la ecuación de calor en coordenadas polares.
+  \[
+    \frac{\partial u}{\partial t} = c\left(\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2u}{\partial y^2}\right),
+  \] para las mismas condiciones de frontera y condiciones iniciales.
+
+  Supongamos que $u$ no depende del tiempo, entonces tenemos la ecuación
+  \[
+  \nabla^2 u = 0,
+\] la cual se le conoce como la ecuación de Laplace o la ecuación de calor indpendiente del tiempo. ¿Podemos deducir la solución para la ecuación de Lapalce a partir de la solución de la ecuación dependiente del tiempo ($u_t = c \nabla^2 u$)?
+\end{exe}
 
 \end{document}
