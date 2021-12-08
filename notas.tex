@@ -1048,9 +1048,9 @@ Por lo tanto,
 
 \subsection{Vibraciones en dos dimensiones}
 
-\subsubsection{Vibraciones en una membrana rectangular}
+\subsubsection{Vibraciones en una membrana rectangular (26 nov 2021)}
 
-\subsubsection{Vibraciones en una membrana circular}
+\subsubsection{Vibraciones en una membrana circular (1 dic 2021)}
 Supongamos que se desea determinar la función que describe las
 vibraciones sobre una membrana circular de radio $r=a$ fija a lo largo
 de toda la frontera.
@@ -1072,12 +1072,34 @@ por lo cual
   r^2 &= x^{2}+y^{2} \\
   \theta &= \tan^{-1}(\tfrac{y}{x})
 \end{align*}
-Por la regla de la cadena, tenemos
+Por la regla de la cadena y del producto, tenemos, en forma matricial,
 \begin{align*}
+  \nabla u
+  &=
   \begin{bmatrix}
-    \frac{\partial u}{\partial x} \\[1mm]
+    \frac{\partial u}{\partial x} &
     \frac{\partial u}{\partial y}
+  \end{bmatrix} \\
+  &=
+  \begin{bmatrix}
+    \frac{\partial u}{\partial r} &
+    \frac{\partial u}{\partial \theta}
   \end{bmatrix}
+  \begin{bmatrix}
+    \frac{\partial r}{\partial x} &
+    \frac{\partial r}{\partial y} \\[1mm]
+    \frac{\partial \theta}{\partial x} &
+    \frac{\partial \theta}{\partial y}
+  \end{bmatrix}
+  \\
+  Hu
+  &=
+  \begin{bmatrix}
+    \frac{\partial ^{2}u}{\partial x^{2}} & 
+    \frac{\partial ^{2}u}{\partial x\partial y} \\[1mm]
+    \frac{\partial ^{2}u}{\partial y\partial x} & 
+    \frac{\partial ^{2}u}{\partial y^{2}}
+  \end{bmatrix} \\
   &=
   \begin{bmatrix}
     \frac{\partial r}{\partial x} &
@@ -1086,23 +1108,36 @@ Por la regla de la cadena, tenemos
     \frac{\partial \theta}{\partial y}
   \end{bmatrix}
   \begin{bmatrix}
-    \frac{\partial u}{\partial r} \\[1mm]
-    \frac{\partial u}{\partial \theta}
-  \end{bmatrix}
-  \\
-  Hu
-  &=
-  \begin{bmatrix}
-    \frac{\partial r}{\partial x} & \frac{\partial r}{\partial y}
-  \end{bmatrix}
-  \begin{bmatrix}
     \frac{\partial ^{2}u}{\partial r^{2}} & 
     \frac{\partial ^{2}u}{\partial r\partial\theta} \\[1mm]
     \frac{\partial ^{2}u}{\partial \theta\partial r} & 
     \frac{\partial ^{2}u}{\partial \theta^{2}}
   \end{bmatrix}
+  \begin{bmatrix}
+    \frac{\partial r}{\partial x} &
+    \frac{\partial r}{\partial y} \\[1mm]
+    \frac{\partial \theta}{\partial x} &
+    \frac{\partial \theta}{\partial y}
+  \end{bmatrix}
+  +
+  \frac{\partial u}{\partial r}
+  \begin{bmatrix}
+    \frac{\partial ^{2}r}{\partial x^{2}} & 
+    \frac{\partial ^{2}r}{\partial x\partial y} \\[1mm]
+    \frac{\partial ^{2}r}{\partial y\partial x} & 
+    \frac{\partial ^{2}r}{\partial y^{2}}
+  \end{bmatrix}
+  +
+  \frac{\partial u}{\partial \theta}
+  \begin{bmatrix}
+    \frac{\partial ^{2}\theta}{\partial x^{2}} & 
+    \frac{\partial ^{2}\theta}{\partial x\partial y} \\[1mm]
+    \frac{\partial ^{2}\theta}{\partial y\partial x} & 
+    \frac{\partial ^{2}\theta}{\partial y^{2}}
+  \end{bmatrix}
 \end{align*}
-
+Calculando todas estas derivadas parciales
+y tomando la traza de esta última matríz, tenemos
 \begin{align*}
   \frac{\partial^{2} u}{\partial x^{2}}
   +
@@ -1125,7 +1160,7 @@ Así, la ecuación queda como
     +
     \frac{1}{r}\frac{\partial u}{\partial r}
   \right)
-.\]
+\]
 con $u=u(r,\theta,t)$.
 Como la membrana está fija en la frontera, tenemos
 \begin{align*}
