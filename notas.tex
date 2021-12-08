@@ -1306,20 +1306,28 @@ donde $\mu=0$ o $\mu=n^{2}$ para $n=1,2,3,\dots$.
     \[
       R(r)=K_1J_n(\lambda r)
     .\]
+    Dado que $J_0(0) = 1$, para el caso $\mu = n^2 = 0$, la condición
+    $\lim_{r\to 0} R(r) = 0$ se convierte en $K_1 = 0$ por lo cual la
+    solución es trivial.
+    
     Por otro lado, la condición $R(a)=0$ nos da
     $K_1J_n(\lambda a)=0$.
-    Así, $\lambda$ son las soluciones de $J_n(\lambda a)=0$. La ecuación $J_n(\lambda a) = 0$ es una ecuación algebráica en $\lambda a$ de grado $\infty$ por lo tanto se tienen $\infty^2$ raíces (¿qué?). Ordenamos el conjunto de raíces $\{ \xi_{n_0}, \xi_{n_1}, \xi_{n_2}, \dots\}$ de manera que
+    Así, $\lambda$ son las soluciones de $J_n(\lambda a)=0$.
+    La ecuación $J_n(\lambda a) = 0$ es una ecuación algebráica en
+    $\lambda a$ de grado $\infty$ por lo tanto se tienen $\infty^2$
+    raíces (¿qué?). Ordenamos el conjunto de raíces
+    $\{ \xi_{n_1}, \xi_{n_2}, \xi_{n_3}, \dots\}$ de manera que
     \[
-      0 < \xi_{n_0} < \xi_{n_1} < \xi_{n_2} < \dots
+      0 < \xi_{n_1} < \xi_{n_2} < \xi_{n_3} < \dots
     \] Entonces
     \[
     \lambda a = \xi \implies \lambda = \frac{\xi}{a},
     \] es decir
     \[
-      \lambda_{nm} = \frac{\xi_{nm}}{a}, \quad \text{ para } m = 0,1,2,\dots
+      \lambda_{nm} = \frac{\xi_{nm}}{a}, \quad \text{ para } m = 1,2,3\dots
     \] Entonces la solución es
     \[
-      R(r) = K_{nm} J_n\left(\frac{\xi_{nm}}{a}r\right), \quad m = 0,1,2, \dots
+      R(r) = K_{nm} J_n\left(\frac{\xi_{nm}}{a}r\right), \quad m = 1,2,3 \dots
     \] 
 \end{itemize}
 
@@ -1341,7 +1349,7 @@ donde $\mu=0$ o $\mu=n^{2}$ para $n=1,2,3,\dots$.
 \end{align*} 
 Por el principio de superposición se sigue que la solución general de la ecuación diferncial está dada por
 \begin{align*}
-  u(r,\theta,t) &= \sum_{n=0}^{\infty}\sum_{m=0}^{\infty} \left\{ J_n\left(\frac{\xi_{nm}}{a}r\right)\left[A_{nm}\cos(n\theta) + B_{nm}\sin(n\theta)\right]\cos\left(\frac{c\xi_{nm}}{a}t\right)\right.\\
+  u(r,\theta,t) &= \sum_{n=1}^{\infty}\sum_{m=1}^{\infty} \left\{ J_n\left(\frac{\xi_{nm}}{a}r\right)\left[A_{nm}\cos(n\theta) + B_{nm}\sin(n\theta)\right]\cos\left(\frac{c\xi_{nm}}{a}t\right)\right.\\
                 &\quad\quad\quad\quad + \left.J_n\left(\frac{\xi_{nm}}{a}r\right)\left[A_{nm}^{\ast}\cos(n\theta) + B_{nm}^{\ast}\sin(n\theta)\right]\sin\left(\frac{c\xi_{nm}}{a}t\right)\right\}.
 \end{align*} 
 Enseguida aplicamos la condición inicial $u(r,\theta,0) = f(r,\theta)$, pero para facilitar la notación introducimos las siguientes funciones
@@ -1350,7 +1358,7 @@ Enseguida aplicamos la condición inicial $u(r,\theta,0) = f(r,\theta)$, pero pa
   \phi_{nm}^{(s)}(r,\theta) &= J_n\left(\frac{\xi_{nm}}{a}r\right)\sin(n\theta).
 \end{align*} Así podemos escribir a $u$ de la siguiente manera
 \begin{align*}
-  u(r,\theta,t) &= \sum_{n=0}^{\infty}\sum_{m=0}^{\infty}
+  u(r,\theta,t) &= \sum_{n=1}^{\infty}\sum_{m=1}^{\infty}
               \left[
               A_{nm}\phi_{nm}^{(c)}(r,\theta)
               + B_{nm}\phi_{nm}^{(s)}(r,\theta)
@@ -1373,16 +1381,20 @@ Aplicando la condición inicial tenemos
 \[
   u(r,\theta,0) = f(r,\theta)
   \implies
-  f(r,\theta) = \sum_{n=0}^\infty\sum_{m=0}^\infty
+  f(r,\theta) = \sum_{n=1}^\infty\sum_{m=1}^\infty
             \left(
             A_{nm}\phi_{nm}^{(c)}
             + B_{nm}\phi_{nm}^{(s)}
             \right).
-\] La igualdad anterior se le conoce como la \textit{Serie de Fourier-Bessel} de la función $f$. Es necesario determinar los coeficientes $A_{nm}$ y $B_{nm}$. Sea $(p,q)$ una pareja de enteros positivos fija, entonces multiplicamos la serie de Fourier-Bessel de la función $f(r,\theta)$ por el término $r\phi_{pq}^{(c)}$:
+\] La igualdad anterior se le conoce como la \textit{Serie de Fourier-Bessel}
+de la función $f$. Es necesario determinar los coeficientes $A_{nm}$
+y $B_{nm}$. Sea $(p,q)$ una pareja de enteros positivos fija, 
+entonces multiplicamos la serie de Fourier-Bessel de la función 
+$f(r,\theta)$ por el término $r\phi_{pq}^{(c)}$:
 \[
   rf(r,\theta)\phi_{pq}^{(c)} =
   \sum_{n=0}^\infty\sum_{m=0}^\infty
-  \left[
+  r\left[
   A_{nm}\phi_{pq}^{(c)}\phi_{nm}^{(c)}
   + B_{nm}\phi_{pq}^{(c)}\phi_{nm}^{(s)}
   \right].
@@ -1397,7 +1409,7 @@ B_{nm} \int_{0}^{a} \int_{0}^{2\pi} \phi_{pq}^{(c)}\phi_{nm}^{(s)} \, d\theta \,
 \end{align*}
 Observemos que
 \[
-  \int \int r\phi_{pq}^{(c)}\phi_{nm}^{(c)} \, d\theta \, dr = \int r J_p J_n \, dr \int \cos(q\theta)\cos(m\theta) \, d\theta \, dr,
+  \int \int r\phi_{pq}^{(c)}\phi_{nm}^{(c)} \, d\theta \, dr = \int r J_p J_n \, dr \int \cos(q\theta)\cos(m\theta) \, d\theta
 \] pero dado que el conjunto $\{\cos(n\theta), \sin(m\theta)\}$ es un conjunto ortogonal en $0 < \theta < 2\pi$, la integral anterior es igual 0 para todo $m \neq q$, así
 \begin{align*}
   \int_{0}^{a} \int_{0}^{2\pi} rf(r,\theta)\phi_{pq}^{(c)} \, d\theta \, dr &=
