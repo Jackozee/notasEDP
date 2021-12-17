@@ -41,6 +41,321 @@
 
 \tableofcontents
 
+\chapter{Ecuaciones Diferenciales de Primer Orden}
+
+\begin{defn}
+  Una ecuación diferencial parcial (EDP) es una ecuación 
+  que involucra derivadas de una o más variables dependientes 
+  respecto a más de una variable independiente.
+\end{defn}
+
+\begin{example}
+  Si $u = u(x,y,z)$ entonces
+  \[
+  \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} + \frac{\partial^2 u}{\partial z^2} = 0,
+  \] es una EDP conocida com la ecuación de Laplace.
+\end{example}
+
+Los conceptos como orden, linealidad, homogeniedad son
+similares a los vistos en ecuaciones diferenciales
+ordinarias.
+
+\begin{defn}[Orden]
+  Es el orden de la máxima o máximas derivadas que aparezcan
+  en la EDP.
+\end{defn}
+
+\begin{defn}[Linealidad]
+  Se dice que una EDP es lineal si la variable o variables
+  son \textit{lineales}, así como \textit{todas} sus
+  derivadas.
+\end{defn}
+
+\begin{example}
+  La siguiente ecuación es una EDP de primer orden en dos
+  variables $x,y$:
+  \[
+    P(x,y) z_x + Q(x,y) z_y + R(x,y) z = S(x,y).
+  \] 
+\end{example}
+
+\begin{example}
+  La siguiente EDP es de segundo orden en $x,y$:
+  \[
+    A(x,y) z_{xx} + 2B(x,y) z_{xy} + C(x,y) z_{yy} + D(x,y)
+    z_x + E(x,y) z_y + F(x,y) z = S(x,y),
+  \] en donde $P,Q,R,A,B,C,D,E$ y $F$ son funciones
+  continuas en alguna región del plano.
+\end{example}
+
+\begin{defn}[Ecuación cuasilineal]
+  Uan EDP se dice cuasilineal si ésta es lineal en las
+  máximas derivadas que aparecen en la ecuación sin importar
+  como son los coeficientes.
+\end{defn}
+
+\begin{example}
+  De primer orden:
+  \[
+    P(x,y,z)z_x + Q(x,y,z) z_y = R(x,y,z).
+  \] 
+  De segundo orden:
+  \[
+    A(x,y,z,z_x,z_y) z_{xx} + B(x,y,z,z_x,z_y) z_{yy} +
+    C(x,y,z,z_x,z_y) z_{xy} = R(x,y,z,z_x,z_y).
+  \] 
+\end{example}
+
+\begin{defn}[Ecuación casilineal]
+  La ecuación se dice casilineal si ésta es cuasilineal y
+  los coeficientes dependen solo de las variables
+  independientes.
+\end{defn}
+
+\begin{example}
+  De primer orden:
+  \[
+    P(x,y)z_x + Q(x,y) z_y = R(x,y,z).
+  \] 
+  De segundo orden:
+  \[
+    A(x,y) z_{xx} + B(x,y) z_{yy} +
+    C(x,y) z_{xy} = R(x,y,z,z_x,z_y).
+  \] 
+
+\end{example}
+
+\begin{defn}[Solución de una EDP]
+  Por una solución de una EDP se entiende a una función
+  $\phi(x,y)$ tal que al sustituirla en la ED, ésta se
+  satisface.
+\end{defn}
+
+\begin{exe}
+  Determine si la función $\displaystyle \phi(x,y) =
+  \frac{1}{3}x^3 + xy^2 + c$, donde $c$ es una constante, es
+  solución de la ecuación diferencial
+  \[
+    \frac{\partial z}{\partial x} + z = x, \quad z = z(x,y).
+  \] 
+
+  \begin{sol}
+    Sea $z = \phi(x,y) = \frac{1}{3}x^3 + xy^2 + c$,
+    entonces $z_x = x^2 + y^2$, sustituyendo en la ecuación
+    obtenemos
+    \[
+    x^2 + y^2 + \frac{1}{3}x^3 + xy^2 \neq x,
+    \] por lo tanto $\phi$ no es solución de la ecuación
+    diferencial.
+  \end{sol}
+\end{exe}
+
+\begin{exe}
+  Sea $\phi(x,y) = e^{x^2}f(x^2+y^2)$ donde $f$ es
+  arbitraria. La ecuación es $y z_x - x z_y = 2xyz$.
+  
+  \begin{sol}
+    Primero calculamos las derivdas parciales
+    \begin{align*}
+      z_x &= 2x e^{x^2} f(x^2 + y^2) + e^{x^2} f'(x^2
+      +y^2)2x\\
+      z_y &= e^{x^2} f'(x^2+y^2)2y
+    \end{align*} 
+    Sustituyendo tenemos
+    \begin{align*}
+      y\left[2x e^{x^2} f(x^2+y^2) + e^{x^2} f'(x^2+y^2)
+      2x\right] - 2xy e^{x^2} f'(x^2+y^2) &= 2xy e^{x^2}
+      f(x^2+y^2)\\
+      \iff 2xy e^{x^2} f(x^2+y^2) + 2xy e^{x^2} f'(x^2+y^2) - 2xy
+      e^{x^2} f'(x^2+y^2) &= 2xy e^{x^2} f(x^2+y^2)\\
+      \iff 2xy e^{x^2} f(x^2+y^2) &= 2xy e^{x^2} f(x^2+y^2).
+    \end{align*} Por lo tanto $\phi$ sí es solución de la
+    ecuación.
+  \end{sol}
+\end{exe}
+
+\section{Obtención de una ecuación diferencial parcial}
+
+\subsection{Por eliminación de funciones arbitrarias}
+
+Dada una familia $z = \phi(x,y)$ de funciones definidas en
+cierto dominio del plano, es posible obtener una ecuación
+diferencial eliminando las funciones arbitrarias que
+aparezcan en ella.
+
+\begin{example}
+  Sean $f(x)$ y $g(y)$ dos funciones diferenciables y sea $z
+  = f(x) + g(y)$. Determine la ecuación diferencial
+  correspondiente a la familia dada.
+
+  \begin{sol}
+    Dado que $f$ y $g$ son arbitrarias, la ecuación
+    diferencial debe ser de segundo orden. Si $z = f(x) +
+    g(y)$, entonces
+     \begin{align*}
+       z_x &= f'(x)\\
+       z_y &= g'(y)\\
+       z_{xx} &= f''(x)\\
+       z_{yy} &= g''(y)\\
+       z_{xy} &= 0.
+    \end{align*} Observamos que $z$ satisface la ecuación
+    buscada $z_{xy} = 0$.
+  \end{sol}
+\end{example}
+
+\begin{example}
+  Sea $z = f(x)g(y)$. De nuevo
+  \begin{align*}
+    z_x &= f'(x)g(y)\\
+    z_y &= f(x)g'(y)\\
+    z_{xx} &= f''(x)g(y)\\
+    z_{yy} &= f(x)g''(y)\\
+    z_{xy} &= f'(x)g'(y).
+  \end{align*}
+  Ahora, $z_x z_y = f'(x)g(y)f(x)g'(y) = z_{xy} z$, por lo
+  tanto la ecuación buscada es
+  \[
+    z_{xy} z - z_x z_y = 0.
+  \] 
+\end{example}
+
+\begin{example}
+  Sea $z = e^{-x} f(x-y)$. La solución será de primer orden.
+  Las parciales son
+  \begin{align*}
+    z_x &= -e^{-x} f(x-y) + e^{-x} f'(x-y)\\
+    z_y &= -e^{-x} f'(x-y).
+  \end{align*} Sumando tenemos
+  \[
+    z_x + z_y = -e^{-x} f(x-y) = -z \implies z + z_x + z_y =
+    0.
+  \] 
+\end{example}
+
+\subsection{Caso geométrico}
+
+Podemos obtener una ecuación diferencial correspondiente a
+los planos tangentes a una superficie.
+
+\begin{enumerate}
+  \item Sea $f$ una función diferenciable en una región del
+    plano $xy$, entonces la superficie $\mathbb{S}$ en el
+    espacio tiene un plano tangente en el punto $(x_0, y_0,
+    z_0)$ dada como
+    \[
+      f_x(x_0, y_0)(x-x_0) + f_y(x_0,y_0)(y-y_0) - (z - z_0)
+      = 0.
+    \] 
+  \item Si $\mathbb{S}$ está dada por la función en forma
+    ímplicita $F(x,y,z) = 0$, entonces la ecuación del plano
+    tangente a $\mathbb{S}$ en el punto $(x_0,y_0,z_0)$ es
+    \[
+      F_x(x_0,y_0,z_0)(x-x_0) + F_y(x_0,y_0,z_0)(y-y_0) +
+      F_z(x_0,y_0,z_0)(z-z_0) = 0.
+    \] 
+  \item Supongamos que $\mathbb{S}$ está dada por la
+    ecuación en forma paramétrica $x = f(u,v)$, $y = g(u,v)$ 
+    y $z = h(u,v)$, donde $u$ y $v$ son parámetros en donde
+    los Jacobianos
+    \[
+      J_1 = \frac{\partial(g,h)}{\partial(u,v)}, \quad J_2 =
+      \frac{\partial(f,h)}{\partial(u,v)}, \quad \text{ y }
+      \quad J_3 = \frac{\partial(f,g)}{\partial(u,v)}
+    \] no son ceros simultáneamente. Entonces la ecuación
+    del plano tangente a $\mathbb{S}$ es
+    \[
+      J_1 \cdot (x-x_0) + J_2 \cdot (y-y_0) + J_3 \cdot
+      (z-z_0) = 0.
+    \] 
+\end{enumerate}
+
+\begin{rem}
+  Los Jacobianos se calculan como
+  \[
+    \renewcommand\arraystretch{1.5}
+    J_1 = \begin{vmatrix}
+      \frac{\partial g}{\partial u} & \frac{\partial
+      g}{\partial v}\\
+        \frac{\partial h}{\partial u} & \frac{\partial
+        h}{\partial v}
+    \end{vmatrix},
+  \] donde $J_1, J_2$, y $J_3$ están evaluados en el punto
+  $(u_0,v_0)$ correspondiente a $(x_0,y_0,z_0)$.
+\end{rem}
+
+El procedimiento se describe en el siguiente example.
+
+\begin{example}
+  Determine la ED de la familia de todos los planos
+  tangentes a la elipsoide $x^2 + 4y^2 + 4z^2 = 4$ no
+  perpendiculares al plano $xy$.
+
+  \begin{sol}
+    Sea $f(x_0,y_0,z_0)$ un punto en la superficie
+    $\mathbb{S}$ con $z_0 \neq 0$. Entonces la ecuación del
+    plano tangente es
+    \[
+      F_x(x_0,y_0,z_0)(x-x_0) + F_y(x_0,y_0,z_0)(y-y_0) +
+      F_z(x_0,y_0,z_0)(z-z_0) = 0.
+    \] Calculando las derivadas parciales
+    \[
+    F_x = 2x \quad F_y = 8y \quad F_z = 8z,
+    \] evaluando en $(x_0,y_0,z_0)$ y sustituyendo obtenemos
+    la ecuación del plano tangente
+    \begin{align*}
+      2x_0(x-x_0) + 8y(y-y_0) + 8z_0(z-z_0) &= 0\\
+      \iff xx_0 - x_0^2 + 4yy_0 - 4y_0^2 + 4zz_0 - 4z_0^2 &=
+      0\\
+      \iff xx_0 - 4yy_0 + 4zz_0 = x_0^2 + 4y_0^2 +
+      4z_0^2.
+    \end{align*}
+    Derivando la ecuación del plano respecto a $x$ y a $y$ 
+    obtenemos
+    \begin{align*}
+      x_0 + 4z_xz_0 = 0 &\implies x_0 = -4z_x z_0\\
+      4y_0 + 4z_yz_0 = 0 &\implies y_0 = -z_y z_0.
+    \end{align*} Sustituyendo los valores de $x_0$ y $y_0$ 
+    en la ecuación del plano obtenemos
+    \begin{align*}
+      -4x z_0 z_x - 4yz_0 zy + 4z z_0 &= 16z_x^2 z_0^2 +
+      4z_y^2 z_0^2 + 4z_0^2\\
+      \implies -xz_x - yz_y + z &= (4z_x^2 + z_y^2 + 1)z_0.
+    \end{align*}
+    Dado que el punto $P(x_0,y_0,z_0)$ pertenece a la
+    superficie $\mathbb{S}$, se sigue que $x_0^2 + 4y_0^2 +
+    4z_0^2 = 4$. Sustituyendo el valor de $x_0$ y $y_0$ en la
+    restricción anterior podemos despejar a $z_0$:
+    \begin{align*}
+      16z_x^2z_0^2 + 4z_y^2z_0^2 + 4z_0^2 &= 4\\
+      \implies (4z_x^2 + z_y^2 + 1)z_0^2 &= 1\\
+      \implies z_0^2 = \frac{1}{4z_x^2 + z_y^2 + 1}.
+    \end{align*}
+    Finalmente sustituímos el valor de $z_0$ en la ecuación
+    del plano
+    \begin{align*}
+      z - xz_x - yz_y &= (4z_x^2 + z_y^2 + 1)
+      \frac{1}{(4z_x^2+z_y^2+1)^{1 / 2}}\\
+      \implies z - x z_x - y z_ y &= (4z_x^2 + z_y^2 + 1)^{1
+      / 2},
+    \end{align*}
+    o equivalentemente 
+    \[
+      (z-xz_x - yz_y)^2 = 4z_x^2 + z_y^2 + 1,
+    \] la cual es la ecuación diferencial de la familia de
+    planos tangentes.
+
+    \begin{figure}[ht]
+      \centering
+      \includegraphics[width=0.5\linewidth]{imgs/chap1-tangent.png}
+      \caption{El plano tangente es solución particular de
+      la ecuación diferencial anterior.}%
+      \label{fig:chap1-tangent}
+    \end{figure}
+  \end{sol}
+\end{example}
+
+CONTINUA EN 4.PDF.
+
 \chapter{Series de Fourier}
 
 \begin{defn}
