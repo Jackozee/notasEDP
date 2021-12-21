@@ -17,6 +17,7 @@
 \newtheorem{lemma}{Lema}
 \newtheorem{rem}{Recordatorio}
 \newtheorem*{sol}{Solución}
+\newtheorem{obs}{Observación}
 
 \newcommand\R{\mathbb R}
 \newcommand\C{\mathbb C}
@@ -283,7 +284,7 @@ los planos tangentes a una superficie.
   $(u_0,v_0)$ correspondiente a $(x_0,y_0,z_0)$.
 \end{rem}
 
-El procedimiento se describe en el siguiente example.
+El procedimiento se describe en el siguiente ejemplo.
 
 \begin{example}
   Determine la ED de la familia de todos los planos
@@ -354,7 +355,231 @@ El procedimiento se describe en el siguiente example.
   \end{sol}
 \end{example}
 
-CONTINUA EN 4.PDF.
+\begin{example}
+  Determine la ecuación diferencial de la familia de todos los planos tangentes
+  a la superficie $\mathbb{S}$ dada por $x^2 - y^2 - z^2 = 0$.
+
+  \begin{sol}
+    Sea $P(x_0,y_0,z_0)$ un punto en la superficie $\mathbb{S}$, entonces la
+    ecuación del plano tangente es:
+    \[
+    F_x(x_0,y_0,z_0)(x-x_0) + F_y(x_0,y_0,z_0)(y-y_0) + F_z(x_0,y_0,z_0)(z-z_0)
+    = 0,
+    \] donde 
+    \[
+    F_x = 2x, \quad F_y = -2y, \quad F_z = -2z,
+    \] evaluando en $(x_0,y_0,z_0)$ obtenemos
+    \begin{align*}
+      2x_0(x-x_0) - 2y_0(y-y_0) - 2z_0(z-z_0) &= 0\\
+      \iff xx_0 - yy_0 - zz_0 = x_0^2 - y_0^2 - z_0^2.
+    \end{align*}
+    Derivando la ecuación del plano respecto a $x$ y $y$ tenemos
+    \begin{align*}
+      x_0 - z_x z_0 &= 0 \implies x_0 = z_x z_0\\
+      -y_0 - z_y z_0 &= 0 \implies y_0 = -z_y z_0.
+    \end{align*}
+    Sustituyendo:
+    \begin{align*}
+      x z_x z_0 + y z_y z_0 - z z_0 &= (z_x z_0)^2 - (z_y z_0)^2 - z_0^2\\
+      \iff x z_x + y z_y - z &= (z_x^2 - z_y^2 - 1) z_0.
+    \end{align*}
+    Como $P \in \mathbb{S}$ y $z_0 \neq 0$, se sigue que
+    \begin{align*}
+      x_0^2 - y_0^2 - z_0^2 = 0 &\implies (z_x z_0)^2 - (z_y z_0)^2 - z_0^2 =
+      0\\
+                                &\implies z_x^2 z_0^2 - z_y^2 z_0^2 - z_0^2 =
+                                0\\
+                                &\implies z_x^2 - z_y^2 - 1 = 0\\
+                                &\implies z_x^2 - z_y^2 = 1.
+    \end{align*} Así la ecuación diferencial es
+    \[
+    x z_x + y z_y - z = 0.
+    \] 
+  \end{sol}
+\end{example}
+
+\section{Solución de ecuaciones lineales de primer orden}
+
+Recordemos que una ecuación diferencial lineal es de la
+forma
+\begin{equation}
+  \label{eqn:ed_lineal_1orden}
+  A(x,y) z_x + B(x,y) z_y + C(x,y) z = G(x,y),
+\end{equation}
+donde $A,B,C$ y $G$ son continuas en el plano. La ecuación
+más sencilla de resolver es cuando
+\ref{eqn:ed_lineal_1orden} contiene solo una derivada
+parcial $z_x$ ó $z_y$ ya que se puede manejar como una
+ecuación diferencial lineal ordinaria de primer orden:
+\[
+y' + P(x) y = Q(X),
+\] cuya solución es 
+\[
+y(x) = e^{-\int P(x) \, dx} \left[\int e^{\int P(x) \, dx}
+  Q(x) \, dx + C\right].
+\] 
+
+\begin{example}
+  Resolver $4z_x - 2xz = xy$ donde $z = z(x,y)$.
+
+  \begin{sol}
+    Dividiendo por 4 obtenemos $z_x - \frac{1}{2} x z =
+    \frac{1}{4} xy$, donde
+    \[
+    P(x) = -\frac{1}{2} x \quad \text{ y } \quad Q(x) =
+    \frac{1}{4} xy.
+    \] De acuerdo a lo anterior, la solución está dada por
+    \begin{align*}
+      z(x,y) &= e^{-\int P(x) \, dx} \left[\int e^{\int P(x)
+        \, dx} \, dx + C\right]\\
+             &= e^{\frac{1}{2} x \, dx} \left[\int e^{- \int
+               \frac{1}{2}x \, dx} \cdot \frac{1}{4} xy \,
+               dx + f(y)\right]\\
+             &= e^{1 / 4 x^2} \left[-\frac{y}{2} e^{- 1 / 4
+               x^2} + f(y)\right]\\
+             &= -\frac{y}{2} + e^{1 / 4 x^2} f(y),
+    \end{align*}
+    donde $f$ es una función arbitraria de $y$.
+  \end{sol}
+\end{example}
+
+\subsection{Ecuación diferencial homogénea con coeficientes
+  constantes}
+
+Consideremos la ecuación
+\[
+A z_x + B z_y + C z = 0,
+\] con $A, B$ y $C$ constantes. Para determinar la solución
+de la ecuación se hace el siguiente cambio de variable:
+\begin{align*}
+  z_x &= z_\xi \xi_x + z_\eta \eta_x = c_{11} z_\xi + c_{21}
+  z_\eta\\
+  z_y &= z_\xi \xi_y + z_\eta \eta_y = c_{12} z_\xi + c_{22}
+  z_\eta.
+\end{align*}
+Sustituyendo en la ecuación diferencial tenemos
+\begin{align*}
+  A(z_\xi \xi_x + z_\eta \eta_x) + B(z_\xi \xi_y + z_\eta
+  \eta_y) + C z &= 0\\
+  \iff A(c_{11} z_\xi + c_{21} z_\eta) + B(c_{12} z_\xi + c_{22}
+  z_\eta) + C z &= 0\\
+  \iff (A c_{11} + B c_{12}) z_xi + (A c_{21} + B c_{22}) z_\eta
+  + C z &= 0,
+\end{align*}
+donde ahora $z = z(\xi, \eta)$. Ahora, fijemos $c_{11} = 1$,
+$c_{12} = 0$, $c_{21} = B$ y $c_{22} = -A$, entonces
+la ecuación diferencial anterior se reduce:
+\[
+A z_\xi + C z = 0,
+\] ó equivalentemente (si $A \neq 0$):
+\[
+z_\xi + \frac{C}{A} z = 0,
+\] cuya solución es
+\[
+z(\xi, \eta) = f(\eta) e^{-\frac{C}{A} \xi}.
+\] De acuerdo a la elección de las constantes también
+tenemos que
+\[
+\xi = x, \quad \eta = Bx - Ay,
+\] por lo tanto la solución de la ecuación origianl es
+\[
+z(x,y) = f(Bx - Ay) e^{-\frac{C}{A} x},
+\] para $f$ arbitraria.
+
+\begin{obs}
+  Para que el cambio de variables sea invertible, es
+  necesario que el jacobiano no se anule, en éste caso
+  tenemos
+  \[
+  \frac{\partial(\xi, \eta)}{\partial(x,y)} = -A \neq 0.
+  \] 
+\end{obs}
+
+\begin{example}
+  Resolver la ecuación $3 z_x - 2 z_y + 4z = 0$.
+  \begin{sol}
+    Notemos que $A = 3$, $B = -2$ y $C = 4$, entonces
+    \[
+    z(x,y) = f(2x + 3y) e^{-\frac{4}{3} x}.
+    \] 
+  \end{sol}
+\end{example}
+
+\subsection{Ecuación no homogénea}
+
+La ecuación no homogenea es de la forma 
+\[
+A z_x + B z_y + C z = G(x,y),
+\] y recordamos que la solución general de la ecuación no
+homogenea es
+\[
+z = z_h + z_p,
+\] donde $z_h$ es la solución a la ecuación homogenea
+correspondiente y $z_p$ es una solución particular de la
+ecuación no homogenea.
+
+Dicha solución particular se puede determinar mediante el
+método de coeficientes indeterminados si $G(x,y)$ es una
+combinación de funciones elementales:
+\[
+\sin, \cos, \exp,
+\] con argumentos lineales en $x$ y en $y$, ó cuando $G$ es
+un polinomio en $x$ y $y$. 
+
+\begin{example}
+  Resolver la ecuación $2 z_x - 3 z_y + z = 5 e^{-2x - y} +
+  xy$.
+  \begin{sol}
+    \begin{enumerate}
+      \item Primero obtenemos la solución de la ecuación
+        homogenea $2 z_x - 3z_y + z = 0$, la cual está dada
+        por
+        \[
+        z(x,y) = f(3x + 2y) e^{-\frac{1}{2}x}.
+        \] 
+      \item Ahora obtenemos una solución particular para el
+        término $5e^{-2x-y}$. Para ésto proponemos una
+        solución de la forma
+        \[
+        z = A e^{-2x-y},
+        \] calculando las derivadas parciales obtenemos
+        \[
+        z_x = -2 A e^{-2x-y}, \quad z_y = -A e^{-2x-y},
+        \] sustituyendo en la ecuación
+        \begin{align*}
+          2\left(-2Ae^{-2x-y}\right) -
+          3\left(-Ae^{-2x-y}\right) + Ae^{-2x-y} &=
+          5e^{-2x-y}\\
+          \implies -4A + 3A + A &= 5\\
+          \implies 0 &= 5,
+        \end{align*}
+        lo cual es absurdo, por lo tanto la solución
+        propuesta no es adecuada, intentemos con $z = A x
+        e^{-2x-y}$, entonces
+        \[
+        z_x = Ae^{-2x-y} - 2Axe^{-2x-y}, \quad z_y =
+        -Axe^{-2x-y},
+        \] sustituyendo
+        \begin{align*}
+          2\left(Ae^{-2x-y}-2Axe^{-2x-y}\right) -
+          3\left(-Axe^{-2x-y}\right) + Axe^{-2x-y} &=
+          5e^{-2x-y}\\
+          \implies 2A - 4Ax + 3Ax + Ax &= 5\\
+          \implies A = \frac{5}{2},
+        \end{align*}
+        por lo tanto $z_{p_1} = \frac{5}{2} x e^{-2x-y}$. La
+        solución particular $z_{p_2}$ correspondiente al
+        término $xy$ se deja como ejercicio para el lector.
+    \end{enumerate}
+  \end{sol}
+\end{example}
+
+\begin{exe}
+  Resolver la ecuación de coeficientes constantes no
+  homogenea $z_x + 2 z_y = \sin x - 3 \cos y$.
+\end{exe}
+
+CONTINUAR CON SESIÓN 5.PDF...
 
 \chapter{Series de Fourier}
 
