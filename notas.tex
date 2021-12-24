@@ -1,9 +1,10 @@
 \documentclass[11pt,letterpaper,draft]{report}
 \usepackage[left=3.5cm,right=3.5cm,top=2.5cm,bottom=2.5cm]{geometry}
-\usepackage[english]{isodate}
 
 \usepackage{amsmath,amsfonts,amsthm,amssymb,enumitem,mathtools}
 \usepackage[final]{hyperref}
+\usepackage[spanish]{babel}
+\usepackage{todonotes}
 \setenumerate[1]{label=(\alph*)}
 \setenumerate[0]{label=\roman*.}
 \allowdisplaybreaks
@@ -11,13 +12,14 @@
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{3}
 
-\newtheorem{defn}{Definición}
-\newtheorem{example}{Ejemplo}[section]
-\newtheorem{exe}{Ejercicio}
-\newtheorem{lemma}{Lema}
-\newtheorem{rem}{Recordatorio}
+\newtheorem{defn}{Definición}[chapter]
+\newtheorem{theorem}[defn]{Teorema}
+\newtheorem{example}[defn]{Ejemplo}
+\newtheorem{exe}[defn]{Ejercicio}
+\newtheorem{lemma}[defn]{Lema}
+\newtheorem{rem}[defn]{Recordatorio}
 \newtheorem*{sol}{Solución}
-\newtheorem{obs}{Observación}
+\newtheorem{obs}[defn]{Observación}
 
 \newcommand\R{\mathbb R}
 \newcommand\C{\mathbb C}
@@ -32,15 +34,14 @@
 \DeclareMathOperator{\erf}{erf}
 \DeclareMathOperator{\sgn}{sgn}
 \DeclareMathOperator{\csch}{csch}
-\title{Notas}
-\author{Jorge Alfredo Álvarez Contreras}
-
-\renewcommand\contentsname{Contenido}
+\title{Ecuaciones diferenciales parciales - Notas de clase}
+\author{Jorge Alfredo Álvarez Contreras, Ernesto Camacho Ramírez}
 
 \begin{document}
 \maketitle
 
 \tableofcontents
+\listoftodos
 
 \chapter{Ecuaciones Diferenciales de Primer Orden}
 
@@ -581,7 +582,9 @@ un polinomio en $x$ y $y$.
 
 CONTINUAR CON SESIÓN 5.PDF...
 
-\chapter{Series de Fourier}
+\chapter{Series y transformadas de Fourier}
+
+\section{Series de Fourier}
 
 \begin{defn}
   Dos funciones son ortogonales en $[a,b]$ si $\int_a^bfg=0$.
@@ -616,10 +619,9 @@ CONTINUAR CON SESIÓN 5.PDF...
   \end{align*}
   Si $n=m$, entonces
   \[
-    \<\phi_n,\phi_m\> = \int_a^b \phi_n^2
+    \<\phi_n,\phi_n\> = \int_a^b \phi_n^2
   \]
-  es la norma cuadrada de $\phi_n$ que se denotará como
-  $\norm{\phi_n}$.
+  es $\norm{\phi_n}^{2}$, la norma cuadrada de $\phi_n$.
 \end{defn}
 
 \begin{example}
@@ -652,7 +654,291 @@ CONTINUAR CON SESIÓN 5.PDF...
   \end{enumerate}
 \end{example}
 
-\chapter{Métodos de solución. (Mie 10 nov 2021)}
+Dado un conjunto de funciones $\{\phi_n\}_{n\in\N}$ ortogonales en
+$[a,b]$ y una función $f:[a,b]\to\R$,
+se desean encontrar coeficientes $c_n$ tales que
+\begin{equation}\label{eq:fourier-gen}
+  f = \sum_{n=1}^{\infty}c_n\phi_n.
+\end{equation}
+No todas las funciones $f$ se pueden expandir así.
+Sin embargo, si tomamos una función $f$ con expansión
+\eqref{eq:fourier-gen}, entonces,
+dado que $\<\phi_n,\phi_m\>=0$ para $m\neq n$, tenemos
+\begin{align*}
+  \<f,\phi_m\>
+  &= \left\< \sum_{n=1}^{\infty}c_n\phi_n,\phi_m\right\> \\
+  &= \sum_{n=1}^{\infty}c_n\<\phi_n,\phi_m\> \\
+  &= c_m\<\phi_m,\phi_m\> \\
+  &= c_m\norm{\phi_m}^{2}.
+\end{align*}
+Por lo tanto, los $c_m$ se pueden calcular como
+\[
+  c_m = \frac{\<f,\phi_m\>}{\norm{\phi_m}^2}
+.\]
+
+Puede suceder que la función $f$ no tenga una descomposición
+\eqref{eq:fourier-gen} pero que, aún así,
+las integrales $c_n=\<f,\phi_n\>$ existan.
+
+\begin{defn}
+  Si $\{\phi_n\}_{n\geq 1}$ es un conjunto ortogonal de funciones
+  integrables en $[a,b]$ y $f:[a,b]\to\R$ es una función
+  tal que las integrales
+  \[
+   \<f,\phi_n\> = \int_{a}^{b}f\phi_n
+  \]
+  existen, entonces la serie
+  \[
+    \overline{f}=\sum_{n=1}^{\infty}c_n\phi_n
+  ,\]
+  donde $c_n = \<f,\phi_n\>/\norm{\phi_n}^{2}$, se llama
+  la serie de Fourier (generalizada) de $f$.
+\end{defn}
+
+\begin{example}
+  Consideremos el conjunto de funciones
+  $\{1,\cos(n\pi x/L),\sin(n\pi x/L)\}$.
+  Este conjunto es ortogonal en $[-L,L]$ y tenemos
+  \begin{align*}
+    \norm{1} &= 2L \\
+    \norm{\cos(n\pi x/L)} &= L \\
+    \norm{\sin(n\pi x/L)} &= L.
+  \end{align*}
+  Entonces la serie de Fourier de $f$ es
+  \begin{equation}\label{eq:serie-fourier}
+    \overline{f}(x) = c_0
+    + \sum_{n=1}^\infty a_n\cos(n\pi x/L)
+    + \sum_{n=1}^\infty b_n\sin(n\pi x/L)
+  ,
+  \end{equation}
+  donde
+  \begin{align*}
+    c_0 &= \frac{1}{2L}\int_{-L}^L f \\
+    a_n &= \frac{1}{L}\int_{-L}^L f(x)\cos(n\pi x/L)\,dx, \\
+    b_n &= \frac{1}{L}\int_{-L}^L f(x)\sin(n\pi x/L)\,dx.
+  \end{align*}
+  Esta serie se llama serie de Fourier (trigonométrica) de $f$.
+\end{example}
+
+\begin{obs}
+Notemos que, para $n\geq 1$,
+\begin{align*}
+  a_n+ib_n
+  &= \frac{1}{L}\int_{-L}^L f(x)\cos(n\pi x/L)\,dx
+    + i\frac{1}{L}\int_{-L}^L f(x)\sin(n\pi x/L)\,dx \\
+  &= \frac{1}{L}\int_{-L}^L f(x)\exp(in\pi x/L)\,dx.
+\end{align*}
+Por lo tanto,
+\begin{align*}
+  a_n &= \frac{1}{L}\Re\int_{-L}^L f(x)\exp(in\pi x/L)\,dx. \\
+  b_n &= \frac{1}{L}\Im\int_{-L}^L f(x)\exp(in\pi x/L)\,dx.
+\end{align*}
+para $n\geq 1$, donde $\Re$ e $\Im$ son las partes real e imaginaria.
+A veces nos podemos ahorrar trabajo calculando una sola integral.
+\end{obs}
+
+\begin{exe}
+  Determine la serie trigonométrica de Fourier de la función $f$
+  definida en $[-1,1]$ como
+  \[
+    f(x) =
+    \begin{cases}
+      1 & -1\leq x\leq 0 \\
+      x & 0<x\leq 1
+    \end{cases}
+  .\]
+\end{exe}
+\begin{sol}
+  De \eqref{eq:serie-fourier} con $L=1$, tenemos
+  \[
+    \overline{f}(x) = c_0
+    + \sum_{n=1}^\infty a_n\cos(n\pi x)
+    + \sum_{n=1}^\infty b_n\sin(n\pi x)
+  ,\]
+  donde
+  \begin{align*}
+    c_0 &= \frac{1}{2}\int_{-1}^1 f \\
+    a_n &= \int_{-1}^1 f(x)\cos(n\pi x)\,dx, \\
+    b_n &= \int_{-1}^1 f(x)\sin(n\pi x)\,dx.
+  \end{align*}
+
+  Tenemos
+  \begin{align*}
+    \int_{-1}^{1}f
+    &= \int_{-1}^{0}1\,dx + \int_{0}^{1}x\,dx \\
+    &= 1 + \left( \frac{1}{2}x^{2} \right)\Big|_{0}{1} \\
+    &= \frac{3}{2}
+  \end{align*}
+  Luego, $c_0=\frac{3}{4}$.
+  Además...
+
+  ...
+  \todo{terminar cálculo}
+
+  Así, la serie es
+  \[
+    \overline{f}(x)
+    =
+    \frac{3}{4}
+    +
+    \sum_{n=1}^{\infty}
+    \left[
+      \frac{1}{n^{2}\pi^{2}}[(-1)^{n}-1]\cos(n\pi x)
+      -\frac{1}{n\pi}\sin(n\pi x)
+    \right]
+  .\]
+    
+\end{sol}
+
+\subsection{Funciones pares e impares}
+
+\begin{defn}
+  Sea $I=[-L,L]$ o $I=\R$.
+  Decimos que una función $f:I\to\R$ es par si
+  \[
+    f(-x) = f(x)
+  \]
+  para todo $x\in I$, o que $f$ es impar si
+  \[
+    f(-x) = -f(x)
+  \]
+  para todo $x\in I$.
+\end{defn}
+
+\begin{example}
+  La función $\sin$ es impar y la función $\cos$ es par.
+  La función $f(x)=e^{2x}$ no es par ni impar.
+\end{example}
+
+\begin{theorem}
+  \begin{enumerate}
+    \item El producto de dos funciones pares es par.
+    \item El producto de dos funciones impares es impar.
+    \item El producto de una función par y una función impar es impar.
+    \item Si $f$ es par en $[-a,a]$, entonces
+      $\int_{-a}^{0}f=\int_{0}^{a}f$, por lo cual
+      \[
+        \int_{-a}^{a}f = 2\int_{0}^{a}f
+      .\]
+    \item Si $f$ es impar en $[-a,a]$, entonces
+      $\int_{-a}^{0}f=-\int_{0}^{a}f$, por lo cual
+      \[
+        \int_{-a}^{a}f = 0
+      .\]
+  \end{enumerate}
+\end{theorem}
+
+Supongamos que $f:[-L,L]\to\R$ tiene serie de Fourier trigonométrica
+
+Si $f$ es una función par, entonces
+\begin{align*}
+  c_0 &= \frac{1}{2L}\int_{-L}^L f = \frac{1}{L}\int_{0}^L f \\
+  a_n
+    &= \frac{1}{L}\int_{-L}^L f(x)\cos(n\pi x/L)\,dx
+    = \frac{2}{L}\int_{0}^L f(x)\cos(n\pi x/L)\,dx \\
+  b_n
+    &= \frac{1}{L}\int_{-L}^L f(x)\sin(n\pi x/L)\,dx
+    = 0.
+\end{align*}
+por lo cual \eqref{eq:serie-fourier} se reduce a
+\begin{equation}\label{eq:fourier-par}
+\begin{aligned}
+  \overline{f}(x)
+  &=
+  c_0
+  +
+  \sum_{n=1}^{\infty}a_n\cos(n\pi x/L) \\
+  \text{con} \hspace{10mm}
+  c_0 &= \frac{1}{L}\int_{0}^L f \\
+  \text{y} \hspace{10mm}
+  a_n &= \frac{2}{L}\int_{0}^L f(x)\cos(n\pi x/L)\,dx.
+\end{aligned}
+\end{equation}
+Esta se llama serie en cosenos de $f$.
+
+Por otro lado, si $f$ es impar, entonces
+\begin{align*}
+  c_0 &= \frac{1}{2L}\int_{-L}^L f = 0 \\
+  a_n
+    &= \frac{1}{L}\int_{-L}^L f(x)\cos(n\pi x/L)\,dx
+    = 0 \\
+  b_n
+    &= \frac{1}{L}\int_{-L}^L f(x)\sin(n\pi x/L)\,dx
+    = \frac{2}{L}\int_{0}^L f(x)\sin(n\pi x/L)\,dx,
+\end{align*}
+por lo cual
+\begin{equation}\label{eq:fourier-impar}
+\begin{aligned}
+  \overline{f}(x)
+  &=
+  \sum_{n=1}^{\infty}b_n\sin(n\pi x/L) \\
+  \text{con}\hspace{10mm}
+  b_n
+  &= \frac{2}{L}\int_{0}^L f(x)\sin(n\pi x/L)\,dx
+\end{aligned}
+\end{equation}
+Esta se llama serie en senos de $f$.
+
+\begin{example}
+  Determine la serie de Fourier de la función dada por
+  \[
+    f(x) =
+    \begin{cases}
+      x+2 & -2\leq x<0 \\
+      -x+2 & 0\leq x\leq 2
+    \end{cases}
+  .\]
+  Nótese que $f$ es par.
+  \todo{terminar: pdf 15}
+\end{example}
+
+\begin{example}
+  Determine la serie de Fourier de la función dada por
+  \[
+    f(x) \frac{|x|}{x} \quad \text{ en } [-\pi,\pi]
+  .\]
+  \todo{terminar: pdf 15}
+\end{example}
+
+\begin{theorem}[Convergencia de la serie de Fourier]
+  Sean $f$ y $f'$ seccionalmente continuas en $[-L,L]$, teniendo $f$
+  un número finito de discontinuidades en el intervalo. Entonces la
+  serie de Fourier $\overline{f}(x)$ de $f$ converge a $f(x)$ en los
+  puntos donde $f$ es continua y, si $x_0$ es un punto de
+  discontinuidad de $f$, entonces $\overline{f}(x_0)$ converge al
+  promedio de los límites laterales de $f$ en $x_0$:
+  \[
+    \overline{f}(x_0) = \frac{f(x_0^{+})+f(x_0^{-})}{2}
+  .\]
+\end{theorem}
+
+\begin{example}
+  Vimos que la función
+  \[
+    f(x) =
+    \begin{cases}
+      1 & -1\leq x<0 \\
+      x & 0\leq x\leq 1
+    \end{cases}
+  \]
+  tiene serie de Fourier...
+  \todo{pdf 15}
+\end{example}
+
+\begin{example}
+  Consideremos la función
+  \[
+    f(x) =
+    \begin{cases}
+      0 & -\pi\leq x<0 \\
+      x^{2} & 0\leq x\leq\pi
+    \end{cases}
+  .\]
+  Su serie de Fourier...
+  \todo{pdf 15}
+\end{example}
+
+\chapter{Problemas de frontera} % (Mie 10 nov 2021)
 
 Los métodos más usuales para resolver los P.F. son
 \begin{enumerate}
@@ -920,8 +1206,8 @@ Sea $u=u(x,t)$ la función deseada. La ecuación diferencial
 \end{align*}
 Queda de tarea.
 
-\subsubsection{Extremos con temperatura constante (mie 17 nov
-2021)}
+% (mie 17 nov 2021)
+\subsubsection{Extremos con temperatura constante}
 
 Determinar la función que determina la distribución de
 temperatura sobre una varilla de longitud $L$ laterlamente
@@ -1588,9 +1874,11 @@ Por lo tanto,
 
 \subsection{Vibraciones en dos dimensiones}
 
-\subsubsection{Vibraciones en una membrana rectangular (26 nov 2021)}
+% (26 nov 2021)
+\subsubsection{Vibraciones en una membrana rectangular}
 
-\subsubsection{Vibraciones en una membrana circular (1 dic 2021)}
+% (1 dic 2021)
+\subsubsection{Vibraciones en una membrana circular}
 Supongamos que se desea determinar la función que describe las
 vibraciones sobre una membrana circular de radio $r=a$ fija a lo largo
 de toda la frontera.
