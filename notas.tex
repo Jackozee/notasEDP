@@ -579,7 +579,64 @@ un polinomio en $x$ y $y$.
   homogenea $z_x + 2 z_y = \sin x - 3 \cos y$.
 \end{exe}
 
-CONTINUAR CON SESIÓN 5.PDF...
+\begin{example}
+  Resolver la ecuación $2z_x + z_y - 2z = \sin(4y-2x)e^{x}$.
+
+  \begin{sol}
+    Primero resolvemos la ecuación homogenea correspondiente
+    $2z_x + z_y - 2z = 0$. Observemos que $A = 2, B = 1$ y
+    $C = -2$, entonces
+     \[
+      z_h = f(x-2y)e^{x}
+    .\] 
+    Ahora buscamos una solución particular de la forma
+    \[
+      z = [A \sin(4y-2x) + B \cos(4y-2x)]e^{x}
+    .\] Las derivadas parciales son
+    \begin{align*}
+      z_x &= [-2A\cos(4y-2x) + 2B\sin(4y-2x)]e^{x} +
+      [A\sin(4y-2x) + B\cos(4y-2x)]e^{x}\\
+      z_y &= [4A\cos(4y-2x) - 4B\sin(4y-2x)]e^{x}.
+    \end{align*}
+    Sustituyendo en la ecuación diferencial y simplificando
+    obtenemos
+    \begin{align*}
+      0 &= \sin(4y-2x)e^{x},
+    \end{align*}
+    lo cual es absurdo, por lo tanto debemos buscar una
+    solución particular de otra forma, digamos
+    \[
+    z = [A\sin(4y-2x) + B\cos(4y-2x)]x e^{x}
+    .\] Derivando
+    \begin{align*}
+      z_x &= [-2A\cos(4y-2x) + 2B\sin(4y-2x)]xe^{x}\\
+          &\quad+ [A\sin(4y-2x)+B\cos(4y-2x)](x+1)e^{x}\\
+      z_y &= [4A\cos(4y-2x) - 4B\sin(4y-2x)]xe^{x}.
+    \end{align*}
+    Sustityendo y simplificando obtenemos
+    \[
+      [2A\sin(4y-2x) + 2B\cos(4y-2x)]e^{x} = \sin(4y-2x)e^{x}
+    ,\] 
+    por lo tanto $B = 0$ y $A = \frac{1}{2}$, así la
+    solución particular es
+    \[
+    z_p = \frac{1}{2}\sin(4y-2x)xe^{x}
+    .\]
+    Se sigue que la solución general de la ecuación
+    diferencial está dada por
+    \[
+    z = f(x-2y)e^{x} + \frac{1}{2}\sin(4y-2x)xe^{x}
+    .\] 
+  \end{sol}
+\end{example}
+
+\begin{exe}
+  Resolver la ecuación $3z_x - 4z_y + 6z = 4e^{2x+3y}$.
+\end{exe}
+
+\subsection{Ecuación homogenea con coeficientes variables}
+
+Consideremos la ecuación
 
 \chapter{Series de Fourier}
 
