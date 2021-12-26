@@ -932,15 +932,15 @@ correspondiente y luego obtenemos una solución particular.
         La solución es
         \begin{align*}
           e^{-\int \frac{2}{x+2} \, dx} \left(\int e^{\int
-            \frac{2}{x+2} \, dx} \frac{2x}{x+2}\right)
+            \frac{2}{x+2} \, dx} \frac{2x}{x+2} \, dx\right)
             &=
             e^{-2\ln(x+2)}\left(\int e^{2\ln(x+2)}
             \frac{2x}{x+2} \, dx\right)\\
             &=
             \frac{1}{(x+2)^2}\left(\int (x+2)^2
-            \frac{2x}{x+2}\right)\\
+            \frac{2x}{x+2} \, dx\right)\\
             &= \frac{1}{(x+2)^2} \int
-            2x^2 + 4x \, dx\\
+            \left(2x^2 + 4x\right) \, dx\\
             z_{p_1} &= \frac{x^2(x+3)}{(x+2)^2}.
         \end{align*}
         La solución correspondiente a $G_2(x,y) = 3y$ y por
@@ -954,7 +954,178 @@ correspondiente y luego obtenemos una solución particular.
 
 \subsection{Método de Lagrange}
 
-CONTINUAR CON EL PDF 6\ldots
+Recordemos que la ecuación cuasilineal de primer orden en
+$x$ y $y$ de la forma
+\begin{equation}
+  \label{eqn:cuasilineal_primer_orden}
+  P(x,y,z) z_x + Q(x,y,z) z_y = R(x,y,z),
+\end{equation}
+donde $P, Q$ y $R$ son funciones con las derivadas parciales
+continuas. Por una solución
+\ref{eqn:cuasilineal_primer_orden} se entiende a una función
+$\phi(x,y)$ con derivadas parciales tales que si $(x_0,y_0)$
+es un punto del dominio del plano $xy$ entonces $z_0 =
+\phi(x_0,y_0)$ y además
+\[
+P(x,y,\phi) \phi_x + Q(x,y,\phi) \phi_y = R(x,y,\phi).
+\] 
+Si $z = \phi(x,y)$ es la solución de
+\ref{eqn:cuasilineal_primer_orden}, entonces $z_x, z_y$
+deben satisfacer \ref{eqn:cuasilineal_primer_orden}
+\begin{equation}
+  \label{eqn:derivada_total_cuasi}
+  dz = \phi_x \, dx + \phi_y \, dy = z_x \, dx + z_y \, dy.
+\end{equation}
+Si \ref{eqn:derivada_total_cuasi} representa a
+\ref{eqn:cuasilineal_primer_orden}, entonces tenemos que
+\begin{align*}
+  dx &= KP(x,y,z)\\
+  dy &= KQ(x,y,z)\\
+  dz &= KR(x,y,z).
+\end{align*}
+Por lo tanto obtenemos la ecuación
+\begin{equation}
+  \label{eqn:subsidiaria}
+  \frac{dx}{P} = \frac{dy}{Q} = \frac{dz}{R},
+\end{equation}
+la cual es llamada \textit{ecuación subsidiaria} ó
+\textit{ecuación característica} de
+\ref{eqn:cuasilineal_primer_orden}. De \ref{eqn:subsidiaria}
+se obtienen dos ecuaciones diferenciales ordinarias:
+\[
+\frac{dx}{P} = \frac{dy}{Q} \quad \text{ y } \quad
+\frac{dx}{P} = \frac{dz}{R}.
+\] 
+Podemos suponer que la variable independiente es $x$. Sean
+$y = y(x,c_1,c_2)$ y
+$z = z(x,c_1,c_2)$ las soluciones, donde
+$c_1$ y $c_2$ son constantes arbitrarias. Si éstas
+ecuaciones son resueltas para $c_1$ y $c_2$ se obtiene
+\[
+c_1 = u(x,y,z) \quad \text{ y } \quad c_2 = v(x,y,z).
+\] 
+Éstas son llamadas \textit{curvas integrales} de la ecuación
+subsidiaria. De ésta forma la relación $F(c_1,c_2) = 0$ es
+la solución
+de \ref{eqn:cuasilineal_primer_orden}, es decir
+\[
+F(u(x,y,z), v(x,y,z))=0.
+\] 
+\begin{example}
+  Resolver la ecuación $xz z_y + yz z_y = -(x^2+y^2)$.
+  \begin{sol}
+    Los coeficientes son
+    \[
+    P = xz, \quad Q = yz, \quad R = -(x^2+y^2).
+    \] 
+    La ecuación subsidaria está dada por
+    \[
+    \frac{dx}{xz} = \frac{dy}{yz} = \frac{dz}{-x^2-y^2}.
+    \] 
+    Se sigue que tenemos dos EDO por resolver, elegimos las
+    siguientes
+    \[
+    \frac{dx}{x} = \frac{dy}{y} \quad \text{ y } \quad
+    \frac{dx}{zx} = \frac{dz}{-x^2-y^2}.
+    \] 
+    Resolviendo la primera obtenemos la primera curva
+    integral
+    \begin{align*}
+      \ln x &= \ln y + \ln c_1\\
+      \implies x &= yc_1\\
+      \implies c_1 &= \frac{x}{y}.
+    \end{align*}
+    Para la segunda tenemos
+    \begin{align*}
+      \frac{dx}{xz} &= \frac{dz}{-x^2-y^2}\\
+      \implies \frac{dx}{xz} &= \frac{dz}{-x^2-x^\frac{2}{c_1^2}}\\
+      \implies -x \, dx &= \frac{z \, dz}{1 + \frac{1}{c_1^2}}\\
+      \implies x\left(1+\frac{1}{c_1^2}\right) \, dx + z \, dz &= 0\\
+      \implies \left(1+\frac{1}{c_1^2}\right) \frac{x^2}{2} +
+      \frac{z^2}{2} &= \frac{c_2}{2}.
+    \end{align*}
+    Sustituyendo $c_1$ obtenemos la segunda curva integral
+    \[
+    c_2 = \left(1+\frac{y^2}{x^2}\right) x^2 + z^2 = x^2 +
+    y^2 + z^2.
+    \] 
+    Se sigue que la solución de la ecuación es
+    \[
+    F(c_1,c_2) = F\left(\frac{x}{y}, x^2+y^2+z^2\right) = 0,
+    \] 
+    para $F$ arbitraria.
+  \end{sol}
+\end{example}
+
+\subsection{Método de multiplicadores}
+
+Otra forma de resolver la ecuación subsidiaria es mediante
+multiplicadores. Sea $\alpha, \beta, \gamma$ cualesquier
+valor, entonces tenemos las siguientes igualdades
+\[
+\frac{\alpha \, dx + \beta \, dy + \gamma \, dz}{\alpha P +
+\beta Q + \gamma R} = \frac{dx}{P} = \frac{dy}{Q} =
+\frac{dz}{R}.
+\] 
+En particular si se elige a $\alpha, \beta, \gamma$ de tal
+manera que
+\[
+\alpha P + \beta Q + \gamma R = 0,
+\] 
+entonces se tiene que
+\[
+\alpha \, dx + \beta \, dy + \gamma \, dz = 0.
+\] 
+
+\begin{example}
+  Resolver la ecuación $(y-x) z_x + (y+x) z_y = (x^2+y^2) /
+  z$.
+  \begin{sol}
+    La ecuación subsidiaria está dada por
+    \[
+    \frac{dx}{y-x} = \frac{dy}{y+x} = \frac{z \,
+    dz}{x^2+y^2}.
+    \] 
+    Utilizando el método de Lagrange sin multiplicadores
+    resultará complicado, en lugar de resolver alguna de las
+    ecuaciones definamos $\alpha = x$, $\beta = -y$ y
+    $\gamma = z$. Entonces
+    \[
+    x(y-x) - y(y+x) + z\left(\frac{x^2+y^2}{2}\right) = xy -
+    x^2 - y^2 - xy + x^2 + y^2 = 0.
+    \]
+    Por lo tanto podemos resolver la ecuación
+    \[
+    x \, dx - y \, dy + z \, dz = 0,
+    \] 
+    para obtener la primera curva integral
+    \[
+    x^2 - y^2 + z^2 = c_1.
+    \] 
+    Ahora, si $\alpha = 1, \beta = 1$ y $\gamma = 0$,
+    entonces
+    \[
+    \frac{dx + dy}{y - x + y + x} = \frac{dy}{x + y},
+    \] 
+    ó equivalentemente
+    \[
+      (x+y)(dx + dy) = 2y \, dy.
+    \] 
+    Integrando obtenemos
+    \[
+    \frac{(x+y)^2}{2} = y^2 + c \implies c_2 = x^2 + 2xy -
+    y^2.
+    \] 
+    Las curvas son linealmente independientes y así
+    obtenemos la solución de la ecuación 
+    \[
+    F(c_1,c_2) = F\left(x^2 - y^2 +
+      z^2, x^2 + 2xy - y^2\right) = 0.
+    \] 
+  \end{sol}
+\end{example}
+
+CONTINUA EN 7.PDF
 
 \chapter{Series y transformadas de Fourier}
 
