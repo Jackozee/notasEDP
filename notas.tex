@@ -1,13 +1,14 @@
-\documentclass[11pt,letterpaper,draft]{report}
+\documentclass[11pt,letterpaper]{report}
 \usepackage[left=3.5cm,right=3.5cm,top=2.5cm,bottom=2.5cm]{geometry}
 
 \usepackage{amsmath,amsfonts,amsthm,amssymb,enumitem,mathtools}
-\usepackage[final]{hyperref}
+\usepackage{hyperref}
 \usepackage[spanish]{babel}
 \usepackage{todonotes}
 \setenumerate[1]{label=(\alph*)}
 \setenumerate[0]{label=\roman*.}
 \allowdisplaybreaks
+\overfullrule=5mm
 
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{3}
@@ -737,7 +738,7 @@ para $n\geq 1$, donde $\Re$ e $\Im$ son las partes real e imaginaria.
 A veces nos podemos ahorrar trabajo calculando una sola integral.
 \end{obs}
 
-\begin{exe}
+\begin{exe}\label{ejemplo-fourier}
   Determine la serie trigonométrica de Fourier de la función $f$
   definida en $[-1,1]$ como
   \[
@@ -895,9 +896,15 @@ Esta se llama serie en senos de $f$.
 \begin{example}
   Determine la serie de Fourier de la función dada por
   \[
-    f(x) \frac{|x|}{x} \quad \text{ en } [-\pi,\pi]
+    f(x) = \frac{|x|}{x} \quad \text{ en } [-\pi,\pi]
   .\]
-  \todo{terminar: pdf 15}
+  \todo{terminar cálculo}
+  \[
+    \overline{f}(x)
+    =
+    \frac{2}{\pi}\sum_{n=1}^{\infty}\frac{1-(-1)^{n}}{n}\sin(nx)
+  .\]
+  
 \end{example}
 
 \begin{theorem}[Convergencia de la serie de Fourier]
@@ -913,7 +920,7 @@ Esta se llama serie en senos de $f$.
 \end{theorem}
 
 \begin{example}
-  Vimos que la función
+  En el ejemplo \ref{ejemplo-fourier} vimos que la función
   \[
     f(x) =
     \begin{cases}
@@ -921,8 +928,40 @@ Esta se llama serie en senos de $f$.
       x & 0\leq x\leq 1
     \end{cases}
   \]
-  tiene serie de Fourier...
-  \todo{pdf 15}
+  tiene serie de Fourier
+  \[
+    \overline{f}(x)
+    =
+    \frac{3}{4}
+    +
+    \sum_{n=1}^{\infty}
+    \left[
+      \frac{1}{n^{2}\pi^{2}}[(-1)^{n}-1]\cos(n\pi x)
+      -\frac{1}{n\pi}\sin(n\pi x)
+    \right]
+  .\]
+  Notemos que $f$ es continua en todo $[-1,1]$ excepto en $x_0=0$.
+  Por lo tanto, la serie $\overline{f}(x)$ converge a $f(x)$ para
+  $x\neq 0$ y, en $x_0=0$, $\overline{f}(x_0)$ es
+  \[
+    \overline{f}(0)
+    =\frac{f(0^{+})+f(0^{-})}{2}
+    = \frac{0+1}{2}
+    =\frac{1}{2}
+  .\]
+  Una consecuencia es que
+  \[
+    \frac{1}{2} = \frac{3}{4} + 
+    \sum_{n=1}^{\infty}
+      \frac{1}{n^{2}\pi^{2}}[(-1)^{n}-1]
+  .\]
+  Así,
+  \[
+    \sum_{n=1}^{\infty}
+      \frac{1}{n^{2}\pi^{2}}[(-1)^{n}-1]
+    =
+    - \frac{1}{4}
+  .\]
 \end{example}
 
 \begin{example}
@@ -934,9 +973,341 @@ Esta se llama serie en senos de $f$.
       x^{2} & 0\leq x\leq\pi
     \end{cases}
   .\]
-  Su serie de Fourier...
-  \todo{pdf 15}
+  Tenemos
+  \[
+    c_0 = \frac{1}{2\pi}\int_{0}^{\pi}x^{2}\,dx = \frac{\pi^{2}}{6}
+  .\]
+  
+  \todo{terminar cálculo}
+  Dado que $f$ es continua en $[-\pi,\pi]$, tenemos
+  \[
+    f(x)
+    =
+    \frac{\pi^{2}}{6}
+    +
+    \sum_{n=1}^{\infty} \left[
+      \frac{2}{n^{2}}(-1)^{n}\cos(nx)
+      +
+      \frac{(2-n^{2}\pi^{2})(-1)^{n}-2}{n^{3}\pi}
+      \sin(nx)
+    \right]
+  .\]
+  En particular, para $x=0$, tenemos
+  \[
+    0
+    =
+    \frac{\pi^{2}}{6}
+    +
+    2\sum_{n=1}^{\infty}\frac{(-1)^{n}}{\pi^{2}}
+  .\]
+  Así,
+  \[
+    \frac{\pi^{2}}{12}
+    =
+    \sum_{n=1}^{\infty}\frac{(-1)^{n+1}}{n^{2}}
+    =
+    1-\frac{1}{2^{2}}+\frac{1}{3^{2}}-\frac{1}{4^{2}}+\dots
+  .\]
 \end{example}
+
+\subsection{Series de medio rango}
+
+Supongamos que tenemos una función $f$ definida en $[0,L]$:
+\missingfigure{función de 0 a L}
+Podemos extender $f$ a $[-L,L]$ de tres maneras, lo cual corresponde a
+definir $f(x)$ para cada $x\in[-L,0)$:
+\begin{itemize}
+  \item definiendo $f(x)=f(-x)$, obtenemos una función par,
+    \missingfigure{extensión par}
+  \item definiendo $f(x)=-f(-x)$, obtenemos una función impar,
+    \missingfigure{extensión impar}
+  \item definendo $f(x)=x+L$, obtenemos una función periódica.
+    \missingfigure{extensión periódica}
+\end{itemize}
+
+Dado que las series de Fourier de las extensiones par e impar de $f$
+son sus series en cosenos y en senos, y éstas dependen únicamente de
+los valores de $f$ $[0,L]$, tenemos que las
+expresiones \eqref{eq:fourier-par} y \eqref{eq:fourier-impar}
+nos dan las series de las extensiones par e impar de $f$.
+
+Explícitamente, si $f_c$ y $f_s$ son las extensiones par e impar
+de $f$ a $[-L,L]$, entonces sus series de Fourier son
+\begin{align*}
+  \overline{f_c}(x) &= c_0 + \sum_{n=1}^{\infty}a_n\cos(n\pi x/L), \\
+  \overline{f_s}(x) &= \sum_{n=1}^{\infty}b_n\sin(n\pi x/L).
+\end{align*}
+donde
+\begin{align*}
+  a_n &= \frac{2}{L}\int_{0}^L f(x)\cos(n\pi x/L)\,dx \\
+  b_n &= \frac{2}{L}\int_{0}^L f(x)\sin(n\pi x/L)\,dx \\
+  c_0 &= \frac{1}{L}\int_{0}^L f.
+\end{align*}
+Para facilidad de cálculo, podemos observar que
+\begin{align*}
+  a_n+ib_n
+  &= \frac{2}{L}\int_0^L f(x)e^{in\pi x/L}\,dx
+\end{align*}
+para $n\geq 1$.
+
+Por otro lado, consideremos la tercera posibilidad: extender a $f$ de
+manera periódica a $[-L,L]$ definiendo $f(x)=f(x+L)$ para
+$x\in[-L,0)$.
+Explícitamente, si $f_p$ es la extensión periódica de $f$ a $[-L,L]$,
+entonces también es periódica en $[-T,T]$ con $T=\frac{L}{2}$
+\missingfigure{gráfica extensión periódica}
+por lo cual, de \eqref{eq:serie-fourier}, su serie de Fourier es
+\[
+  \overline{f_p}(x) = c_0
+  + \sum_{n=1}^\infty a_n\cos(n\pi x/T)
+  + \sum_{n=1}^\infty b_n\sin(n\pi x/T)
+,
+\]
+donde
+\begin{align*}
+  c_0 &= \frac{1}{2T}\int_{-T}^T f_p \\
+  a_n &= \frac{1}{T}\int_{-T}^T f_p(x)\cos(n\pi x/T)\,dx, \\
+  b_n &= \frac{1}{T}\int_{-T}^T f_p(x)\sin(n\pi x/T)\,dx.
+\end{align*}
+Ahora notemos que, para $x\in[-T,0]$, tenemos
+\begin{align*}
+  f_p(x) &=f(x+2T) \\
+  f_p(x)\cos(n\pi x/T) &=f(x+2T)\cos(n\pi(x+2T)/T) \\
+  f_p(x)\sin(n\pi x/T) &=f(x+2T)\sin(n\pi(x+2T)/T).
+\end{align*}
+Por lo tanto,
+\begin{align*}
+  \int_{-T}^{0}f_p
+    &=\int_{T}^{2T}f \\
+  \int_{-T}^{T}f_p(x)\cos(n\pi x/T)\,dx
+    &=\int_{T}^{2T}f(x)\cos(n\pi x/T)\,dx \\
+  \int_{-T}^{T}f_p(x)\sin(n\pi x/T)\,dx
+    &=\int_{T}^{2T}f(x)\sin(n\pi x/T)\,dx.
+\end{align*}
+Así, por la aditividad de la integral con respecto al dominio, tenemos
+\begin{align*}
+  c_0
+  &= \frac{1}{2T}\int_{-T}^T f_p(x)\,dx
+  = \frac{1}{2T}\int_{0}^{2T} f(x)\,dx, \\
+  a_n
+  &= \frac{1}{T}\int_{-T}^T f_p(x)\cos(n\pi x/T)\,dx
+  = \frac{1}{T}\int_{0}^{2T} f(x)\cos(n\pi x/T)\,dx \\
+  b_n
+  &= \frac{1}{T}\int_{-T}^T f_p(x)\sin(n\pi x/T)\,dx
+  = \frac{1}{T}\int_{0}^{2T} f(x)\sin(n\pi x/T)\,dx.
+\end{align*}
+Sustituyendo $T=\frac{L}{2}$, esto es
+\begin{equation}
+  \overline{f_p}(x) = c_0
+  + \sum_{n=1}^\infty a_n\cos(2n\pi x/L)
+  + \sum_{n=1}^\infty b_n\sin(2n\pi x/L)
+,
+\end{equation}
+con
+\begin{align*}
+  c_0
+  &= \frac{1}{L}\int_{0}^{L} f, \\
+  a_n
+  &= \frac{2}{L}\int_{0}^{L} f(x)\cos(2n\pi x/L)\,dx, \\
+  b_n
+  &= \frac{2}{L}\int_{0}^{L} f(x)\sin(2n\pi x/L)\,dx.
+\end{align*}
+
+\begin{example}
+  Considere la función $f(x)=x^{2}$ en $[0,\pi]$. Determine las
+  series de $f$ en cosenos, en senos y trigonométrica.
+\end{example}
+\begin{sol}
+  Tenemos $L=\pi$. Para la serie de $f$ en cosenos, calculamos
+  \begin{align*}
+    c_0
+    &= \frac{1}{\pi}\int_{0}^{\pi}x^{2}\,dx \\
+    &= \frac{1}{\pi} \left[
+      \frac{x^{3}}{3}
+    \right]\Big|_{0}^{\pi} \\
+    &= \frac{\pi^{2}}{3}, \\
+    a_n
+    &= \frac{2}{\pi}\int_{0}^{\pi}x^{2}\cos(nx)\,dx \\
+    &= \frac{2}{\pi} \left[
+      x^{2}\frac{\sin(nx)}{n}
+      -2x\frac{-\cos(nx)}{n^{2}}
+      +2\frac{-\sin(nx)}{n^{3}}
+    \right]\Big|_{0}^{\pi} \\
+    &= \frac{2}{\pi} \left[
+      -2\pi\frac{-(-1)^{n}}{n^{2}}
+    \right] \\
+    &= \frac{4(-1)^{n}}{n^{2}}.
+  \end{align*}
+  Así, la extensión par $f_c$ de $f$ a $[-\pi,\pi]$ tiene serie de
+  Fourier
+  \[
+    \overline{f_c}(x)
+    =
+    \frac{\pi^{2}}{3}
+    +
+    4\sum_{n=1}^{\infty}\frac{(-1)^{n}}{n^{2}}\cos(nx)
+  .\]
+  
+  Ahora, para la serie de $f$ en senos, calculamos
+  \begin{align*}
+    b_n
+    &= \frac{2}{\pi}\int_{0}^{\pi}x^{2}\sin(nx)\,dx \\
+    &= \frac{2}{\pi} \left[
+      x^{2}\frac{-\cos(nx)}{n}
+      -2x\frac{-\sin(nx)}{n^{2}}
+      +2\frac{\cos(nx)}{n^{3}}
+    \right]\Big|_{0}^{\pi} \\
+    &= \frac{2}{\pi} \left[
+      \pi^{2}\frac{-(-1)^{n}}{n}+2\frac{(-1)^{n}-1}{n^{3}}
+    \right] \\
+    &= \frac{2}{\pi} \left[
+      \frac{(2-\pi^{2}n^{2})(-1)^{n}-2}{n^{3}}
+    \right].
+  \end{align*}
+  Así,
+  \[
+    \overline{f_s}(x)
+    =
+    \frac{2}{\pi}\sum_{n=1}^{\infty}
+      \frac{(2-\pi^{2}n^{2})(-1)^{n}-2}{n^{3}}
+      \sin(nx)
+  .\]
+  
+  Finalmente, calculemos la serie de su extensión periódica.
+  Tenemos
+  \begin{align*}
+    c_0
+    &= \frac{1}{\pi}\int_{0}^{\pi}x^{2}\,dx = \frac{\pi^{2}}{3}, \\
+    a_n+ib_n
+    &= \frac{2}{\pi}\int_{0}^{L}x^{2}e^{i 2nx}\,dx \\
+    &= \frac{2}{\pi} \left[
+      x^{2}\frac{e^{i 2nx}}{i 2n}
+      -2x\frac{e^{i 2nx}}{i^{2}4n^{2}}
+      +2 \frac{e^{i 2nx}}{i^{3} 8n^{3}}
+    \right]\Big|_{0}^{\pi} \\
+   &= \frac{2}{\pi} \left[
+     \pi^{2}\frac{1}{i 2n}
+     -2\pi \frac{1}{-4n^{2}}
+   \right] \\
+   &= \frac{1}{n^{2}}-i \frac{\pi}{n}.
+  \end{align*}
+  Así, $a_n=\frac{1}{n^{2}}$ y $b_n=-\frac{\pi}{n}$, por lo cual
+  \[
+    \overline{f_p}(x)
+    =
+    \frac{\pi^{2}}{3}
+    +
+    \sum_{n=1}^{\infty} \left[
+      \frac{1}{n^{2}}\cos(2nx)
+      -
+      \frac{\pi}{n}\sin(2nx)
+    \right]
+  .\]
+\end{sol}
+
+\begin{example}
+  Determine la serie en cosenos y en senos de $f(x)=\sin(x)$ en
+  $[0,\pi]$.
+  Para $L=\pi$, tenemos
+  \begin{align*}
+    \overline{f_c}(x)
+    &=
+    c_0
+    +
+    \sum_{n=1}^{\infty}a_n\cos(nx) \\
+    \overline{f_s}(x)
+    &= \sum_{n=1}^{\infty}b_n\sin(nx),
+  \end{align*}
+  donde
+  \begin{align*}
+    c_0
+    &= \frac{1}{\pi}\int_{0}^{\pi}\sin(x)\,dx \\
+    a_n
+    &= \frac{2}{\pi}\int_{0}^{\pi}\sin(x)\cos(n x)\,dx \\
+    b_n
+    &= \frac{2}{\pi}\int_{0}^{\pi}\sin(x)\sin(n x)\,dx \\
+  \end{align*}
+  Así,
+  \begin{align*}
+    c_0
+    &=
+    \frac{1}{\pi}\int_{0}^{\pi}\sin(x)\,dx
+    =\frac{1}{\pi}(-\cos x)\Big|_{0}^{\pi}
+    =\frac{1}{\pi}(1+1)
+    =\frac{2}{\pi} \\
+    a_n+ib_n
+    &= \frac{2}{\pi}\int_{0}^{\pi}\sin(x)e^{inx}\,dx
+  \end{align*}
+  Tenemos
+  \begin{align*}
+    a_n+ib_n
+    &= \frac{2}{\pi}\int_{0}^{\pi}e^{inx}\sin x \,dx \\
+    &= \frac{2}{\pi} \left[
+      e^{inx}(-\cos x)
+      -ine^{inx}(-\sin x)
+    \right]\Big|_{0}^{\pi}
+    +\frac{2}{\pi}\int_{0}^{\pi}(-n^{2}e^{inx})(-\sin x)\,dx \\
+    &= \frac{2}{\pi} \left[
+      -e^{inx}\cos x
+      +ine^{inx}\sin x
+    \right]\Big|_{0}^{\pi}
+    +n^{2}(a_n+ib_n) \\
+    &= \frac{2}{\pi} \left[
+      (-1)^{n}
+      +1
+    \right]
+    +n^{2}(a_n+ib_n)
+  \end{align*}
+  Por lo tanto, para $n>1$, tenemos
+  \[
+    a_n+ib_n
+    =
+    \frac{2}{\pi}\frac{(-1)^{n}+1}{1-n^{2}}
+  ,\]
+  mientras que, para $n=1$,
+  \begin{align*}
+    a_1+ib_1
+    &=\frac{2}{\pi}\int_{0}^{\pi}e^{ix}\sin(x)\,dx \\
+    &=\frac{2}{\pi}\int_{0}^{\pi}(\cos(x)\sin(x)+i\sin^{2}(x))\,dx \\
+    &=\frac{1}{\pi}\int_{0}^{\pi}(\sin(2x)+i(1-\cos(2x)))\,dx \\
+    &=\frac{1}{\pi}\int_{0}^{\pi}(i+\sin(2x)-i\cos(2x))\,dx \\
+    &=\frac{1}{\pi}\int_{0}^{\pi}(i-ie^{i2x})\,dx \\
+    &=i.
+  \end{align*}
+  Por lo tanto,
+  \begin{align*}
+    a_n
+    &=
+    \begin{cases}
+      0 & n=1 \\
+      \frac{2}{\pi}\frac{(-1)^{n}+1}{1-n^{2}} & n>1,
+    \end{cases}
+    &
+    b_n
+    &=
+    \begin{cases}
+      1 & n=1 \\
+      0 & n>1.
+    \end{cases}
+  \end{align*}
+  Así,
+  \begin{align*}
+    \overline{f_c}(x)
+    &=
+    \frac{2}{\pi}
+    +
+    \frac{2}{\pi}
+    \sum_{n=2}^{\infty}\frac{(-1)^{n}+1}{1-n^{2}}\cos(nx) \\
+    \overline{f_s}(x)
+    &= \sin(x).
+  \end{align*}
+\end{example}
+
+\section{Transformadas de Fourier}
+
+\todo{pdf 17}
+
+
 
 \chapter{Problemas de frontera} % (Mie 10 nov 2021)
 
@@ -1872,10 +2243,10 @@ Por lo tanto,
   y $g(x)=x$.
 \end{exe}
 
-\subsection{Vibraciones en dos dimensiones}
-
 % (26 nov 2021)
 \subsubsection{Vibraciones en una membrana rectangular}
+
+\todo{pendiente}
 
 % (1 dic 2021)
 \subsubsection{Vibraciones en una membrana circular}
