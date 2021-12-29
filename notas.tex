@@ -581,7 +581,552 @@ un polinomio en $x$ y $y$.
   homogenea $z_x + 2 z_y = \sin x - 3 \cos y$.
 \end{exe}
 
-CONTINUAR CON SESIÓN 5.PDF...
+\begin{example}
+  Resolver la ecuación $2z_x + z_y - 2z = \sin(4y-2x)e^{x}$.
+
+  \begin{sol}
+    Primero resolvemos la ecuación homogenea correspondiente
+    $2z_x + z_y - 2z = 0$. Observemos que $A = 2, B = 1$ y
+    $C = -2$, entonces
+     \[
+      z_h = f(x-2y)e^{x}
+    .\] 
+    Ahora buscamos una solución particular de la forma
+    \[
+      z = [A \sin(4y-2x) + B \cos(4y-2x)]e^{x}
+    .\] Las derivadas parciales son
+    \begin{align*}
+      z_x &= [-2A\cos(4y-2x) + 2B\sin(4y-2x)]e^{x} +
+      [A\sin(4y-2x) + B\cos(4y-2x)]e^{x}\\
+      z_y &= [4A\cos(4y-2x) - 4B\sin(4y-2x)]e^{x}.
+    \end{align*}
+    Sustituyendo en la ecuación diferencial y simplificando
+    obtenemos
+    \begin{align*}
+      0 &= \sin(4y-2x)e^{x},
+    \end{align*}
+    lo cual es absurdo, por lo tanto debemos buscar una
+    solución particular de otra forma, digamos
+    \[
+    z = [A\sin(4y-2x) + B\cos(4y-2x)]x e^{x}
+    .\] Derivando
+    \begin{align*}
+      z_x &= [-2A\cos(4y-2x) + 2B\sin(4y-2x)]xe^{x}\\
+          &\quad+ [A\sin(4y-2x)+B\cos(4y-2x)](x+1)e^{x}\\
+      z_y &= [4A\cos(4y-2x) - 4B\sin(4y-2x)]xe^{x}.
+    \end{align*}
+    Sustityendo y simplificando obtenemos
+    \[
+      [2A\sin(4y-2x) + 2B\cos(4y-2x)]e^{x} = \sin(4y-2x)e^{x}
+    ,\] 
+    por lo tanto $B = 0$ y $A = \frac{1}{2}$, así la
+    solución particular es
+    \[
+    z_p = \frac{1}{2}\sin(4y-2x)xe^{x}
+    .\]
+    Se sigue que la solución general de la ecuación
+    diferencial está dada por
+    \[
+    z = f(x-2y)e^{x} + \frac{1}{2}\sin(4y-2x)xe^{x}
+    .\] 
+  \end{sol}
+\end{example}
+
+\begin{exe}
+  Resolver la ecuación $3z_x - 4z_y + 6z = 4e^{2x+3y}$.
+\end{exe}
+
+\subsection{Ecuación homogenea con coeficientes variables}
+
+Consideremos la ecuación la ecuación
+\begin{equation}
+  \label{eqn:ec_homo_coef_var}
+  A(x,y) z_x + B(x,y) z_y + C(x,y) z = 0,
+\end{equation} 
+con $A,B$ y $C$ funciones continuas en alguna región del
+plano. El método para resolver la ecuación
+\ref{eqn:ec_homo_coef_var} consiste en encontrar una
+transformación $\xi = \xi(x,y)$ y  $\eta = \eta(x,y)$ con
+$\frac{\partial(\xi,\eta)}{\partial(x,y)} \neq 0$.
+
+Por la regla de la cadena tenemos
+\begin{align*}
+  z_x &= z_\xi \xi_x + z_\eta \eta_x\\
+  z_y &= z_\xi \xi_y + z_\eta \eta_y,
+\end{align*}
+sustituyendo en la ecuación
+\begin{align*}
+  A(z_\xi \xi_x + z_\eta \eta_x) + B(z_\xi \xi_y + z_\eta
+  \eta_y) + Cz &= 0\\
+  \implies (A\xi_x + B \xi_y)z_\xi + (A\eta_x +
+  B\eta_y)z_\eta + Cz &= 0,
+\end{align*}
+en donde ahora $A,B$ y $C$ son funciones de $\xi, \eta$.
+Para simplificar la ecuación anterior, elíjase a $\eta$ de
+tal manera que
+\[
+A\eta_x + B\eta_y = 0,
+\] 
+es decir
+\begin{equation}
+  \label{eqn:ec_homo_coef_var_xi_eta}
+  \frac{\eta_x}{\eta_y} = -\frac{B}{A}.
+\end{equation} 
+Ahora suponga que $A \neq 0$ y consideremos la ecuación
+diferencial ordinaria
+\[
+\frac{dy}{dx} = \frac{A}{B},
+\] 
+cuya solución es $\eta(x,y) = k$ con $\eta_y \neq 0$. Ésta
+función satisface \ref{eqn:ec_homo_coef_var_xi_eta}, ya que
+\[
+\eta_x \, dx + \eta_y \, dy = 0 \implies \frac{dy}{dx} =
+-\frac{\eta_x}{\eta_y} = \frac{B}{A}.
+\] 
+De ésta manera la ecuación queda como
+\[
+  (A \xi_x + B \xi_y)z_\xi + C z = 0.
+\] 
+Luego elíjase a $\xi$ como $\xi = x$. Entonces obtenemos la
+ecuación diferencial
+\[
+A z_\xi + C z = 0 \iff z_\xi + \frac{C}{A} z = 0,
+\]
+cuya solución es
+\[
+z(\xi,\eta) = f(\eta) e^{-\int \frac{C}{A} \, d\xi}
+.\] 
+\begin{obs}
+  Notemos que la transformación cumple con el requisito:
+  \[
+  \frac{\partial(\xi,\eta)}{\partial(x,y)} = 
+  \begin{vmatrix}
+    \xi_x & \xi_y\\
+    \eta_x & \eta_y
+  \end{vmatrix} = 
+  \begin{vmatrix}
+    1 & 0\\
+    \eta_x & \eta_y
+  \end{vmatrix} = \eta_y \neq 0
+  .\] 
+\end{obs}
+
+\begin{example}
+  Resolver la ecuación $xy z_x - x^2 z_y - yz = 0$.
+  \begin{sol}
+    Los coeficientes de la ecuación están dadas por las
+    funciones continuas
+    \[
+    A = xy, \quad B = -x^2, \quad C = -y.
+    \] 
+    Observemos que
+    \[
+    \frac{dy}{dx} = -\frac{x^2}{xy} = -\frac{x}{y},
+    \] 
+    equivalentemente
+    \[
+    y \, dy + x \, dx = 0.
+    \] 
+    La solución de la ecuación anterior es $x^2 + y^2 = k$,
+    por lo tanto definamos la transformación $\eta = x^2 +
+    y^2$ y $\xi = x$. Aplicando la transformación la
+    ecuación se convierte en
+    \[
+    z_\xi + \frac{C}{A} z = 0 \iff z_\xi - \frac{1}{\xi} z =
+    0.
+    \]
+    Cuya solución es
+    \begin{align*}
+      z(\xi,\eta) &= f(\eta)e^{-\int -\frac{1}{\xi} \,
+      d\xi}\\
+                  &= f(\eta)e^{\ln \xi}\\
+                  &= \xi f(\eta).
+    \end{align*} 
+    Expresamos la solución en términos de $x,y$: 
+    \[
+      z(x,y) = xf(x^2+y^2).
+    \] 
+  \end{sol}
+\end{example}
+
+\begin{example}
+  Resolver la ecuación $x^2 z_x - xy z_y + yz = 0.$
+  \begin{sol}
+    Los coeficientes son las funciones continuas
+    \[
+    A = x^2, \quad B = -xy, \quad C = y.
+    \] 
+    Entonces
+    \[
+    \frac{dy}{dx} = -\frac{xy}{x^2} = -\frac{y}{x} \iff
+    \frac{dy}{y} + \frac{dx}{x} = 0,
+    \] 
+    cuya solución es
+    \[
+    \ln y + \ln x = \ln k \iff xy = k.
+    \]
+    Definamos la transformación $\xi = x$ y $\eta = xy$.
+    Dado que $\frac{C}{A} = \frac{y}{x^2} =
+    \frac{\eta}{\xi^3}$ la ecuación transformada tiene como
+    solución
+    \[
+    z(\xi,\eta) = f(\eta)e^{-\int \frac{\eta}{\xi^3} \, d\xi} =
+    f(\eta)e^{\frac{\eta}{2\xi^2}}.
+    \] 
+    En términos de $x$ y $y$ tenemos
+    \[
+    z(x,y) = f(xy)e^{\frac{y}{2x}}.
+    \] 
+  \end{sol}
+\end{example}
+
+\begin{example}
+  Resolver la ecuación $2x z_x - 3y z_y + 6z = 0$.
+  \begin{sol}
+    Los coeficientes son las funciones continuas
+    \[
+    A = 2x, \quad B = -3y, \quad C = 6.
+    \] 
+    Entonces
+    \[
+    \frac{dy}{dx} = -\frac{3y}{2x} \implies \frac{dy}{3y} +
+    \frac{dx}{2x} = 0,
+    \]
+    por lo tanto
+    \[
+    \frac{1}{3}\ln(y) + \frac{1}{2}\ln(x) = \ln k \iff
+    x^3y^2 = k.
+    \] 
+    Sean $\eta = x^3 y^2$ y $\xi = x$. Entonces $\frac{C}{A}
+    = \frac{6}{2x} = \frac{3}{\xi}$. Por lo tanto la
+    solución de la ecuación transformada es
+    \[
+    z(x,y) = f(\eta)e^{-\int \frac{3}{\xi} \, d\xi} =
+    f(\eta)e^{-3\ln \xi} = f(\eta) \xi^{-3}.
+    \] 
+    En términos de $x$ y $y$:
+    \[
+    z(x,y) = \frac{f(x^3y^2)}{x^3}.
+    \] 
+  \end{sol}
+\end{example}
+
+Un caso particular es cuando $A(x,y) = ax, B(x,y) = by$ y
+$C(x,y) = c$. La sustitución $\xi = \ln x$ y $\eta = \ln
+y$ transforma la ecuación diferencial en una ecuación
+diferencial con coeficientes constantes en $\xi, \eta$.
+
+\begin{example}
+  Resolver la ecuación $2x z_x - 3yz_y + 6z = 0$.
+  \begin{sol}
+    Sean $\xi = \ln x$ y $\eta = \ln y$. Entonces
+    \[
+    z_x = z_\xi \xi_x + z_\eta \eta_x = z_\xi \frac{1}{x},
+    \quad \text{ y } \quad z_y = \frac{1}{y} z_\eta.
+    \] 
+    Sustituyendo obtenemos la ecuación de coeficientes
+    constantes
+    \[
+    2z_\xi - 3z_\eta + 6z = 0.
+    \] 
+    Cuya solución es
+    \[
+    z(\xi,\eta) = f(3\xi + 2\eta)e^{-3\xi},
+    \] 
+    ó
+    \[
+    z(x,y) = f(x^3y^2)x^{-3}.
+    \] 
+  \end{sol}
+\end{example}
+
+\subsubsection{Ecuación no homogenea}
+
+Para resolver la ecuación no homogenea con coeficientes
+variables primero resolvemos la ecuación homogenea
+correspondiente y luego obtenemos una solución particular.
+
+\begin{example}
+  Resolver la ecuación $x z_x + 2y z_y + z = x\cos x$.
+  \begin{sol}
+    \begin{itemize}
+      \item La ecuación homogenea es $xz_x+2yz_y + z=0$. Sea
+        $\xi = \ln x$ y $\eta = \ln y$, entonces la ecuación
+        transformada es
+        \[
+          z_\xi + 2z_\eta + z = 0,
+        \] 
+        cuya solución es
+        \[
+          z_h = f(2\xi - \eta)e^{-\xi}.
+        \] 
+        En términos de $x,y$:
+        \[
+        z_h = f(2\ln x - \ln y)e^{-\ln x} = \frac{1}{x}
+        f\left(\frac{x^2}{y}\right).
+        \] 
+      \item Para obtener la solución particular, observemos
+        que $G(x,y) = x \cos x$ solo depende $x$ por lo que
+        se puede eliminar el término con $z_y$, es decir, el
+        problema se reduce a resolver la ecuación ordinaria
+        \[
+        x z_x + z = x\cos x.
+        \] 
+        La solución particular está dada por
+        \begin{align*}
+          z_p &= e^{-\int \frac{1}{x}\, dx} \left(\int
+            e^{\int \frac{1}{x} \, dx} \cos x \, dx +
+            g(y)\right)\\
+              &= e^{-\int \frac{dx}{x}} \int e^{\int
+              \frac{dx}{x}} \cos x \, dx\\
+              &= x^{-1} \int x\cos x \, dx\\
+              &= x^{-1}\left(x\sin x + \cos x\right)\\
+              &= \sin x + \frac{\cos x}{x}.
+        \end{align*}
+    \end{itemize}
+    Se sigue que la solución de la ecuación diferencial es
+    \[
+    z = \frac{1}{x}f\left(\frac{x^2}{y}\right) + \sin x +
+      \frac{1}{x} \cos x.
+    \] 
+  \end{sol}
+\end{example}
+
+\begin{example}
+  Resolver $(x+2)z_x - (y-1)z_y + 2z = 2x + 3y$.
+  \begin{sol}
+    \begin{itemize}
+      \item Primero resolver la ecuación homogenea
+        correspondiente. Los coeficientes continuos son
+        \[
+        A = x + 2, \quad B = 1 - y, \quad c = 2.
+        \] 
+        Entonces
+        \[
+        \frac{dy}{dx} = -\frac{y-1}{x+2} \implies
+        \frac{dy}{y-1} + \frac{dx}{x+2} = 0.
+        \] 
+        Resolviendo obtenemos
+        \[
+        \ln(y-1) + \ln(x+2) = \ln(k) \implies (x+2)(y-1) =
+        \eta.
+        \] 
+        Sean $\xi = x$ y $\eta = (x+2)(y-1)$. Se sigue que
+        $\frac{C}{A} = \frac{2}{\xi + 2}$. Entonces la
+        solución está dada por
+        \[
+        z(\xi,\eta) = f(\eta)e^{-\int \frac{2}{\xi+2} \,
+        d\xi} = f(\eta)(\xi+2)^{-2}.
+        \] 
+        Expresamos la solución de la ecuación homogenea en
+        términos de $x$ y $y$:
+        \[
+        z_h = f((x+2)(y-1)) \frac{1}{(x+2)^2}.
+        \] 
+      \item Separemos el término $G(x,y) = 2x + 3y$ en dos.
+        Primero sea $G_1(x,y) = 2x$. Por el mismo
+        razonamiento buscamos resolver la ecuación 
+        \[
+          (x+2)z_x + 2z = 2x \iff z_x + \frac{2}{x+2}z =
+          \frac{2x}{x+2}.
+        \] 
+        La solución es
+        \begin{align*}
+          e^{-\int \frac{2}{x+2} \, dx} \left(\int e^{\int
+            \frac{2}{x+2} \, dx} \frac{2x}{x+2} \, dx\right)
+            &=
+            e^{-2\ln(x+2)}\left(\int e^{2\ln(x+2)}
+            \frac{2x}{x+2} \, dx\right)\\
+            &=
+            \frac{1}{(x+2)^2}\left(\int (x+2)^2
+            \frac{2x}{x+2} \, dx\right)\\
+            &= \frac{1}{(x+2)^2} \int
+            \left(2x^2 + 4x\right) \, dx\\
+            z_{p_1} &= \frac{x^2(x+3)}{(x+2)^2}.
+        \end{align*}
+        La solución correspondiente a $G_2(x,y) = 3y$ y por
+        lo tanto la solución general de la ecuación se dejan
+        como ejercicio al lector.
+    \end{itemize}
+  \end{sol}
+\end{example}
+
+\section{Solución de la ecuación cuasilineal}
+
+\subsection{Método de Lagrange}
+
+Recordemos que la ecuación cuasilineal de primer orden en
+$x$ y $y$ de la forma
+\begin{equation}
+  \label{eqn:cuasilineal_primer_orden}
+  P(x,y,z) z_x + Q(x,y,z) z_y = R(x,y,z),
+\end{equation}
+donde $P, Q$ y $R$ son funciones con las derivadas parciales
+continuas. Por una solución
+\ref{eqn:cuasilineal_primer_orden} se entiende a una función
+$\phi(x,y)$ con derivadas parciales tales que si $(x_0,y_0)$
+es un punto del dominio del plano $xy$ entonces $z_0 =
+\phi(x_0,y_0)$ y además
+\[
+P(x,y,\phi) \phi_x + Q(x,y,\phi) \phi_y = R(x,y,\phi).
+\] 
+Si $z = \phi(x,y)$ es la solución de
+\ref{eqn:cuasilineal_primer_orden}, entonces $z_x, z_y$
+deben satisfacer \ref{eqn:cuasilineal_primer_orden}
+\begin{equation}
+  \label{eqn:derivada_total_cuasi}
+  dz = \phi_x \, dx + \phi_y \, dy = z_x \, dx + z_y \, dy.
+\end{equation}
+Si \ref{eqn:derivada_total_cuasi} representa a
+\ref{eqn:cuasilineal_primer_orden}, entonces tenemos que
+\begin{align*}
+  dx &= KP(x,y,z)\\
+  dy &= KQ(x,y,z)\\
+  dz &= KR(x,y,z).
+\end{align*}
+Por lo tanto obtenemos la ecuación
+\begin{equation}
+  \label{eqn:subsidiaria}
+  \frac{dx}{P} = \frac{dy}{Q} = \frac{dz}{R},
+\end{equation}
+la cual es llamada \textit{ecuación subsidiaria} ó
+\textit{ecuación característica} de
+\ref{eqn:cuasilineal_primer_orden}. De \ref{eqn:subsidiaria}
+se obtienen dos ecuaciones diferenciales ordinarias:
+\[
+\frac{dx}{P} = \frac{dy}{Q} \quad \text{ y } \quad
+\frac{dx}{P} = \frac{dz}{R}.
+\] 
+Podemos suponer que la variable independiente es $x$. Sean
+$y = y(x,c_1,c_2)$ y
+$z = z(x,c_1,c_2)$ las soluciones, donde
+$c_1$ y $c_2$ son constantes arbitrarias. Si éstas
+ecuaciones son resueltas para $c_1$ y $c_2$ se obtiene
+\[
+c_1 = u(x,y,z) \quad \text{ y } \quad c_2 = v(x,y,z).
+\] 
+Éstas son llamadas \textit{curvas integrales} de la ecuación
+subsidiaria. De ésta forma la relación $F(c_1,c_2) = 0$ es
+la solución
+de \ref{eqn:cuasilineal_primer_orden}, es decir
+\[
+F(u(x,y,z), v(x,y,z))=0.
+\] 
+\begin{example}
+  Resolver la ecuación $xz z_y + yz z_y = -(x^2+y^2)$.
+  \begin{sol}
+    Los coeficientes son
+    \[
+    P = xz, \quad Q = yz, \quad R = -(x^2+y^2).
+    \] 
+    La ecuación subsidaria está dada por
+    \[
+    \frac{dx}{xz} = \frac{dy}{yz} = \frac{dz}{-x^2-y^2}.
+    \] 
+    Se sigue que tenemos dos EDO por resolver, elegimos las
+    siguientes
+    \[
+    \frac{dx}{x} = \frac{dy}{y} \quad \text{ y } \quad
+    \frac{dx}{zx} = \frac{dz}{-x^2-y^2}.
+    \] 
+    Resolviendo la primera obtenemos la primera curva
+    integral
+    \begin{align*}
+      \ln x &= \ln y + \ln c_1\\
+      \implies x &= yc_1\\
+      \implies c_1 &= \frac{x}{y}.
+    \end{align*}
+    Para la segunda tenemos
+    \begin{align*}
+      \frac{dx}{xz} &= \frac{dz}{-x^2-y^2}\\
+      \implies \frac{dx}{xz} &= \frac{dz}{-x^2-x^\frac{2}{c_1^2}}\\
+      \implies -x \, dx &= \frac{z \, dz}{1 + \frac{1}{c_1^2}}\\
+      \implies x\left(1+\frac{1}{c_1^2}\right) \, dx + z \, dz &= 0\\
+      \implies \left(1+\frac{1}{c_1^2}\right) \frac{x^2}{2} +
+      \frac{z^2}{2} &= \frac{c_2}{2}.
+    \end{align*}
+    Sustituyendo $c_1$ obtenemos la segunda curva integral
+    \[
+    c_2 = \left(1+\frac{y^2}{x^2}\right) x^2 + z^2 = x^2 +
+    y^2 + z^2.
+    \] 
+    Se sigue que la solución de la ecuación es
+    \[
+    F(c_1,c_2) = F\left(\frac{x}{y}, x^2+y^2+z^2\right) = 0,
+    \] 
+    para $F$ arbitraria.
+  \end{sol}
+\end{example}
+
+\subsection{Método de multiplicadores}
+
+Otra forma de resolver la ecuación subsidiaria es mediante
+multiplicadores. Sea $\alpha, \beta, \gamma$ cualesquier
+valor, entonces tenemos las siguientes igualdades
+\[
+\frac{\alpha \, dx + \beta \, dy + \gamma \, dz}{\alpha P +
+\beta Q + \gamma R} = \frac{dx}{P} = \frac{dy}{Q} =
+\frac{dz}{R}.
+\] 
+En particular si se elige a $\alpha, \beta, \gamma$ de tal
+manera que
+\[
+\alpha P + \beta Q + \gamma R = 0,
+\] 
+entonces se tiene que
+\[
+\alpha \, dx + \beta \, dy + \gamma \, dz = 0.
+\] 
+
+\begin{example}
+  Resolver la ecuación $(y-x) z_x + (y+x) z_y = (x^2+y^2) /
+  z$.
+  \begin{sol}
+    La ecuación subsidiaria está dada por
+    \[
+    \frac{dx}{y-x} = \frac{dy}{y+x} = \frac{z \,
+    dz}{x^2+y^2}.
+    \] 
+    Utilizando el método de Lagrange sin multiplicadores
+    resultará complicado, en lugar de resolver alguna de las
+    ecuaciones definamos $\alpha = x$, $\beta = -y$ y
+    $\gamma = z$. Entonces
+    \[
+    x(y-x) - y(y+x) + z\left(\frac{x^2+y^2}{2}\right) = xy -
+    x^2 - y^2 - xy + x^2 + y^2 = 0.
+    \]
+    Por lo tanto podemos resolver la ecuación
+    \[
+    x \, dx - y \, dy + z \, dz = 0,
+    \] 
+    para obtener la primera curva integral
+    \[
+    x^2 - y^2 + z^2 = c_1.
+    \] 
+    Ahora, si $\alpha = 1, \beta = 1$ y $\gamma = 0$,
+    entonces
+    \[
+    \frac{dx + dy}{y - x + y + x} = \frac{dy}{x + y},
+    \] 
+    ó equivalentemente
+    \[
+      (x+y)(dx + dy) = 2y \, dy.
+    \] 
+    Integrando obtenemos
+    \[
+    \frac{(x+y)^2}{2} = y^2 + c \implies c_2 = x^2 + 2xy -
+    y^2.
+    \] 
+    Las curvas son linealmente independientes y así
+    obtenemos la solución de la ecuación 
+    \[
+    F(c_1,c_2) = F\left(x^2 - y^2 +
+      z^2, x^2 + 2xy - y^2\right) = 0.
+    \] 
+  \end{sol}
+\end{example}
+
+CONTINUA EN 7.PDF
 
 \chapter{Series y transformadas de Fourier}
 
