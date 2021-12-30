@@ -1274,12 +1274,6 @@ Notemos que, para $n\geq 1$,
     + i\frac{1}{L}\int_{-L}^L f(x)\sin(n\pi x/L)\,dx \\
   &= \frac{1}{L}\int_{-L}^L f(x)\exp(in\pi x/L)\,dx.
 \end{align*}
-Por lo tanto,
-\begin{align*}
-  a_n &= \frac{1}{L}\Re\int_{-L}^L f(x)\exp(in\pi x/L)\,dx. \\
-  b_n &= \frac{1}{L}\Im\int_{-L}^L f(x)\exp(in\pi x/L)\,dx.
-\end{align*}
-para $n\geq 1$, donde $\Re$ e $\Im$ son las partes real e imaginaria.
 A veces nos podemos ahorrar trabajo calculando una sola integral.
 \end{obs}
 
@@ -1312,16 +1306,36 @@ A veces nos podemos ahorrar trabajo calculando una sola integral.
   \begin{align*}
     \int_{-1}^{1}f
     &= \int_{-1}^{0}1\,dx + \int_{0}^{1}x\,dx \\
-    &= 1 + \left( \frac{1}{2}x^{2} \right)\Big|_{0}{1} \\
+    &= 1 + \left( \frac{1}{2}x^{2} \right)\Big|_{0}^{1} \\
     &= \frac{3}{2}
   \end{align*}
   Luego, $c_0=\frac{3}{4}$.
-  Además...
+  Además, tenemos
+  \begin{align*}
+    a_n+ib_n
+    &= \int_{-1}^{1}f(x)e^{in\pi x}\,dx \\
+    &= \int_{-1}^{0}e^{in\pi x}\,dx
+     + \int_{0}^{1}xe^{in\pi x}\,dx \\
+    &= \frac{1}{in\pi}e^{in\pi x}\Big|_{-1}^{0}
+     + \left[
+       x \frac{e^{in\pi x}}{in\pi}
+       -
+       \frac{e^{in\pi x}}{-n^{2}\pi^{2}}
+     \right]\Big|_{0}^{1} \\
+    &= \frac{1-(-1)^{n}}{in\pi}
+     + \left[
+       \frac{(-1)^{n}}{in\pi}
+       + \frac{(-1)^{n}-1}{n^{2}\pi^{2}}
+     \right] \\
+    &= \frac{1}{in\pi}
+     + \frac{(-1)^{n}-1}{n^{2}\pi^{2}} \\
+    &=
+     \frac{(-1)^{n}-1}{n^{2}\pi^{2}}
+     -i \frac{1}{n\pi}.
+  \end{align*}
 
-  ...
-  \todo{terminar cálculo}
-
-  Así, la serie es
+  Así, $a_n=\frac{(-1)^{n}-1}{n^{2}\pi^{2}}$ y $b_n=-\frac{1}{n\pi}$,
+  por lo cual la serie es
   \[
     \overline{f}(x)
     =
@@ -1329,7 +1343,7 @@ A veces nos podemos ahorrar trabajo calculando una sola integral.
     +
     \sum_{n=1}^{\infty}
     \left[
-      \frac{1}{n^{2}\pi^{2}}[(-1)^{n}-1]\cos(n\pi x)
+      \frac{(-1)^{n}-1}{n^{2}\pi^{2}}\cos(n\pi x)
       -\frac{1}{n\pi}\sin(n\pi x)
     \right]
   .\]
@@ -1434,8 +1448,39 @@ Esta se llama serie en senos de $f$.
       -x+2 & 0\leq x\leq 2
     \end{cases}
   .\]
-  Nótese que $f$ es par.
-  \todo{terminar: pdf 15}
+  Nótese que $f$ es par y en este caso tenemos $L=2$.
+  De \eqref{eq:fourier-par}, tenemos que la serie de Fourier de $f$ es
+  \[
+    c_0+\sum_{n=1}^{\infty}a_n\cos(n\pi x /2)
+  ,\]
+  donde
+  \begin{align*}
+    c_0
+    &= \frac{1}{2}\int_{0}^{2}f \\
+    &= \frac{1}{2}\int_{0}^{2}(2-x)\,dx \\
+    &= \frac{-1}{4}(2-x)^{2}\Big|_{0}^{2} \\
+    &= 1. \\
+    a_n
+    &= \int_{0}^{2}f(x)\cos(n\pi x /2)\,dx \\
+    &= \int_{0}^{2}(2-x)\cos(n\pi x /2)\,dx \\
+    &=
+    \left[
+      (2-x)\frac{2\sin(n\pi x /2)}{n\pi}
+      -(-1) \frac{-4\cos(n\pi x /2)}{n^{2}\pi^{2}}
+    \right]\Big|_{0}^{2}
+    \\
+    &=
+      -\frac{4(-1)^{n}-4}{n^{2}\pi^{2}}
+    \\
+    &= 4\frac{1-(-1)^{n}}{n^{2}\pi^{2}}.
+  \end{align*}
+  Así, la serie buscada es
+  \[
+    \overline{f}(x)
+    =
+    1 + 4 \sum_{n=1}^{\infty}
+    \frac{1-(-1)^{n}}{n^{2}\pi^{2}}\cos(n\pi x / 2)
+  .\]
 \end{example}
 
 \begin{example}
@@ -1443,7 +1488,21 @@ Esta se llama serie en senos de $f$.
   \[
     f(x) = \frac{|x|}{x} \quad \text{ en } [-\pi,\pi]
   .\]
-  \todo{terminar cálculo}
+  Nótese que $f$ es impar y en este caso tenemos $L=\pi$.
+  De \eqref{eq:fourier-impar},
+  tenemos que la serie de Fourier de $f$ es
+  \[
+    \sum_{n=1}^{\infty}b_n\sin(nx)
+  ,\]
+  donde
+  \begin{align*}
+    b_n
+    &= \frac{2}{\pi}\int_{0}^{\pi}f(x)\sin(nx)\,dx \\
+    &= \frac{2}{\pi}\int_{0}^{\pi}\sin(nx)\,dx \\
+    &= \frac{-2}{n\pi}\cos(nx)\Big|_{0}^{\pi} \\
+    &= \frac{2}{\pi}\frac{1-(-1)^{n}}{n}.
+  \end{align*}
+  Por lo tanto, la serie buscada es
   \[
     \overline{f}(x)
     =
@@ -1521,17 +1580,49 @@ Esta se llama serie en senos de $f$.
   Tenemos
   \[
     c_0 = \frac{1}{2\pi}\int_{0}^{\pi}x^{2}\,dx = \frac{\pi^{2}}{6}
-  .\]
-  
-  \todo{terminar cálculo}
-  Dado que $f$ es continua en $[-\pi,\pi]$, tenemos
+  \]
+  y
+  \begin{align*}
+    a_n+ib_n
+    &= \frac{1}{\pi}\int_{-\pi}^{\pi}f(x)e^{inx}\,dx \\
+    &= \frac{1}{\pi}\int_{0}^{\pi}x^{2}e^{inx}\,dx \\
+    &= \frac{1}{\pi}
+    \left[
+      x^{2}\frac{e^{inx}}{in}
+      -
+      2x\frac{e^{inx}}{-n^{2}}
+      +
+      2\frac{e^{inx}}{-in^{3}}
+    \right]\Big|_{0}^{\pi}
+    \\
+    &= \frac{1}{\pi}
+    \left[
+      \frac{\pi^{2}(-1)^{n}}{in}
+      +
+      \frac{2\pi(-1)^{n}}{n^{2}}
+      +
+      2\frac{(-1)^{n}-1}{-in^{3}}
+    \right]
+    \\
+    &= \frac{1}{\pi}
+    \left[
+      \frac{2\pi(-1)^{n}}{n^{2}}
+      +
+      i\frac{-n^{2}\pi^{2}(-1)^{n}+2(-1)^{n}-2}{n^{3}}
+    \right] \\
+    &=
+      \frac{2(-1)^{n}}{n^{2}}
+      +
+      i\frac{(2-n^{2}\pi^{2})(-1)^{n}-2}{n^{3}\pi}.
+  \end{align*}
+  Por lo tanto, como $f$ es continua en $[-\pi,\pi]$, tenemos
   \[
     f(x)
     =
     \frac{\pi^{2}}{6}
     +
     \sum_{n=1}^{\infty} \left[
-      \frac{2}{n^{2}}(-1)^{n}\cos(nx)
+      \frac{2(-1)^{n}}{n^{2}}\cos(nx)
       +
       \frac{(2-n^{2}\pi^{2})(-1)^{n}-2}{n^{3}\pi}
       \sin(nx)
@@ -1850,9 +1941,203 @@ con
 
 \section{Transformadas de Fourier}
 
-\todo{pdf 17}
+Sea $f$ una función definida en $\R$.
+Bajo ciertas condiciones, podemos expresar a $f$ como
+\[
+  f(x)
+  =
+  \frac{1}{2\pi}\int_{-\infty}^{\infty}
+  F(\omega)e^{i\omega x}\,d\omega,
+  \quad
+  \text{donde}
+  \quad
+  F(\omega)
+  = \int_{-\infty}^{\infty}f(x)e^{-i\omega x}\,dx
+.\]
+Decimos que $F$ es la transformada de Fourier de $f$ y, en este caso,
+$f$ es la transformada inversa de Fourier de $F$. Escribimos esto como
+$F=\cal Ff$ y $f=\cal F^{-1}F$.
+Similarmente, tenemos la llamada expresión de $f$ como integral de
+Fourier:
+\[
+  f(x)=
+  \frac{1}{\pi}
+  \int_{0}^{\infty}
+  \left[
+    \left(
+    \int_{-\infty}^{\infty}f(\xi)\cos(\omega\xi)\,d\xi
+    \right)
+    \cos(\omega x)
+    +
+    \left(
+      \int_{-\infty}^{\infty}f(\xi)\sin(\omega\xi)\,d\xi
+    \right)
+    \sin(\omega x)
+  \right]
+  \,d\omega
+.\]
+Por lo tanto, tenemos
+\begin{align*}
+  f(x)
+  &=
+  \frac{2}{\pi}
+  \int_{0}^{\infty}
+    \left(
+    \int_{0}^{\infty}f(\xi)\cos(\omega\xi)\,d\xi
+    \right)
+    \cos(\omega x)
+  \,d\omega
+  \quad
+  \text{si $f$ es par, o} \\
+  f(x)
+  &=
+  \frac{2}{\pi}
+  \int_{0}^{\infty}
+    \left(
+      \int_{0}^{\infty}f(\xi)\sin(\omega\xi)\,d\xi
+    \right)
+    \sin(\omega x)
+  \,d\omega
+  \quad
+  \text{si $f$ es impar.}
+\end{align*}
+Las integrales entre paréntesis se llaman las transformadas de $f$ en
+cosenos o en senos y las denotamos como $\cal F_cf$ y $\cal F_sf$,
+respectivamente. De este modo, obtenemos que
+\[
+  f(x)
+  =
+  \frac{2}{\pi}
+  \int_{0}^{\infty}\cal F_cf(\omega)\cos(\omega x)\,d\omega,
+  \quad
+  \text{donde}
+  \quad
+  \cal F_cf(\omega)
+  =
+  \int_{0}^{\infty}f(x)\cos(\omega x)\,dx
+,\]
+\[
+  f(x)
+  =
+  \frac{2}{\pi}
+  \int_{0}^{\infty}\cal F_sf(\omega)\sin(\omega x)\,d\omega,
+  \quad
+  \text{donde}
+  \quad
+  \cal F_sf(\omega)
+  =
+  \int_{0}^{\infty}f(x)\sin(\omega x)\,dx
+.\]
+Nótese que para definir $\cal F_cf$ y $\cal F_sf$ solo se necesita que
+$f$ esté definida en $[0,\infty)$, en cuyo caso funcionan ambas
+fórmulas.
 
+\begin{example}
+  Calcule $\cal F\{f(x)\}$ para
+  \[
+    f(x)=
+    \begin{cases}
+      e^{-bx} & x\geq 0 \\
+      0 & x<0,
+    \end{cases}
+  \]
+  donde $b>0$.
+\end{example}
+\begin{sol}
+  Tenemos
+  \begin{align*}
+    \cal F\{f(x)\}
+    &= \int_{-\infty}^{\infty}f(x)e^{-i\omega x}\,dx \\
+    &= \int_{0}^{\infty}e^{-bx}e^{-i\omega x}\,dx \\
+    &= -\frac{1}{b+i\omega}e^{-(b+i\omega)x}\Big|_{0}^{\infty} \\
+    &= \frac{1}{b+i\omega}.
+  \end{align*}
+\end{sol}
 
+\begin{example}
+  Calcule $F(\omega)=\cal F\{f(x)\}$ para
+  \[
+    f(x)
+    =
+    \begin{cases}
+      |x| & x^{2}<2 \\
+      0 & \text{en otro caso.}
+    \end{cases}
+  .\]
+\end{example}
+\begin{sol}
+  Tenemos
+  \begin{align*}
+    F(\omega)
+    &= \int_{-\infty}^{\infty}f(x)e^{-i\omega x}\,dx \\
+    &= \int_{-\sqrt 2}^{0}-xe^{-i\omega x}\,dx
+      + \int_{0}^{\sqrt 2}xe^{-i\omega x}\,dx \\
+    &= \int_{0}^{\sqrt 2}xe^{i\omega x}\,dx
+      + \int_{0}^{\sqrt 2}xe^{-i\omega x}\,dx \\
+    &= 2\int_{0}^{\sqrt 2}x\cos(\omega x)\,dx \\
+    &= 2\left[
+      x\frac{\sin(\omega x)}{\omega}-\frac{-\cos(\omega
+      x)}{\omega^{2}}
+    \right]\Big|_{0}^{\sqrt 2} \\
+    &= 2\left[
+      \sqrt 2\frac{\sin(\sqrt 2\omega)}{\omega}
+      +\frac{\cos(\sqrt 2\omega)-1}{\omega^{2}}
+    \right] \\
+    &=
+      \frac{2\sqrt 2\omega\sin(\sqrt 2\omega)+2\cos(\sqrt 2\omega)-2}
+      {\omega^{2}}.
+  \end{align*}
+\end{sol}
+
+\begin{theorem}[Algunas propiedades y fórmulas]
+  Sea $F(\omega)=\cal F\{f(x)\}$.
+  Entonces
+  \begin{enumerate}
+    \item $\cal F\{f(at)\}=\frac{1}{a}F(\frac{\omega}{a})$, donde $a$
+      es una constante.
+    \item $\cal F\{e^{-bt}f(t)\}=F(\omega-ib)$.
+    \item $\cal F\{f'(x)\}=i\omega F(\omega)$.
+    \item $\cal F\{f''(x)\}=-\omega^{2}F(\omega)$.
+    \item $\cal F\{f(x-x_0)\}=e^{-i\omega x_0}F(\omega)$, donde $x_0$
+      es constante.
+    \item $\cal
+      F\{\int_{-\infty}^{t}f(s)\,ds\}=\frac{F(\omega)}{i\omega}$.
+  \end{enumerate}
+  Supóngase que $f$, $f'$ y $f''$ son seccionalmente continuas para
+  $x\geq 0$, que $\lim_{x\to\infty}f(x)=0$,
+  $\lim_{x\to\infty}f'(x)=0$ y que $\int_{0}^{\infty}|f|<\infty$.
+  Entonces
+  \begin{enumerate}
+    \item $\cal F_c\{f''(x)\}=-\omega^{2}F_c(\omega)-f'(0+)$.
+    \item $\cal F_s\{f''(x)\}=-\omega^{2}F_s(\omega)+\omega f(0+)$.
+  \end{enumerate}
+\end{theorem}
+
+\begin{example}
+  Determine $\cal F\{f(x)\}$ para $f(x)=e^{-bx}\sin(ax)U(x)$.
+\end{example}
+
+\begin{example}
+  Calcule la transformada de Fourier en senos de
+  \[
+    f(x)=
+    \begin{cases}
+      1 & 0<x<k \\
+      \frac{1}{2} & x=k \\
+      0 & x>k
+    \end{cases}
+  .\]
+\end{example}
+\begin{sol}
+  Tenemos
+  \begin{align*}
+    \cal F_s\{f(x)\}
+    &= \int_{0}^{\infty}f(x)\sin(\omega x)\,dx \\
+    &= \int_{0}^{k}\sin(\omega x)\,dx \\
+    &= -\frac{\cos(\omega x)}{\omega}\Big|_{0}^{k} \\
+    &= \frac{1-\cos(\omega k)}{\omega}
+  \end{align*}
+\end{sol}
 
 \chapter{Problemas de frontera} % (Mie 10 nov 2021)
 
@@ -2775,11 +3060,11 @@ con
 Además, la ecuación $c^2\phi''+h=0$ tiene solución general
 \[
   \phi(x) = -\frac{1}{c^2}\int_{0}^{x}H(\xi)\,d\xi+c_1x+c_2,
-  \quad H(\xi) = \int_{0}^{x}h(\xi)\,d\xi
+  \quad \text{donde} \quad H(x) = \int_{0}^{x}h(\xi)\,d\xi
 .\]
-Por lo tanto,
+Imponiendo las condiciones $\phi(0)=\phi(L)=0$, tenemos
 \[
-  \phi(x)=-\frac{1}{c}\int_{0}^{x}H(\xi)\,d\xi
+  \phi(x)=-\frac{1}{c^{2}}\int_{0}^{x}H(\xi)\,d\xi
   + \frac{x}{c^2L}\int_{0}^{L}H(\xi)\,d\xi
 .\]
 
