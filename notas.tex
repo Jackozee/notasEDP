@@ -44,7 +44,7 @@
 \tableofcontents
 \listoftodos
 
-\chapter{Ecuaciones Diferenciales de Primer Orden}
+\chapter{Ecuaciones de Primer Orden}
 
 \begin{defn}
   Una ecuación diferencial parcial (EDP) es una ecuación 
@@ -1126,7 +1126,451 @@ entonces se tiene que
   \end{sol}
 \end{example}
 
-CONTINUA EN 7.PDF
+\begin{obs}
+  Si por ejemplo $R = 0$, entonces la ecuación subsidiaria
+  es de la forma
+  \[
+  \frac{dx}{P} = \frac{dy}{Q} \quad \text{ y } \quad dz = 0.
+  \] 
+\end{obs}
+
+\begin{example}
+  Resolver la ecuación $(x+z) z_x + (y+z) z_y = 0$.
+  \begin{sol}
+    La ecuación subsidiaria es
+    \[
+    \frac{dx}{x+z} = \frac{dy}{y+z} \quad \text{ y } \quad
+    dz = 0.
+    \] 
+    Se sigue que $z = c_1$ es una curva integral.
+    Sustituyendo el valor de $z$ en la primera ecuación,
+    obtenemos una ecuación separable
+    \[
+    \frac{dx}{x+c_1} = \frac{dy}{y+c_1},
+    \]
+    integrando obtenemos $\ln(x+c_1) = \ln(y+c_1) +
+    \ln(c_2)$, es decir
+    \[
+    c_2 = \frac{x+z}{y+z}.
+    \] 
+    Se sigue que la solución es
+    \[
+    F\left(z, \frac{x+z}{y+z}\right) = 0,
+    \] 
+    para $F$ arbitraria.
+  \end{sol}
+\end{example}
+
+\begin{example}
+  Resolver la ecuación $(3z-4y) z_x + (4x+5z) z_y = -5y -
+  3x$.
+  \begin{sol}
+    La ecuación subsidiaria es
+    \[
+    \frac{dx}{3z-4y} = \frac{dy}{4x+5z} = \frac{dz}{-5y-3x}.
+    \] 
+    Sean $\alpha = x, \beta = y$ y $\gamma = z$. Entonces
+    \[
+    \alpha P + \beta Q + \gamma R = 3xz - 4xy + 4xy + 5yz -
+    5yz - 3xz = 0.
+    \] Por lo tanto
+    \[
+    x \, dx + y \, dy + z \, dz = 0 \implies c_1 = x^2 + y^2
+    + z^2.
+    \] 
+    Ahora fijemos $\alpha = -5, \beta = 3$ y $\gamma = 4$,
+    entonces
+    \[
+    -5(3z-4y) + 3(4x+5z) + 4(-5y-3x) = -15z + 20y + 12x +
+    15z - 20y - 12x = 0.
+    \]
+    Se sigue que
+    \[
+    -4 \, dx + 3 \, dy + 4 \, dz = 0 \implies c_2 = -5x + 3y
+    + 4z.
+    \] 
+    La solución es
+    \[
+    F\left(x^2+y^2+z^2, -5x + 3y + 4z\right) = 0.
+    \] 
+  \end{sol}
+\end{example}
+
+\section{Problemas de Cauchy de primer orden}
+
+Al igual que un problema de valor inicial para una ecuación
+diferencial ordinaria, existen para las ecuaciones
+diferenciales parciales los llamados problemas de Cauchy los
+cuales consisten en determinar la solución de la ecuación
+cuasilineal
+\begin{equation}
+  \label{eq:cauchy_ec_cuasi}
+  P z_x + Q z_y = R.s,
+\end{equation}
+y que pasa por una curva $\Gamma$ dada por lo general en
+forma paramétrica. Es decir, sea $\Gamma$ una curva
+\textit{suave} dada por $x = f(t), y = g(t)$ y $z = h(t)$
+con $a \leq t \leq b$. Para determinar la superficie
+integral de \ref{eq:cauchy_ec_cuasi} que contenga a $\Gamma$
+se procede como sigue.
+
+Sean $u(x,y,z) = c_1$ y $v(x,y,z) = c_2$ las curvas
+integrales de la ecuación subsidiaria
+\[
+\frac{dx}{P} = \frac{dy}{Q} = \frac{dz}{R},
+\] 
+se puede escribir $c_1 = u(x(t), y(t), z(t))$ y $c_2 =
+v(x(t),y(t),z(t))$ y eliminando el parametro $t$ obtenemos
+la relación entre $c_1$ y $c_2$ tal que $F(u,v,) = 0$ para
+alguna función $F$.
+
+\begin{example}
+  Resolver la ecuación $(y+xz) z_x + (x+yz) z_y = z^2 - 1$ y
+  que contenga la curva $\Gamma$ dada por $x = t, y = 1$ y
+  $z = t^2$.
+  \begin{sol}
+    La ecuación subsidiaria es
+    \[
+    \frac{dx}{y+xz} = \frac{dy}{x+yz} = \frac{dz}{z^2-1},
+    \] 
+    utilizando el método de multiplicadores, elejimos
+    $\alpha = 1, \beta = 1$ y $\gamma = 0$. Así
+    \[
+      \frac{dx+dy}{x+y+z(x+y)} = \frac{dx+dy}{(x+y)(z+1)} =
+      \frac{dz}{z^2-1},
+    \] 
+    entonces
+    \[
+    \frac{dx+dy}{x+y} = \frac{dz}{z-1} \implies \ln(x+y) =
+    \ln(z-1) + \ln c_1 \implies c_1 = \frac{x+y}{z-1}.
+    \] 
+    Ahora sean $\alpha = x, \beta = -y$ y $\gamma = 0$,
+    entonces
+    \[
+    \frac{x \, dx - y \, dy}{xy + x^2z - xy - y^2z} =
+    \frac{dz}{z^2-1},
+    \] 
+    entonces
+    \[
+    \frac{x \, dx - y \, dy}{x^2-y^2} = \frac{z \,
+    dz}{z^2-1} \implies \ln(x^2-y^2) = \ln(z^2-1) + \ln c_2,
+    \] 
+    es decir
+    \[
+    c_2 = \frac{x^2-y^2}{z^2-1}.
+    \] 
+    De lo anterior tenemos que la solución de la ecuación es
+    \[
+    F\left(\frac{x+y}{z-1}, \frac{x^2-y^2}{z^2-1}\right) =
+    0.
+    \]
+    Para resolver el problema de Cauchy buscamos relacionar
+    las curvas integrales $c_1$ y $c_2$. Aplicando $\Gamma$ 
+    a $c_1$ y $c_2$ tenemos
+    \[
+    c_1 = \frac{t+1}{t^2-1} = \frac{1}{t-1} \implies t =
+    \frac{1}{c_1} = 1,
+    \] 
+    y
+    \[
+    c_2 = \frac{t^2-1}{t^4 - 1} =
+    \frac{t^2-1}{(t^2-1)(t^2+1)} = \frac{1}{t^2+1} \implies
+    c_2 = \frac{1}{\left(\frac{1}{c_1}+1\right)^2+1}.
+    \] 
+    Sustituyendo las curvas integrales obtenemos la solución
+    al problema de Cauchy:
+    \begin{align*}
+      c_2 \left[(1+c_1)^2 + c_1^2\right] &= c_1^2\\
+      \implies
+      \frac{x^2-y^2}{z^2-1}\left[\left(1+\frac{x+y}{z-1}\right)^2
+    + \left(\frac{x+y}{z-1}\right)^2 \right] &=
+        \left(\frac{x+y}{z-1}\right)^2.
+    \end{align*}
+  \end{sol}
+\end{example}
+
+\begin{example}
+  Resolver el problema de Cuachy: $yz z_x + xz z_y + 2xy =
+  0$, con $\Gamma : x^2 + y^2 = 16$ y $z = 3$.
+  \begin{sol}
+    La ecuación subsidiaria es
+    \[
+    \frac{dx}{yz} = \frac{dy}{xz} = \frac{dz}{-2xy},
+    \] 
+    resolviendo las ecuaciones
+    \[
+    \frac{dx}{yz} = \frac{dy}{xz} \implies \frac{dx}{y} =
+    \frac{dy}{x} \implies x^2 - y^2 = c_1.
+    \]
+    y
+    \[
+    \frac{dx}{yz} = \frac{dz}{-2xy} \implies \frac{dx}{z} =
+    \frac{dz}{-2x} \implies 2x^2 + z^2 = c_2,
+    \] 
+    obtenemos la solución de la ecuación difernecial
+    \[
+    F(x^2 - y^2, 2x^2 + z^2) = 0.
+    \] 
+    Equivalentemente, podemos escribir la solución de la
+    siguiente manera
+    \[
+    c_2 = f(c_1) \implies z^2 = f(x^2-y^2) - 2x^2.
+    \] 
+    Aplicando $\Gamma$ tenemos
+    \[
+    f(x^2 - 16 + x^2) = 2x^2 + 9 \iff f(2x^2 - 16) = 2x^2 +
+    9.
+    \]
+    Sea $u = 2x^2 - 16$ entonces
+    \[
+    2x^2 = u + 16 \implies f(u) = u + 25,
+    \] 
+    y hemos econtrado a $f$, ahora si $u = x^2 - y^2$
+    entonces
+    \[
+    f(x^2-y^2) = x^2-y^2 + 25 = 2x^2 + z^2 \implies x^2 +
+    y^2 + z^2 = 25,
+    \] 
+    es la solución al problema de Cauchy, ver figura
+    \ref{fig:cauchy-esfera-ejemplo}.
+    \begin{figure}[ht]
+      \centering
+      \includegraphics[width=0.6\textwidth]{imgs/cauchy-esfera.png}
+      \caption{La esfera es la solución de la ecuación
+      diferencial que contiene a la curva $\Gamma$.}
+      \label{fig:cauchy-esfera-ejemplo}
+    \end{figure}
+  \end{sol}
+\end{example}
+
+\begin{example}
+  Resolver el problema de Cauchy dado por la ecuación
+  $(y-z)z_x + (z-x)z_y = x-y$ y la curva $\Gamma : x = t, y
+  = 2t, z = 0$.
+  \begin{sol}
+    La ecuación subsidiaria es
+    \[
+    \frac{dx}{y-z} = \frac{dy}{z-x} = \frac{dz}{x-y}.
+    \] 
+    Observemos que $dx + dy + dz = 0 \implies x + y + z =
+    c_1$. Similarmente obtenemos la segunda curva integral
+    dada por $c_2 = x^2 + y^2 + z^2$. Aplicando $\Gamma$ 
+    tenemos que $t + 2t = c_1$ y $t^2 + 4t^2 = c_2$, es
+    decir
+    \[
+    3t = c_1 \implies t = \frac{c_1}{3} \implies
+    \frac{5}{9}c_1^2 = c_2.
+    \] 
+    Sustituyendo las curvas integrales obtenemos la
+    solución del problema de Cauchy:
+    \[
+    5(x+y+z)^2 = 9(x^2+y^2+z^2).
+    \] 
+  \end{sol}
+\end{example}
+
+\begin{example}
+  Resolver el problema de Cauchy dado por $(x^2+y^2) z_x +
+  2xy z_y = xz$ y $\Gamma : y^2 + z^2 = 4, x = 2$.
+  \begin{sol}
+    La ecuación subsidiaria es
+    \[
+    \frac{dx}{x^2+y^2} = \frac{dy}{2xy} = \frac{dz}{xz},
+    \] 
+    cuyas curvas integrales están dadas por
+    \[
+    c_1 = \frac{y}{z^2} \quad \text{ y } \quad c_2 =
+    \frac{x^2-y^2}{y}.
+    \] 
+    La solución de la ecuación diferencial está dada por
+    \[
+    c_2 = f(c_1) \implies \frac{y}{z^2} =
+    f\left(\frac{x^2-y^2}{y}\right).
+    \] 
+    Aplicando $\Gamma$ obtenemos
+    \[
+    \frac{y}{4-y^2} = f\left(\frac{4-y^2}{y}\right) \implies
+    f(u) = \frac{1}{u},
+    \] 
+    donde $u = \frac{4-y^2}{y}$. Se sigue que
+    \[
+    \frac{y}{z^2} = \frac{y}{x^2-y^2} \implies \frac{1}{z^2}
+    = \frac{1}{x^2-y^2},
+    \] 
+    por lo tanto la superficie que es solución de la
+    ecuación diferencial y contiene a la curva $\Gamma$ está
+    dada por
+    \[
+    x^2 - y^2 - z^2 = 0.
+    \] 
+  \end{sol}
+\end{example}
+
+\chapter{Ecuaciones de Segundo Orden}
+
+\section{Ecuaciones diferenciales parciales de segundo orden
+  en dos variables}
+
+Recordemos que la ecuación diferencial lineal de segundo
+orden es de la forma
+\begin{equation}
+  \label{eq:ec_lineal_seg_orden}
+  A(x,y) z_{xx} + 2B(x,y)z_{xy} + C(x,y) z_{yy} + D(x,y) z_x
+  + E(x,y) z_y + F(x,y) z = G(x,y).
+\end{equation}a
+donde $A,B,C,D,E,F$ y $G$ son continuas en alguna región del
+plano $xy$. Para simplificar \ref{eq:ec_lineal_seg_orden}
+introducimos el operador lineal $D$ haciendo
+\[
+\frac{\partial}{\partial x} = D_x, \quad
+\frac{\partial^2}{\partial x^2} = D_{xx} = D_x^2, \quad
+\frac{\partial}{\partial x \partial y} = D_{xy} = D_x D_y.
+\] 
+Así tenemos
+\[
+  (AD_x^2 + 2BD_xD_y + CD_y^2 + DD_x + ED_y + F)z = G.
+\] 
+Definamos $L := AD_x^2 + 2BD_xD_y + CD_y^2 + D D_x + ED_y =
+F$, entonces la ecuación diferencial se expresa como
+\begin{equation}
+  \label{eq:ec_expr_diferencial}
+  Lz = G(x,y).
+\end{equation}
+A $L$ se le llama operador diferencial correspondiente a la
+ecuación \ref{eq:ec_lineal_seg_orden}. Éste operador es
+lineal ya que
+\[
+L(c_1z_1 + c_2z_2) = c_1 Lz_1 + c_2 Lz_2,
+\] 
+donde $c_1$ y $c_2$ son constantes y $z_1 = z_1(x,y)$ y
+$z_2 = z_2(x,y)$ son funciones diferenciables.
+
+A partir de la linealidad de $L$ se tiene que si
+$z_1,z_2,\ldots,z_k$ son soluciones de la ecuación homogenea
+\begin{equation}
+  \label{eq:eq_lineal_seg_homo}
+  Lz = 0
+\end{equation}
+entonces 
+\[
+z_h = c_1 z_1 + c_2 z_2 + \ldots + c_k z_k
+\] 
+también es solución de la ecuación \ref{eq:eq_lineal_seg_homo}.
+Además si $z_p$ es una solución particular de
+\ref{eq:ec_expr_diferencial} entonces
+\[
+z = z_h + z_p
+\] 
+es la solución general de la ecuación
+\ref{eq:ec_expr_diferencial}.
+
+\subsection{Ecuación homogenea con coefcientes constantes}
+
+Si $L$ es de coeficientes constantes la solución de la
+ecuación \ref{eq:eq_lineal_seg_homo} se obtiene como sigue:
+Se trabaja a $L$ como un polinimio en $D_x, D_y$ de grado
+dos. Por lo tanto es posible factorizarlos, digamos de la
+forma $L = L_1 L_2$ donde $L_1 = a_1 D_x + b_1 D_y + c_1$ y
+$L_2 = a_2 D_x + b_2 D_y + c_2$ con $a_1 \neq 0, a_2 \neq
+0$ y $a_1 a_2 = A$. Así $L z = 0$ se puede escribir como
+$L_1 L_2 z = L_2 L_1 z$ de donde obtenemos las ecuaciones
+diferenciales de primer orden
+\[
+L_1 z = 0 \quad \text{ y } \quad L_2 z = 0.
+\] 
+Las soluciones de dichas ecuaciones son de la forma
+\[
+z_1 = \exp\left(-\frac{c_1}{a_1} x\right) f(b_1x-a_1y),
+\quad \text{ y } \quad z_2 = \exp\left(-\frac{c_2}{a_2}
+  x\right) g(b_2x - a_2y).
+\] 
+\begin{obs}
+  El caso en el que $L$ siempre es factorizable es cuando $L$
+  es homogeneo, es decir, $L = AD_x^2 + 2BD_xD_y + CD_y^2$. 
+\end{obs}
+Para determinar la solución general de
+\ref{eq:ec_expr_diferencial}, se consideran dos casos:
+\begin{enumerate}
+  \item $L_1 \neq L_2$. Si los operadores $L_1$ y $L_2$ son
+    distintos, entonces $z_1$ y $z_2$ son linealmente
+    independientes, por lo tanto
+    \[
+    z = z_1 + z_2.
+    \] 
+  \item $L_1 = L_2$. En éste caso solo tenemos una solución
+    de la ecuación \ref{eq:ec_expr_diferencial} $z_1 = z_2$.
+    La segunda solución linealmente independiente se obtiene
+    como
+    \[
+    z_2 = x z_1 = x \exp\left(-\frac{c_1}{a_1} x\right)
+    f_2(b_1x - a_1y).
+    \] 
+\end{enumerate}
+
+\begin{example}
+  Resolver la ecuación homogenea de segundo orden $z_{xx} -
+z_{yy} + 2z_x + z = 0$.
+\begin{sol}
+  El operador está dado por
+  \begin{align*}
+    L &= D_x^2 - D_y^2 + 2D_x + 1\\
+      &= D_x^2 + 2D_x + 1 - D_y^2\\
+      &= (D_x+1)^2 - D_y^2\\
+      &= (D_x + D_y + 1)(D_x - D_y + 1).
+  \end{align*}
+  Sea $L_1 = D_x + D_y + 1$ y $L_2 = D_x - D_y + 1$,
+  observamos que $L_1 = L_2a$, entonces las ecuaciones a
+  resolver son
+  \[
+  L_1 z = z_x + z_y + z = 0 \quad \text{ y } \quad L_2 z =
+  z_x - z_y + z = 0.
+  \] 
+  Las soluciones son
+  \[
+  z_1 = e^{-x}f_1(x-y) \quad \text{ y } \quad z_2 =
+  e^{-x}f_2(x+y).
+  \] 
+  Se sigue que la solución de la ecuación homogenea es
+  \[
+  z = z_1 + z_2 = e^{-x}f_1(x-y) + e^{-x}f_2(x+y).
+  \] 
+\end{sol}
+\end{example}
+
+\begin{example}
+  Resolver la ecuación $2z_{xx} + z_{xy} - 6z_{yy} + 2z_x -
+  3z_y = 0$.
+  \begin{sol}
+    El operador es
+    \[
+    L = 2D_x^2 + D_xD_y - 6D_y^2 + 2D_x - 3D_y =
+    (2D_x-3D_y)(D_x+2D_y+1)
+    \] 
+    sean
+    \[
+    L_1 = 2D_x - 3D_y \quad \text{ y } \quad L_2 = D_x + 2D_y
+    + 1.
+    \] 
+    Las ecuaciones a resolver son
+    \[
+    L_1z = 0 \implies 2z_x - 3z_y = 0
+    \] 
+    y
+    \[
+    L_2z = 0 \implies z_x + 2z_y + z = 0.
+    \] 
+    Las soluciones de dichas ecuaciones lineales son
+    \[
+    z_1 = f_1(3x+2y) \quad \text{ y } \quad z_2 =
+    e^{-x}f_2(2x-y),
+    \] 
+    como $L_1 \neq L_2$ tenemos que la solución general es
+    \[
+    z = z_1 + z_2 = f_1(3x+2y) + e^{-x}f_2(2x-y).
+    \] 
+  \end{sol}
+\end{example}
+
 
 \chapter{Series y transformadas de Fourier}
 
