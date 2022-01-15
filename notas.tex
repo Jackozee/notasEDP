@@ -1571,6 +1571,267 @@ z_{yy} + 2z_x + z = 0$.
   \end{sol}
 \end{example}
 
+% INICIA 9.PDF
+\subsection{Ecuación no homogenea}
+
+Recordemos que utilizando la notación anterior la ecuación
+no homogenea puede ser escrita como
+\begin{equation}
+  \label{eqn:no_homo_Lz}
+  Lz = G(x,y).
+\end{equation}
+Para determinar la solución particular $z_p$ de la ecuación
+\ref{eqn:no_homo_Lz}, se procede como las ecuaciones de
+primer orden, aplicando el método de coeficientes
+indeterminados ó aplicando una de la siguientes fórmulas
+según sea $G(x,y)$.
+
+Sea $P(D_x,D_y)$ un polinomio en $D_x$ y $D_y$. Sea $G$ una
+función tal que la siguiente ecuación es válida:
+\[
+\frac{G(x,y)}{P(D_x,D_y)} = \phi(x,y),
+\] 
+entonces
+\[
+P(D_x,D_y) \phi(x,y) = G(x,y).
+\] 
+Si
+\begin{itemize}
+  \item $\displaystyle G(x,y) = e^{ax+by}$, entonces
+    \[
+    \phi(x,y) = \frac{e^{ax+by}}{P(a,b)}, \quad P(a,b) \neq
+    0.
+    \] 
+  \item $\displaystyle G(x,y) = \sin(ax+by)$, entonces
+    \[
+    \phi(x,y) = \Im \left\{
+      \frac{e^{i(ax+by)}}{P(ia,ib)}
+    \right\}, \quad P(ia, ib) \neq 0.
+    \] 
+\end{itemize}
+% FALTAN NOTAS AQUI...
+% FIN 9.pdf
+% INICIA 10.pdf
+\begin{example}
+  Otra forma de calcular la solución particular de la
+  ecuación
+  \[
+  z_{xx} - z_{yy} - 3z_x + 3z_y = xy + e^{x+2y},
+  \] 
+  es la siguiente. Nos enfocamos en el término $xy$. Sea
+  \[
+  P(D_x,D_y) = D_x^2 - D_y^2 - 3D_x + 3D_y = (D_x -
+  D_y)(D_x+D_y-3),
+  \] 
+  tomando primero $D_x - D_y$ tenemos
+  \begin{align*}
+    \frac{xy}{D_x-D_y} &= (D_x - D_y)^{-1}(xy)\\
+                       &= \left(
+                         D_x^{-1} + D_x^{-2}D_y +
+                         \frac{2D_x^{-2}D_y^{-2}}{2}
+                       \right)(xy)\\
+                       &= D_x^{-1}(xy) + D_x^{-2}D_y(xy)\\
+                       &= \frac{1}{2}x^2y + D_x^{-2}(x)\\
+                       &= \frac{1}{2}x^2y + \frac{1}{6}x^3.
+  \end{align*}
+  Ahora para $D_x+D_y-3$ se puede demostrar que
+  \begin{align*}
+    \frac{\frac{1}{2}x^2y + \frac{1}{6}x^3}{D_x+D_y-3}
+    &= (D_y-3)^{-1}\left(1+\frac{D_x}{D_y-3}\right)^{-1}
+       \left(\frac{1}{2}x^2y+\frac{1}{6}x^3\right)\\
+    z_p &= -\frac{1}{6}x^2y - \frac{1}{18}x^3 - \frac{1}{9}xy -
+    \frac{1}{27}x - \frac{1}{27}y - \frac{1}{8},
+  \end{align*}
+  donde $z_p$ es la solución particular para la ecuación $Lz
+  = xy$.
+\end{example}
+
+Otra forma de calcular la solución particular $z_p$, para
+$Lz = G$ se obtiene resolviendo dos ecuaciones. Si $L$ es
+factorizable $L = L_1 L_2$ entonces
+\[
+Lz = L_1L_2z = L_2L_1z.
+\] 
+Sea $L_2z = v$ entonces
+\begin{equation}
+  \label{eqn:ec_cuasi_Lz}
+  L_1v = G,
+\end{equation}
+la cual es una ecuación cuasilineal de primer orden. Se
+resuelve ésta ecuación para $v$, obteniendo
+\[
+v = v_h + v_p.
+\] 
+Luego se sustituye $v_p$ en \ref{eqn:ec_cuasi_Lz} y se
+resuelve la ecuación para $z$ obteniendo
+\[
+z = z_h + z_p,
+\]
+tomando solo $z_p$.
+
+\begin{example}
+  Resuelva la ecuación $z_{xx} + 5z_{xy} + 6z_{yy} =
+  \ln(y-2x)$.
+  \begin{sol}
+    Primero obtenemos la solución homogenea. El operador es
+    \[
+    L = D_x^2 + 5D_xD_y + 6D_y^2 = (D_x+2D_y)(D_x+3D_y) =
+    L_1L_2.
+    \] 
+    Resolviendo $L_1z=0$ obtenemos $z = g(2x-y)$.
+    Resolviendo $L_2z=0$ obtenemos $z = f(3x-y)$. Por lo
+    tanto la solución de la ecuación homogenea
+    correspondiente es
+    \[
+    z_h = f(3x-y) + g(2x-y).
+    \] 
+    Ahora buscamos la solución particular de la ecuación
+    \[
+    L_1L_2z = \ln(y-2x).
+    \] 
+    Sea $L_2z = v$ entonces $z_x + 2z_y = v$ es la una
+    ecuación cuasilineal de primer orden (es lineal) y de
+    $L_1v = G$ tenemos la ecuación $v_x + 3v_y = \ln(y-2x)$.
+    La ecuación subsidiaria de la segunda ecuación está dada
+    por
+    \[
+    \frac{dx}{1} = \frac{dy}{3} = \frac{dv}{\ln(y-2x)},
+    \] 
+    notemos que
+    \[
+    \frac{dy}{dx} = 3 \implies y = 3x + c_1 \implies c_1 = y
+    - 3x.
+    \] 
+    Para obtener una segunda curva integral observemos que
+    \begin{align*}
+      \frac{dx}{1} = \frac{dv}{\ln(y-2x)}
+      &\implies
+      \frac{dv}{dx} = \ln(3x+c_1-2x)\\
+      &\implies \int \frac{dv}{dx} = \int \ln(x+c_1) + c_2\\
+      &\implies v = (x+c_1)[\ln(x+c_1)-1] + c_2,
+    \end{align*}
+    como $c_1 = y - 3x$ tenemos que
+    \[
+    v = (y-2x)[\ln(y-2x)-1] + c_2 \implies c_2 = v -
+    (y-2x)[\ln(y-2x)-1].
+    \] 
+    Por lo tanto la solución para $v$ es
+    \[
+    F(y-3x, v-(y-2x)[\ln(y-2x)-1]) = 0.
+    \] 
+    Se sigue que una solución particular para $v$ está dada
+    por
+    \[
+    v_p = (y-2x)[\ln(y-2x)-1].
+    \] 
+    Sustituyendo en la primera ecuación obtenemos
+    \[
+    z_x + 2z_y = (y-2x)[\ln(y-2x)-1].
+    \] 
+    Resolviendo ésta ecuación utilizando la ecuación
+    subsidiaria obtenemos la solución particular para $z$ 
+    dada por
+    \[
+    z_p = x(y-2x)[\ln(y-2x)-1].
+    \] 
+    Se sigue que la solución de la ecuación original es
+    \[
+    z = z_h + z_p = f(3x-y) + g(2x-y) +
+    x(y-2x)[\ln(y-2x)-1].
+    \] 
+  \end{sol}
+\end{example}
+
+\begin{exe}
+  Resuelva la ecuación $\displaystyle z_{xx} - 4z_{yy} = \frac{4x}{y^2} -
+  \frac{y}{x^2}$.
+\end{exe}
+% FIN 10.pdf
+% INICIO 11.pdf
+\subsection{Ecuación con coeficientes variables}
+
+Iniciamos con el caso especial en donde la ecuación
+diferencial es de la forma
+\[
+ax^2 z_{xx} + 2bxy z_{xy} + cy^2 z_{yy} + dx z_x + cy z_y +
+fz = G(x,y),
+\] 
+en donde $a,b,c,d,e$ y $f$ son constantes y $G$ es una
+función de $x,y$. Ésta ecuación se reduce a una ecuación con
+coeficientes constantes mediantes la sustitución $\xi = \ln
+x$ y $\eta = \ln y$. Para ver esto, primero calculemos la
+derivadas requeridas:
+\begin{align*}
+  z_x &= z_\xi \xi_x + z_\eta \eta_y = \frac{1}{x} z_\xi\\
+  z_{xx} &= \frac{1}{x}\left(z_{\xi\xi} \xi_x + z_{\xi\eta}
+    \eta_x\right) = \frac{1}{x^2} z_{\xi\xi} -
+    \frac{1}{x^2}z_\xi\\
+    z_y &= \frac{1}{y}z_\eta\\
+    z_{yy} &= \frac{1}{y^2}z_{\eta\eta} -
+    \frac{1}{y^2}z_\eta\\
+    z_{xy} &= \frac{1}{x}\left(z_{\xi\eta} \xi_y +
+      z_{\xi\eta} \eta_y\right) = \frac{1}{xy}z_{\xi\eta}.
+\end{align*}
+Sustituyendo en la ecuación diferencial y simplificando
+obtenemos
+\[
+a z_{\xi\xi} + 2bz_{\xi\eta} + cz_{\eta\eta} + (d-a)z_\xi +
+(e-c)z_\eta + fz = G,
+\] 
+la cual es una ecuación de coeficientes constantes.
+
+\begin{example}
+  Resolver la ecuación $x^2z_{xx} + 2xyz_{xy} +
+  y^2z_{yy}-xz_x-yz_y + z = x^2y^2$.
+  \begin{sol}
+    Sea $\xi = \ln x$ y $\eta = \ln y$. Por lo anterior, la
+    ecuación se transforma en
+    \[
+    z_{\xi\xi} + 2z_{\xi\eta} + z_{\eta\eta} - 2z_{\xi} -
+    2z_\eta + z = e^{2\xi}e^{2\eta}.
+    \] 
+    Primero obtenemos la solución a la ecuación homogenea
+    correspondiente, observemos que
+    \[
+    L = D_\xi^2 + 2D_\xi D_\eta + D_\eta^2 - 2D_\xi - 2D_\eta
+    + 1 = (D_\xi + D_\eta-1)^2 \implies L_1 = L_2 = D_\xi +
+    D_\eta - 1.
+    \] 
+    Se sigue que la solución de la ecuación homogenea es
+    \[
+    z_h(\xi,\eta) = e^{\xi}f(\xi-\eta) + \xi
+    e^{\xi}g(\xi-\eta).
+    \] 
+    Para obtener una solución particular, utilizamos el
+    método de coeficientes indeterminados. Sea $z =
+    Ae^{2(\xi+\eta)}$, entonces
+    \[
+    z_\xi = 2Ae^{2(\xi+\eta)} \quad \text{ y } \quad z_\eta
+    = 2Ae^{2(\xi-\eta)}.
+    \] 
+    Sustituyendo y determinando los coeficientes obtenemos
+    la solución particular
+    \[
+    z_p(\xi,\eta) = \frac{1}{9}e^{2(\xi+\eta)}.
+    \] 
+    Finalmente recordemos que $\xi = \ln x$ y $\eta = \ln
+    y$, por lo tanto $x = e^{\xi}$ y $y = e^{\eta}$, así la
+    solución de la ecuación original es
+    \[
+    z(x,y) = xf(\ln(x / y)) + x\ln(x)g(\ln(x / y)) +
+    \frac{1}{9}x^2y^2.
+    \] 
+  \end{sol}
+\end{example}
+
+\begin{exe}
+  Resolver la ecuación
+  \[
+  3x^2 z_{xx} - 2xy z_{xy} - y^2 z_{yy} + 4x z_x - 2y z_y =
+  \sin(2x+3y).
+  \] 
+\end{exe}
+% FIN 11.pdf
 
 \chapter{Series y transformadas de Fourier}
 
