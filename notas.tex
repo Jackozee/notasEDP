@@ -1,26 +1,55 @@
 \documentclass[11pt,letterpaper,draft]{report}
-\usepackage[left=3.5cm,right=3.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage[hmargin=30mm,vmargin=25mm]{geometry}
 
 \usepackage{amsmath,amsfonts,amsthm,amssymb,enumitem,mathtools}
-\usepackage[final]{hyperref}
 \usepackage[spanish]{babel}
 \usepackage{todonotes} % depende de tikz
 \setenumerate[1]{label=(\alph*)}
 \setenumerate[0]{label=\roman*.}
 \allowdisplaybreaks
 \overfullrule=5mm
+%\usepackage{libertinus}
+\usepackage{palatino,microtype}
+\usepackage{capt-of}
+
+\usepackage[final]{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=cyan,
+    citecolor=blue,     
+    urlcolor=cyan,
+    pdftitle={Notas EDP - Martín Muñóz},
+}
 
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{3}
 
-\newtheorem{defn}{Definición}[chapter]
-\newtheorem{theorem}[defn]{Teorema}
-\newtheorem{example}[defn]{Ejemplo}
-\newtheorem{exe}[defn]{Ejercicio}
-\newtheorem{lemma}[defn]{Lema}
-\newtheorem{rem}[defn]{Recordatorio}
-\newtheorem*{sol}{Solución}
-\newtheorem{obs}[defn]{Observación}
+\theoremstyle{plain}
+\newtheorem{theorem}{Teorema}[chapter]
+\newtheorem{lemma}[theorem]{Lema}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definición}
+\newtheorem{example}[theorem]{Ejemplo}
+\newtheorem{solved}[theorem]{Ejemplo resuelto}
+\newtheorem{exercise}[theorem]{Ejercicio}
+
+\theoremstyle{remark}
+\newtheorem{reminder}[theorem]{Recordatorio}
+\newtheorem{remark}[theorem]{Observación}
+\newtheorem*{solution}{Solución}
+
+% colorcitos para los entornos
+\RequirePackage[breakable]{tcolorbox}
+% colores disponibles:
+% white, lime, cyan, purple, gray, green, yellow, orange
+\tcolorboxenvironment{definition}{colframe=cyan,breakable}
+\tcolorboxenvironment{example}{colframe=lime,breakable}
+\tcolorboxenvironment{solved}{colframe=gray,breakable}
+\tcolorboxenvironment{remark}{colframe=white,breakable}
+\tcolorboxenvironment{proof}{colframe=white,breakable}
+\tcolorboxenvironment{theorem}{colframe=lime,breakable}
 
 \newcommand\R{\mathbb R}
 \newcommand\C{\mathbb C}
@@ -36,7 +65,8 @@
 \DeclareMathOperator{\sgn}{sgn}
 \DeclareMathOperator{\csch}{csch}
 \title{Ecuaciones diferenciales parciales - Notas de clase}
-\author{Jorge Alfredo Álvarez Contreras, Ernesto Camacho Ramírez}
+\author{Profesor: Martín Muñóz \\
+Notas: Jorge Alfredo Álvarez Contreras, Ernesto Camacho Ramírez}
 
 \begin{document}
 \maketitle
@@ -46,11 +76,13 @@
 
 \chapter{Ecuaciones de Primer Orden}
 
-\begin{defn}
+\section{Conceptos básicos}
+
+\begin{definition}
   Una ecuación diferencial parcial (EDP) es una ecuación 
   que involucra derivadas de una o más variables dependientes 
   respecto a más de una variable independiente.
-\end{defn}
+\end{definition}
 
 \begin{example}
   Si $u = u(x,y,z)$ entonces
@@ -63,78 +95,120 @@ Los conceptos como orden, linealidad, homogeniedad son
 similares a los vistos en ecuaciones diferenciales
 ordinarias.
 
-\begin{defn}[Orden]
+\begin{definition}[Orden]
   Es el orden de la máxima o máximas derivadas que aparezcan
   en la EDP.
-\end{defn}
+\end{definition}
 
-\begin{defn}[Linealidad]
+\begin{definition}[Linealidad]
   Se dice que una EDP es lineal si la variable o variables
-  son \textit{lineales}, así como \textit{todas} sus
+  dependientes son \textit{lineales}, así como \textit{todas} sus
   derivadas.
-\end{defn}
+\end{definition}
 
 \begin{example}
-  La siguiente ecuación es una EDP de primer orden en dos
-  variables $x,y$:
-  \[
-    P(x,y) z_x + Q(x,y) z_y + R(x,y) z = S(x,y).
-  \] 
-\end{example}
-
-\begin{example}
-  La siguiente EDP es de segundo orden en $x,y$:
-  \[
-    A(x,y) z_{xx} + 2B(x,y) z_{xy} + C(x,y) z_{yy} + D(x,y)
-    z_x + E(x,y) z_y + F(x,y) z = S(x,y),
-  \] en donde $P,Q,R,A,B,C,D,E$ y $F$ son funciones
+  Las EDP lineales en dos variables \(x,y\) tienen la siguiente forma:
+  \begin{itemize}
+    \item
+      De primer orden:
+      \[
+        P(x,y) z_x + Q(x,y) z_y + R(x,y) z = S(x,y).
+      \] 
+    \item 
+      De segundo orden:
+      \[
+        A(x,y) z_{xx} + 2B(x,y) z_{xy} + C(x,y) z_{yy} + D(x,y)
+      z_x + E(x,y) z_y + F(x,y) z = S(x,y), \]
+  \end{itemize}
+  en donde $P,Q,R,S,A,B,C,D,E$ y $F$ son funciones
   continuas en alguna región del plano.
 \end{example}
 
-\begin{defn}[Ecuación cuasilineal]
+\begin{definition}[Ecuación cuasilineal]
   Una EDP se dice cuasilineal si ésta es lineal en las
-  máximas derivadas que aparecen en la ecuación sin importar
-  como son los coeficientes.
-\end{defn}
+  derivadas de mayor orden, sin importar como son los coeficientes.
+\end{definition}
 
 \begin{example}
-  De primer orden:
-  \[
-    P(x,y,z)z_x + Q(x,y,z) z_y = R(x,y,z).
-  \] 
-  De segundo orden:
-  \[
-    A(x,y,z,z_x,z_y) z_{xx} + B(x,y,z,z_x,z_y) z_{yy} +
-    C(x,y,z,z_x,z_y) z_{xy} = R(x,y,z,z_x,z_y).
-  \] 
+  Las ecuaciones cuasilineales en dos variables \(x,y\) tienen la
+  siguiente forma:
+  \begin{itemize}
+    \item
+      De primer orden:
+      \[
+        P(x,y,z)z_x + Q(x,y,z) z_y = R(x,y,z).
+      \] 
+    \item
+      De segundo orden:
+      \[
+        A(x,y,z,z_x,z_y) z_{xx}
+        +
+        B(x,y,z,z_x,z_y) z_{yy}
+        +
+        C(x,y,z,z_x,z_y) z_{xy}
+        = R(x,y,z,z_x,z_y).
+      \] 
+  \end{itemize}
 \end{example}
 
-\begin{defn}[Ecuación casilineal]
-  La ecuación se dice casilineal si ésta es cuasilineal y
-  los coeficientes dependen solo de las variables
-  independientes.
-\end{defn}
+\begin{definition}[Ecuación casi lineal]
+  Decimos que una ecuación cuasilineal es \emph{casi lineal} si
+  los coeficientes de las derivadas de mayor orden dependen solo de
+  las variables independientes.
+\end{definition}
 
 \begin{example}
-  De primer orden:
-  \[
-    P(x,y)z_x + Q(x,y) z_y = R(x,y,z).
-  \] 
-  De segundo orden:
-  \[
-    A(x,y) z_{xx} + B(x,y) z_{yy} +
-    C(x,y) z_{xy} = R(x,y,z,z_x,z_y).
-  \] 
-
+  Las ecuaciones casi lineales en dos variables \(x,y\) tienen la
+  siguiente forma:
+  \begin{itemize}
+    \item
+      De primer orden:
+      \[
+        P(x,y)z_x + Q(x,y) z_y = R(x,y,z).
+      \] 
+    \item
+      De segundo orden:
+      \[
+        A(x,y) z_{xx} + B(x,y) z_{yy} +
+        C(x,y) z_{xy} = R(x,y,z,z_x,z_y).
+      \] 
+  \end{itemize}
 \end{example}
 
-\begin{defn}[Solución de una EDP]
+\begin{solved}
+  Clasifique las siguientes ecuaciones diferenciales.
+  \begin{enumerate}
+    \item \((xy+z)z_x + (xy-z)z_y = xyz\),
+    \item \((3x-y)z_{xx} + xyz_{xy} -2y^{2}z_{yy} -
+      (x^{2}+y^{2})z_x-2z = \ln(xy)\),
+    \item \(u_{xx}-u_{zz}+uu_x = 0\) 
+    \item \(u_{xx}+xu_y=y\),
+    \item \((z_x)^{2}+zz_y=1\),
+    \item \(z_{xx}+2z_{xy}+z_{yy} = \sin(xy)\),
+    \item \((2x-3y)z_x+(3x+y)z_y+5e^{2z}=0\),
+    \item \(2x^{2}z_{xx}+xyz_{xy}-3y^{2}z_{yy}+xz_x-yz_y=e^{2x-3y}\).
+  \end{enumerate}
+  \begin{solution} \leavevmode
+    \begin{enumerate}
+      \item 1er orden, cuasilineal,
+      \item 2do orden, lineal,
+      \item 2do orden, cuasilineal,
+      \item 2do orden, lineal,
+      \item 1er orden, no lineal,
+      \item 2do orden, lineal,
+      \item 1er orden, casi lineal,
+      \item 2do orden, lineal,
+    \end{enumerate}
+  \end{solution}
+\end{solved}
+
+\begin{definition}[Solución de una EDP]
   Por una solución de una EDP se entiende a una función
   $\phi(x,y)$ tal que al sustituirla en la ED, ésta se
   satisface.
-\end{defn}
+\end{definition}
 
-\begin{exe}
+\begin{solved}
   Determine si la función $\displaystyle \phi(x,y) =
   \frac{1}{3}x^3 + xy^2 + c$, donde $c$ es una constante, es
   solución de la ecuación diferencial
@@ -142,40 +216,69 @@ ordinarias.
     \frac{\partial z}{\partial x} + z = x, \quad z = z(x,y).
   \] 
 
-  \begin{sol}
+  \begin{solution}
     Sea $z = \phi(x,y) = \frac{1}{3}x^3 + xy^2 + c$,
-    entonces $z_x = x^2 + y^2$, sustituyendo en la ecuación
-    obtenemos
+    entonces $z_x = x^2 + y^2$.
+    Sustituyendo en el lado izquierdo de la ecuación, obtenemos
     \[
     x^2 + y^2 + \frac{1}{3}x^3 + xy^2 \neq x,
     \] por lo tanto $\phi$ no es solución de la ecuación
     diferencial.
-  \end{sol}
-\end{exe}
+  \end{solution}
+\end{solved}
 
-\begin{exe}
+\begin{solved}
   Sea $\phi(x,y) = e^{x^2}f(x^2+y^2)$ donde $f$ es
-  arbitraria. La ecuación es $y z_x - x z_y = 2xyz$.
+  arbitraria. Determine si es solución de la ecuación $y z_x - x z_y = 2xyz$.
   
-  \begin{sol}
+  \begin{solution}
     Primero calculamos las derivdas parciales
     \begin{align*}
-      z_x &= 2x e^{x^2} f(x^2 + y^2) + e^{x^2} f'(x^2
-      +y^2)2x\\
-      z_y &= e^{x^2} f'(x^2+y^2)2y
+      z_x &= 2x e^{x^2} f(x^2 + y^2) + e^{x^2} f'(x^2 +y^2)2x, \\
+      z_y &= e^{x^2} f'(x^2+y^2)2y.
     \end{align*} 
-    Sustituyendo tenemos
+    Sustituyendo del lado izquierdo de la ecuación, tenemos
     \begin{align*}
-      y\left[2x e^{x^2} f(x^2+y^2) + e^{x^2} f'(x^2+y^2)
-      2x\right] - 2xy e^{x^2} f'(x^2+y^2) &= 2xy e^{x^2}
-      f(x^2+y^2)\\
-      \iff 2xy e^{x^2} f(x^2+y^2) + 2xy e^{x^2} f'(x^2+y^2) - 2xy
-      e^{x^2} f'(x^2+y^2) &= 2xy e^{x^2} f(x^2+y^2)\\
-      \iff 2xy e^{x^2} f(x^2+y^2) &= 2xy e^{x^2} f(x^2+y^2).
-    \end{align*} Por lo tanto $\phi$ sí es solución de la
-    ecuación.
-  \end{sol}
-\end{exe}
+      y z_x - x z_y 
+      &= y\left[2x e^{x^2} f(x^2+y^2) + e^{x^2} f'(x^2+y^2) 2x\right]
+      - x\left[2y e^{x^2} f'(x^2+y^2)\right]
+      \\
+      &= 2xy e^{x^2} f(x^2+y^2) + 2xy e^{x^2} f'(x^2+y^2) - 2xy
+      e^{x^2} f'(x^2+y^2) \\
+      &= 2xy e^{x^2} f(x^2+y^2) \\
+      &= 2xyz.
+    \end{align*}
+    Por lo tanto, $\phi$ sí es solución de la ecuación.
+  \end{solution}
+\end{solved}
+
+\begin{exercise}
+  Verifique que la función \(\phi(x,y,z)=xF(y / x, z / x)\), donde
+  \(F\) es una función arbitraria, satisface la ecuación
+  \begin{equation}
+    x \frac{\partial u}{\partial x}
+    + y \frac{\partial u}{\partial y}
+    + z \frac{\partial u}{\partial z}
+    - u = 0
+  .\end{equation}
+\end{exercise}
+
+\begin{exercise}
+  Determine si \(\phi(x,y) = e^{x / y}+f(x^{3}y)\) es solución de la
+  ecuación
+  \begin{equation}
+    x^{2}z_{xx} - 2xyz_{xy} - 3y^{2}z_{yy}
+    +xz_x - 3yz_y = 0
+  .\end{equation}
+\end{exercise}
+
+\begin{exercise}
+  Halle el valor de \(n\) de manera que \(z=x^{3}\arctan
+  \frac{x^{2}-xy+y^{2}}{x^{2}+xy+y^{2}}\) satisface la ecuación
+  \begin{equation}
+    xz_x + yz_y = nz
+  .\end{equation}
+\end{exercise}
 
 \section{Obtención de una ecuación diferencial parcial}
 
@@ -185,66 +288,85 @@ Dada una familia $z = \phi(x,y)$ de funciones definidas en
 cierto dominio del plano, es posible obtener una ecuación
 diferencial eliminando las funciones arbitrarias que
 aparezcan en ella.
+El orden de la ecuación será el número de funciones arbitrarias
+que hay que eliminar.
+Es decir, si \(z\) es una familia de funciones dada por una sola
+función arbitraria, entonces habrá que buscar una ecuación de dependencia
+entre \(z,z_x,z_y\). Por otro lado, si en \(z\) aparecen dos
+funciones arbitrarias, habrá que buscar una ecuación de dependencia
+entre \(z,z_x,z_y,z_{xx},z_{xy},z_{yy}\).
 
-\begin{example}
-  Sean $f(x)$ y $g(y)$ dos funciones diferenciables y sea $z
-  = f(x) + g(y)$. Determine la ecuación diferencial
-  correspondiente a la familia dada.
-
-  \begin{sol}
+\begin{solved}
+  Sean $f(x)$ y $g(y)$ dos funciones diferenciables.
+  \begin{itemize}
+    \item
+      Determine la ecuación diferencial correspondiente a la familia
+      $z = f(x) + g(y)$.
+    \item 
+      Determine la ecuación diferencial correspondiente a la familia
+      $z = f(x)g(y)$.
+  \end{itemize}
+  \begin{solution}
     Dado que $f$ y $g$ son arbitrarias, la ecuación
-    diferencial debe ser de segundo orden. Si $z = f(x) +
-    g(y)$, entonces
-     \begin{align*}
-       z_x &= f'(x)\\
-       z_y &= g'(y)\\
-       z_{xx} &= f''(x)\\
-       z_{yy} &= g''(y)\\
-       z_{xy} &= 0.
-    \end{align*} Observamos que $z$ satisface la ecuación
-    buscada $z_{xy} = 0$.
-  \end{sol}
-\end{example}
+    diferencial debe ser de segundo orden.
+    \begin{itemize}
+      \item
+        Si $z = f(x) + g(y)$, entonces
+         \begin{align*}
+           z &= f(x)+g(y)\\
+           z_x &= f'(x)\\
+           z_y &= g'(y)\\
+           z_{xx} &= f''(x)\\
+           z_{yy} &= g''(y)\\
+           z_{xy} &= 0.
+        \end{align*}
+        En este caso, tenemos una dependencia \(z_{xy}=0\),
+        así que esta es la ecuación buscada.
+      \item 
+        Si $z = f(x)g(y)$, entonces
+        \begin{align*}
+          z &= f(x)g(y)\\
+          z_x &= f'(x)g(y)\\
+          z_y &= f(x)g'(y)\\
+          z_{xx} &= f''(x)g(y)\\
+          z_{yy} &= f(x)g''(y)\\
+          z_{xy} &= f'(x)g'(y).
+        \end{align*}
+        Ahora tenemos $z_x z_y = f'(x)g(y)f(x)g'(y) = z_{xy} z$, por lo
+        tanto la ecuación buscada es
+        \[
+          z_{xy} z - z_x z_y = 0.
+        \] 
+    \end{itemize}
+  \end{solution}
+\end{solved}
 
-\begin{example}
-  Sea $z = f(x)g(y)$. De nuevo
+\begin{solved}
+  Sea $z = e^{-x} f(x-y)$. Como hay una sola función arbitraria, la
+  ecuación será de primer orden. Tenemos
   \begin{align*}
-    z_x &= f'(x)g(y)\\
-    z_y &= f(x)g'(y)\\
-    z_{xx} &= f''(x)g(y)\\
-    z_{yy} &= f(x)g''(y)\\
-    z_{xy} &= f'(x)g'(y).
-  \end{align*}
-  Ahora, $z_x z_y = f'(x)g(y)f(x)g'(y) = z_{xy} z$, por lo
-  tanto la ecuación buscada es
-  \[
-    z_{xy} z - z_x z_y = 0.
-  \] 
-\end{example}
-
-\begin{example}
-  Sea $z = e^{-x} f(x-y)$. La solución será de primer orden.
-  Las parciales son
-  \begin{align*}
+    z &= e^{-x} f(x-y) \\
     z_x &= -e^{-x} f(x-y) + e^{-x} f'(x-y)\\
     z_y &= -e^{-x} f'(x-y).
-  \end{align*} Sumando tenemos
+  \end{align*}
+  Sumando las dos derivadas parciales, tenemos
   \[
-    z_x + z_y = -e^{-x} f(x-y) = -z \implies z + z_x + z_y =
-    0.
+    z_x + z_y = -e^{-x} f(x-y) = -z,
   \] 
-\end{example}
+  así que la ecuación buscada es \(z + z_x + z_y = 0\).
+\end{solved}
 
-\subsection{Caso geométrico}
+\subsection{La familia de planos tangentes a una superficie}
 
-Podemos obtener una ecuación diferencial correspondiente a
-los planos tangentes a una superficie.
-
+Si \(\mathbb S\subseteq\R^{3}\) es una superficie en el espacio,
+podemos encontrar ecuaciones que parametrizan los planos tangentes a
+\(\mathbb S\).
 \begin{enumerate}
-  \item Sea $f$ una función diferenciable en una región del
-    plano $xy$, entonces la superficie $\mathbb{S}$ en el
-    espacio tiene un plano tangente en el punto $(x_0, y_0,
-    z_0)$ dada como
+  \item
+    Si $\mathbb S\subseteq\R^{3}$ es la gráfica de una función \(f\)
+    definida en una región del plano \(xy\), entonces
+    \(S\) tiene un plano tangente en el punto
+    $(x_0, y_0, z_0)$ dada como
     \[
       f_x(x_0, y_0)(x-x_0) + f_y(x_0,y_0)(y-y_0) - (z - z_0)
       = 0.
@@ -256,6 +378,8 @@ los planos tangentes a una superficie.
       F_x(x_0,y_0,z_0)(x-x_0) + F_y(x_0,y_0,z_0)(y-y_0) +
       F_z(x_0,y_0,z_0)(z-z_0) = 0.
     \] 
+    El caso anterior es el caso particular en el que
+    \(F(x,y,z)=f(x,y)-z\).
   \item Supongamos que $\mathbb{S}$ está dada por la
     ecuación en forma paramétrica $x = f(u,v)$, $y = g(u,v)$ 
     y $z = h(u,v)$, donde $u$ y $v$ son parámetros en donde
@@ -271,8 +395,7 @@ los planos tangentes a una superficie.
       (z-z_0) = 0.
     \] 
 \end{enumerate}
-
-\begin{rem}
+\begin{reminder}
   Los Jacobianos se calculan como
   \[
     \renewcommand\arraystretch{1.5}
@@ -284,121 +407,213 @@ los planos tangentes a una superficie.
     \end{vmatrix},
   \] donde $J_1, J_2$, y $J_3$ están evaluados en el punto
   $(u_0,v_0)$ correspondiente a $(x_0,y_0,z_0)$.
-\end{rem}
+\end{reminder}
 
+En los primeros dos casos, estas ecuaciones son de la forma
+\(\phi(x,y,z,x_0,y_0,z_0)=0\).
+%(resp. \(\phi(x,y,z,u_0,v_0)=0\)).
+Derivando con respecto a \(x\) y \(y\), obtenemos un sistema de
+ecuaciones
+\begin{equation}
+  \left\{
+    \begin{aligned}
+      \phi(x,y,z,x_0,y_0,z_0) &= 0 \\
+      \phi_x(x,y,z,z_x,x_0,y_0,z_0) &= 0 \\
+      \phi_y(x,y,z,z_y,x_0,y_0,z_0) &= 0 \\
+      F(x_0,y_0,z_0) &= 0
+    \end{aligned}
+    \right.
+\end{equation}
+del cual podemos intentar eliminar \(x_0,y_0,z_0\) para obtener una
+relación de la forma
+\begin{equation}
+  \Phi(x,y,z,z_x,z_y) = 0
+.\end{equation}
+Esta es la mínima ecuación diferencial que es satisfecha por \emph{todas}
+las funciones \(z=z(x,y)\) de los planos tangentes a \(\mathbb S\).
+%En el tercer caso, el sistema que obtenemos es de la forma
+%\begin{equation}
+%  \left\{
+%    \begin{aligned}
+%      \phi(x,y,z,u_0,v_0) &= 0 \\
+%      \phi_x(x,y,z,z_x,u_0,v_0) &= 0 \\
+%      \phi_y(x,y,z,z_y,u_0,v_0) &= 0
+%    \end{aligned}
+%    \right.
+%\end{equation}
+%
 El procedimiento se describe en el siguiente ejemplo.
 
-\begin{example}
+\begin{solved}
   Determine la ED de la familia de todos los planos
   tangentes a la elipsoide $x^2 + 4y^2 + 4z^2 = 4$ no
   perpendiculares al plano $xy$.
 
-  \begin{sol}
-    Sea $f(x_0,y_0,z_0)$ un punto en la superficie
-    $\mathbb{S}$ con $z_0 \neq 0$. Entonces la ecuación del
-    plano tangente es
+  \begin{solution}
+    La elipsoide es el conjunto de nivel \(F=0\) para
+    \(F(x,y,z)=x^{2}+4y^{2}+4z^{2}-4\).
+    Sea $P_0=(x_0,y_0,z_0)$ un punto en el elipsoide, es decir 
+    \(F(P_0)=0\).
+    Las derivadas parciales de \(F\) en \(P_0\) son
     \[
-      F_x(x_0,y_0,z_0)(x-x_0) + F_y(x_0,y_0,z_0)(y-y_0) +
-      F_z(x_0,y_0,z_0)(z-z_0) = 0.
-    \] Calculando las derivadas parciales
-    \[
-    F_x = 2x \quad F_y = 8y \quad F_z = 8z,
-    \] evaluando en $(x_0,y_0,z_0)$ y sustituyendo obtenemos
-    la ecuación del plano tangente
-    \begin{align*}
-      2x_0(x-x_0) + 8y(y-y_0) + 8z_0(z-z_0) &= 0\\
-      \iff xx_0 - x_0^2 + 4yy_0 - 4y_0^2 + 4zz_0 - 4z_0^2 &=
-      0\\
-      \iff xx_0 - 4yy_0 + 4zz_0 = x_0^2 + 4y_0^2 +
-      4z_0^2.
-    \end{align*}
-    Derivando la ecuación del plano respecto a $x$ y a $y$ 
+    F_x(P_0) = 2x_0, \quad F_y(P_0) = 8y_0, \quad F_z(P_0) = 8z_0,
+    \]
+    así que la ecuación del plano tangente en \(P_0\) es
+    \begin{equation}
+      2x_0(x-x_0) + 8y_0(y-y_0) + 8z_0(z-z_0) = 0
+    \end{equation}
+    Reacomodando y dividiendo entre \(2\), tenemos
+    \begin{equation}
+      x_0x+ 4y_0y+ 4z_0z-x_0^{2} -4y_0^{2} -4z_0^{2} = 0
+    \end{equation}
+    Supongamos que podemos poner a \(z\) como función de \(x,y\).
+    La ecuación del plano, sus dos derivadas parciales, y la
+    ecuación \(F(P_0)=0\), nos dan un total de cuatro ecuaciones:
+    \begin{equation}
+      \left\{
+        \begin{aligned}
+          x_0x+ 4y_0y+ 4z_0z-x_0^{2} -4y_0^{2} -4z_0^{2} &= 0 \\
+          x_0 + 4z_0z_x &= 0 \\
+          4y_0 + 4z_0z_y &= 0 \\
+          x_0^{2}+4y_0^{2}+4z_0^{2}-4 &= 0
+        \end{aligned}
+      \right.
+    \end{equation}
+    Sumando la cuarta ecuación a la primera, y simplificando la
+    tercera, tenemos
+    \begin{equation}
+      \left\{
+        \begin{aligned}
+          x_0x+ 4y_0y+ 4z_0z-4 &= 0 \\
+          x_0 + 4z_0z_x &= 0 \\
+          y_0 + z_0z_y &= 0 \\
+          x_0^{2}+4y_0^{2}+4z_0^{2}-4 &= 0
+        \end{aligned}
+      \right.
+    \end{equation}
+    Las dos ecuaciones centrales nos dan \(x_0=-4z_0z_x\) y
+    \(y_0=-z_0z_y\). Sustituyendo en las otras dos y simplificando,
     obtenemos
-    \begin{align*}
-      x_0 + 4z_xz_0 = 0 &\implies x_0 = -4z_x z_0\\
-      4y_0 + 4z_yz_0 = 0 &\implies y_0 = -z_y z_0.
-    \end{align*} Sustituyendo los valores de $x_0$ y $y_0$ 
-    en la ecuación del plano obtenemos
-    \begin{align*}
-      -4x z_0 z_x - 4yz_0 zy + 4z z_0 &= 16z_x^2 z_0^2 +
-      4z_y^2 z_0^2 + 4z_0^2\\
-      \implies -xz_x - yz_y + z &= (4z_x^2 + z_y^2 + 1)z_0.
-    \end{align*}
-    Dado que el punto $P(x_0,y_0,z_0)$ pertenece a la
-    superficie $\mathbb{S}$, se sigue que $x_0^2 + 4y_0^2 +
-    4z_0^2 = 4$. Sustituyendo el valor de $x_0$ y $y_0$ en la
-    restricción anterior podemos despejar a $z_0$:
-    \begin{align*}
-      16z_x^2z_0^2 + 4z_y^2z_0^2 + 4z_0^2 &= 4\\
-      \implies (4z_x^2 + z_y^2 + 1)z_0^2 &= 1\\
-      \implies z_0^2 = \frac{1}{4z_x^2 + z_y^2 + 1}.
-    \end{align*}
-    Finalmente sustituímos el valor de $z_0$ en la ecuación
-    del plano
-    \begin{align*}
-      z - xz_x - yz_y &= (4z_x^2 + z_y^2 + 1)
-      \frac{1}{(4z_x^2+z_y^2+1)^{1 / 2}}\\
-      \implies z - x z_x - y z_ y &= (4z_x^2 + z_y^2 + 1)^{1
-      / 2},
-    \end{align*}
-    o equivalentemente 
-    \[
-      (z-xz_x - yz_y)^2 = 4z_x^2 + z_y^2 + 1,
-    \] la cual es la ecuación diferencial de la familia de
-    planos tangentes.
+    \begin{equation}
+      \left\{
+        \begin{aligned}
+          -z_0(z_xx+ z_yy- z)-4 &= 0 \\
+          z_0^{2}(4z_x^{2}+z_y^{2}+1)-1 &= 0
+        \end{aligned}
+      \right.
+    \end{equation}
+    De la segunda ecuación, obtenemos
+    \begin{equation}
+      z_0^2 = \frac{1}{4z_x^2 + z_y^2 + 1}
+    \end{equation}
+    y, al sustituir en la primera, llegamos a
+    \begin{equation}
+      \frac{z_xx+ z_yy-z}{\sqrt{4z_x^2 + z_y^2 + 1}}+1 = 0
+    .\end{equation}
+    Esta cual es la ecuación diferencial de la familia de planos
+    tangentes.
 
-    \begin{figure}[ht]
+    \begin{center}
       \centering
       \includegraphics[width=0.5\linewidth]{imgs/chap1-tangent.png}
-      \caption{El plano tangente es solución particular de
+      \captionof{figure}{El plano tangente es solución particular de
       la ecuación diferencial anterior.}%
       \label{fig:chap1-tangent}
-    \end{figure}
-  \end{sol}
-\end{example}
+    \end{center}
+  \end{solution}
+\end{solved}
 
-\begin{example}
+\begin{solved}
   Determine la ecuación diferencial de la familia de todos los planos tangentes
   a la superficie $\mathbb{S}$ dada por $x^2 - y^2 - z^2 = 0$.
 
-  \begin{sol}
-    Sea $P(x_0,y_0,z_0)$ un punto en la superficie $\mathbb{S}$, entonces la
-    ecuación del plano tangente es:
+  \begin{solution}
+    Sea $P_0=(x_0,y_0,z_0)$ un punto en la superficie $\mathbb{S}$.
+    Las derivadas parciales son
     \[
-    F_x(x_0,y_0,z_0)(x-x_0) + F_y(x_0,y_0,z_0)(y-y_0) + F_z(x_0,y_0,z_0)(z-z_0)
-    = 0,
-    \] donde 
-    \[
-    F_x = 2x, \quad F_y = -2y, \quad F_z = -2z,
-    \] evaluando en $(x_0,y_0,z_0)$ obtenemos
+    F_x(P_0) = 2x_0, \quad F_y(P_0) = -2y_0, \quad F_z(P_0) = -2z_0.
+    \]
+    Así, la ecuación del plano tangente es:
     \begin{align*}
       2x_0(x-x_0) - 2y_0(y-y_0) - 2z_0(z-z_0) &= 0\\
-      \iff xx_0 - yy_0 - zz_0 = x_0^2 - y_0^2 - z_0^2.
+      \iff xx_0 - yy_0 - zz_0 - (x_0^2 - y_0^2 - z_0^2) = 0.
     \end{align*}
-    Derivando la ecuación del plano respecto a $x$ y $y$ tenemos
-    \begin{align*}
-      x_0 - z_x z_0 &= 0 \implies x_0 = z_x z_0\\
-      -y_0 - z_y z_0 &= 0 \implies y_0 = -z_y z_0.
-    \end{align*}
-    Sustituyendo:
-    \begin{align*}
-      x z_x z_0 + y z_y z_0 - z z_0 &= (z_x z_0)^2 - (z_y z_0)^2 - z_0^2\\
-      \iff x z_x + y z_y - z &= (z_x^2 - z_y^2 - 1) z_0.
-    \end{align*}
-    Como $P \in \mathbb{S}$ y $z_0 \neq 0$, se sigue que
-    \begin{align*}
-      x_0^2 - y_0^2 - z_0^2 = 0 &\implies (z_x z_0)^2 - (z_y z_0)^2 - z_0^2 =
-      0\\
-                                &\implies z_x^2 z_0^2 - z_y^2 z_0^2 - z_0^2 =
-                                0\\
-                                &\implies z_x^2 - z_y^2 - 1 = 0\\
-                                &\implies z_x^2 - z_y^2 = 1.
-    \end{align*} Así la ecuación diferencial es
-    \[
-    x z_x + y z_y - z = 0.
-    \] 
-  \end{sol}
-\end{example}
+    Supongamos que podemos poner a \(z\) como función de \(x,y\).
+    La ecuación del plano, sus dos derivadas, y la ecuación \(F(P_0)=0\),
+    forman el sistema
+    \begin{equation}
+      \left\{
+        \begin{aligned}
+          xx_0 - yy_0 - zz_0 - (x_0^2 - y_0^2 - z_0^2) &= 0 \\
+          x_0 - z_x z_0 &= 0 \\
+          -y_0 - z_y z_0 &= 0 \\
+          x_0^2 - y_0^2 - z_0^2 &= 0 
+        \end{aligned}
+      \right.
+    \end{equation}
+    Sumando la cuarta ecuación a la primera, obtenemos
+    \begin{equation}
+      \left\{
+        \begin{aligned}
+          xx_0 - yy_0 - zz_0 &= 0 \\
+          x_0 - z_x z_0 &= 0 \\
+          -y_0 - z_y z_0 &= 0 \\
+          x_0^2 - y_0^2 - z_0^2 &= 0 
+        \end{aligned}
+      \right.
+    \end{equation}
+    Las ecuaciones centrales nos dan \(x_0 = z_x z_0\) y
+    \(y_0 = -z_y z_0\). Sustituyendo en las otras dos y simplificando, tenemos
+    \begin{equation}
+      \left\{
+        \begin{aligned}
+          (xz_x + yz_y - z)z_0 &= 0 \\
+          (z_x^{2} - z_y^{2} - 1)z_0^2 &= 0 
+        \end{aligned}
+      \right.
+    \end{equation}
+    Suponiendo que \(z_0\neq 0\), tenemos el sistema
+    \begin{equation}
+      \left\{
+        \begin{aligned}
+          xz_x + yz_y - z &= 0 \\
+          z_x^{2} - z_y^{2} - 1 &= 0 
+        \end{aligned}
+      \right.
+    \end{equation}
+    cuyas soluciones son los planos tangentes a la superficie. Por
+    supuesto, podemos despejar (por ejemplo) \(z_x\) de una de las dos
+    y sustituir en la otra, pero esto solo lo complicaría más.
+  \end{solution}
+\end{solved}
+\begin{remark}
+  El sistema que obtuvimos en el ejemplo anterior
+  \begin{equation}
+    \left\{
+      \begin{aligned}
+        xz_x + yz_y - z &= 0 \\
+        z_x^{2} - z_y^{2} - 1 &= 0 
+      \end{aligned}
+    \right.
+  \end{equation}
+  tiene soluciones explícitas.
+  Más adelante, veremos que las soluciones a la primera ecuación son
+  todas de la forma \(z = xf(y / x)\) para alguna función \(f\).
+  Sustituyendo en la segunda ecuación, obtenemos la EDO no lineal
+  \begin{equation}
+    f(u)^{2}-2uf(u)f'(u) + (u^{2}-1)f'(u)^{2} = 1
+  ,\end{equation}
+  cuyas soluciones son
+  \begin{equation}
+    f(u) = Cu \pm \sqrt{C^{2}+1}
+  ,\end{equation}
+  Luego, las ecuaciones de los planos tangentes a la superficie
+  \(x^{2}-y^{2}-z^{2}\) están dadas por
+  \begin{equation}
+    z = Cy \pm x\sqrt{C^{2}+1}
+  ,\end{equation}
+  donde \(C\) es alguna constante.
+\end{remark}
 
 \section{Solución de ecuaciones lineales de primer orden}
 
@@ -413,40 +628,48 @@ más sencilla de resolver es cuando
 \ref{eqn:ed_lineal_1orden} contiene solo una derivada
 parcial $z_x$ ó $z_y$ ya que se puede manejar como una
 ecuación diferencial lineal ordinaria de primer orden:
-\[
-y' + P(x) y = Q(X),
-\] cuya solución es 
-\[
-y(x) = e^{-\int P(x) \, dx} \left[\int e^{\int P(x) \, dx}
-  Q(x) \, dx + C\right].
-\] 
+\begin{equation}
+  \label{eq:edolinord1}
+  y' + P(x) y = Q(X)
+,\end{equation}
+cuya solución (bien conocida) es:
+\begin{equation}
+  \label{eq:edolinord1sol}
+  y(x) = e^{-\int P(x) \, dx} \left[\int e^{\int P(x) \, dx}
+  Q(x) \, dx + C\right]
+,\end{equation}
+donde \(\int P(x)\,dx\) es cualquier primitiva de \(P\).
 
-\begin{example}
+\begin{solved}
   Resolver $4z_x - 2xz = xy$ donde $z = z(x,y)$.
 
-  \begin{sol}
+  \begin{solution}
     Dividiendo por 4 obtenemos $z_x - \frac{1}{2} x z =
-    \frac{1}{4} xy$, donde
+    \frac{1}{4} xy$, que es de la forma \eqref{eq:edolinord1}, donde
     \[
     P(x) = -\frac{1}{2} x \quad \text{ y } \quad Q(x) =
     \frac{1}{4} xy.
-    \] De acuerdo a lo anterior, la solución está dada por
+    \]
+    Una primitiva de \(P\) es \(-\frac{1}{4}x^{2}\).
+    De acuerdo a \eqref{eq:edolinord1sol},
+    la solución está dada por
     \begin{align*}
-      z(x,y) &= e^{-\int P(x) \, dx} \left[\int e^{\int P(x)
-        \, dx} \, dx + C\right]\\
-             &= e^{\frac{1}{2} x \, dx} \left[\int e^{- \int
-               \frac{1}{2}x \, dx} \cdot \frac{1}{4} xy \,
+      z(x,y) 
+             &= e^{x^{2} / 4}
+             \left[\int e^{- \frac{x^{2}}{4}} \cdot \frac{1}{4} xy \,
                dx + f(y)\right]\\
-             &= e^{1 / 4 x^2} \left[-\frac{y}{2} e^{- 1 / 4
-               x^2} + f(y)\right]\\
-             &= -\frac{y}{2} + e^{1 / 4 x^2} f(y),
+             &= e^{x^{2} / 4}
+             \left[-\frac{y}{2}\int e^{- \frac{x^{2}}{4}} (-\tfrac{x}{2}) \,
+               dx + f(y)\right]\\
+             &= e^{x^2 / 4} \left[-\frac{y}{2} e^{- x^2 / 4 } + f(y)\right]\\
+             &= -\frac{y}{2} + e^{x^2 / 4 } f(y),
     \end{align*}
     donde $f$ es una función arbitraria de $y$.
-  \end{sol}
-\end{example}
+  \end{solution}
+\end{solved}
 
-\subsection{Ecuación diferencial homogénea con coeficientes
-  constantes}
+\subsection{Coeficientes constantes, caso homogéneo}
+\label{ssec:cconst-homo}
 
 Consideremos la ecuación
 \[
@@ -488,26 +711,27 @@ tenemos que
 z(x,y) = f(Bx - Ay) e^{-\frac{C}{A} x},
 \] para $f$ arbitraria.
 
-\begin{obs}
+\begin{remark}
   Para que el cambio de variables sea invertible, es
   necesario que el jacobiano no se anule, en éste caso
   tenemos
   \[
   \frac{\partial(\xi, \eta)}{\partial(x,y)} = -A \neq 0.
   \] 
-\end{obs}
+\end{remark}
 
-\begin{example}
+\begin{solved}
   Resolver la ecuación $3 z_x - 2 z_y + 4z = 0$.
-  \begin{sol}
+  \begin{solution}
     Notemos que $A = 3$, $B = -2$ y $C = 4$, entonces
     \[
     z(x,y) = f(2x + 3y) e^{-\frac{4}{3} x}.
     \] 
-  \end{sol}
-\end{example}
+  \end{solution}
+\end{solved}
 
-\subsection{Ecuación no homogénea}
+\subsection{Coeficientes constantes, caso general}
+\label{ssec:cconst-nohomo}
 
 La ecuación no homogenea es de la forma 
 \[
@@ -520,7 +744,8 @@ z = z_h + z_p,
 correspondiente y $z_p$ es una solución particular de la
 ecuación no homogenea.
 
-Dicha solución particular se puede determinar mediante el
+La solución \(z_h\) ya la determinamos en \ref{ssec:cconst-homo}.
+Una solución particular \(z_p\) se puede determinar mediante el
 método de coeficientes indeterminados si $G(x,y)$ es una
 combinación de funciones elementales:
 \[
@@ -528,10 +753,10 @@ combinación de funciones elementales:
 \] con argumentos lineales en $x$ y en $y$, ó cuando $G$ es
 un polinomio en $x$ y $y$. 
 
-\begin{example}
+\begin{solved}
   Resolver la ecuación $2 z_x - 3 z_y + z = 5 e^{-2x - y} +
   xy$.
-  \begin{sol}
+  \begin{solution}
     \begin{enumerate}
       \item Primero obtenemos la solución de la ecuación
         homogenea $2 z_x - 3z_y + z = 0$, la cual está dada
@@ -573,18 +798,18 @@ un polinomio en $x$ y $y$.
         solución particular $z_{p_2}$ correspondiente al
         término $xy$ se deja como ejercicio para el lector.
     \end{enumerate}
-  \end{sol}
-\end{example}
+  \end{solution}
+\end{solved}
 
-\begin{exe}
+\begin{exercise}
   Resolver la ecuación de coeficientes constantes no
   homogenea $z_x + 2 z_y = \sin x - 3 \cos y$.
-\end{exe}
+\end{exercise}
 
-\begin{example}
+\begin{solved}
   Resolver la ecuación $2z_x + z_y - 2z = \sin(4y-2x)e^{x}$.
 
-  \begin{sol}
+  \begin{solution}
     Primero resolvemos la ecuación homogenea correspondiente
     $2z_x + z_y - 2z = 0$. Observemos que $A = 2, B = 1$ y
     $C = -2$, entonces
@@ -629,14 +854,15 @@ un polinomio en $x$ y $y$.
     \[
     z = f(x-2y)e^{x} + \frac{1}{2}\sin(4y-2x)xe^{x}
     .\] 
-  \end{sol}
-\end{example}
+  \end{solution}
+\end{solved}
 
-\begin{exe}
+\begin{exercise}
   Resolver la ecuación $3z_x - 4z_y + 6z = 4e^{2x+3y}$.
-\end{exe}
+\end{exercise}
 
-\subsection{Ecuación homogenea con coeficientes variables}
+\subsection{Coeficientes variables, caso homogéneo}
+\label{ssec:cvar-homo}
 
 Consideremos la ecuación la ecuación
 \begin{equation}
@@ -696,7 +922,10 @@ cuya solución es
 \[
 z(\xi,\eta) = f(\eta) e^{-\int \frac{C}{A} \, d\xi}
 .\] 
-\begin{obs}
+Volviendo a las variables \(x,y\) anteriores, obtenemos la solución a
+la ecuación original.
+
+\begin{remark}
   Notemos que la transformación cumple con el requisito:
   \[
   \frac{\partial(\xi,\eta)}{\partial(x,y)} = 
@@ -709,11 +938,11 @@ z(\xi,\eta) = f(\eta) e^{-\int \frac{C}{A} \, d\xi}
     \eta_x & \eta_y
   \end{vmatrix} = \eta_y \neq 0
   .\] 
-\end{obs}
+\end{remark}
 
-\begin{example}
+\begin{solved}
   Resolver la ecuación $xy z_x - x^2 z_y - yz = 0$.
-  \begin{sol}
+  \begin{solution}
     Los coeficientes de la ecuación están dadas por las
     funciones continuas
     \[
@@ -746,12 +975,12 @@ z(\xi,\eta) = f(\eta) e^{-\int \frac{C}{A} \, d\xi}
     \[
       z(x,y) = xf(x^2+y^2).
     \] 
-  \end{sol}
-\end{example}
+  \end{solution}
+\end{solved}
 
-\begin{example}
+\begin{solved}
   Resolver la ecuación $x^2 z_x - xy z_y + yz = 0.$
-  \begin{sol}
+  \begin{solution}
     Los coeficientes son las funciones continuas
     \[
     A = x^2, \quad B = -xy, \quad C = y.
@@ -777,12 +1006,12 @@ z(\xi,\eta) = f(\eta) e^{-\int \frac{C}{A} \, d\xi}
     \[
     z(x,y) = f(xy)e^{\frac{y}{2x}}.
     \] 
-  \end{sol}
-\end{example}
+  \end{solution}
+\end{solved}
 
-\begin{example}
+\begin{solved}
   Resolver la ecuación $2x z_x - 3y z_y + 6z = 0$.
-  \begin{sol}
+  \begin{solution}
     Los coeficientes son las funciones continuas
     \[
     A = 2x, \quad B = -3y, \quad C = 6.
@@ -808,17 +1037,36 @@ z(\xi,\eta) = f(\eta) e^{-\int \frac{C}{A} \, d\xi}
     \[
     z(x,y) = \frac{f(x^3y^2)}{x^3}.
     \] 
-  \end{sol}
-\end{example}
+  \end{solution}
+\end{solved}
 
 Un caso particular es cuando $A(x,y) = ax, B(x,y) = by$ y
 $C(x,y) = c$. La sustitución $\xi = \ln x$ y $\eta = \ln
-y$ transforma la ecuación diferencial en una ecuación
-diferencial con coeficientes constantes en $\xi, \eta$.
+y$ transforma la ED
+\begin{equation}
+  axz_x + byz_y + cz = 0
+,\end{equation}
+en una ecuación diferencial con coeficientes constantes en $\xi, \eta$:
+\begin{equation}
+  az_\xi + bz_\eta + cz = 0
+,\end{equation}
+cuya solución es
+\begin{equation}
+  z = f(b\xi-a\eta)e^{-c \xi/ a}
+,\end{equation}
+es decir,
+\begin{equation}
+  z = f(\ln (x^b / y^{a}))x^{-c / a}
+.\end{equation}
+Como una función arbitraria compuesta con el logaritmo es otra función
+arbitraria, podemos escribir
+\begin{equation}
+  z = f(x^b / y^{a})x^{-c / a}
+.\end{equation}
 
-\begin{example}
+\begin{solved}
   Resolver la ecuación $2x z_x - 3yz_y + 6z = 0$.
-  \begin{sol}
+  \begin{solution}
     Sean $\xi = \ln x$ y $\eta = \ln y$. Entonces
     \[
     z_x = z_\xi \xi_x + z_\eta \eta_x = z_\xi \frac{1}{x},
@@ -837,18 +1085,29 @@ diferencial con coeficientes constantes en $\xi, \eta$.
     \[
     z(x,y) = f(x^3y^2)x^{-3}.
     \] 
-  \end{sol}
-\end{example}
+  \end{solution}
+\end{solved}
 
-\subsubsection{Ecuación no homogenea}
+\subsubsection{Coeficientes variables, caso general}
+\label{ssec:cvar-nohomo}
 
-Para resolver la ecuación no homogenea con coeficientes
-variables primero resolvemos la ecuación homogenea
-correspondiente y luego obtenemos una solución particular.
+La solución de la ecuación no homogenea con coeficientes variables es
+de la forma
+\begin{equation}
+  z = z_h + z_p
+,\end{equation}
+donde \(z_h\) es la solución a la ecuación homogénea correspondiente y
+\(z_p\) es una solución particular.
+Podemos obtener \(z_h\) usando los métodos de \ref{ssec:cvar-homo}.
+Sin embargo, para obtener la solución particular \(z_p\) no hay un
+método infalible, así que solo queda intentar reducirla a un caso
+conocido, o, con mucha suerte, usando coeficientes indeterminados.
+Por ejemplo, si podemos reducirla a una EDO lineal, podemos usar el
+método de variación de parámetros.
 
-\begin{example}
+\begin{solved}
   Resolver la ecuación $x z_x + 2y z_y + z = x\cos x$.
-  \begin{sol}
+  \begin{solution}
     \begin{itemize}
       \item La ecuación homogenea es $xz_x+2yz_y + z=0$. Sea
         $\xi = \ln x$ y $\eta = \ln y$, entonces la ecuación
@@ -889,12 +1148,12 @@ correspondiente y luego obtenemos una solución particular.
     z = \frac{1}{x}f\left(\frac{x^2}{y}\right) + \sin x +
       \frac{1}{x} \cos x.
     \] 
-  \end{sol}
-\end{example}
+  \end{solution}
+\end{solved}
 
-\begin{example}
+\begin{solved}
   Resolver $(x+2)z_x - (y-1)z_y + 2z = 2x + 3y$.
-  \begin{sol}
+  \begin{solution}
     \begin{itemize}
       \item Primero resolver la ecuación homogenea
         correspondiente. Los coeficientes continuos son
@@ -948,8 +1207,8 @@ correspondiente y luego obtenemos una solución particular.
         lo tanto la solución general de la ecuación se dejan
         como ejercicio al lector.
     \end{itemize}
-  \end{sol}
-\end{example}
+  \end{solution}
+\end{solved}
 
 \section{Solución de la ecuación cuasilineal}
 
@@ -1012,9 +1271,9 @@ de \ref{eqn:cuasilineal_primer_orden}, es decir
 \[
 F(u(x,y,z), v(x,y,z))=0.
 \] 
-\begin{example}
+\begin{solved}
   Resolver la ecuación $xz z_y + yz z_y = -(x^2+y^2)$.
-  \begin{sol}
+  \begin{solution}
     Los coeficientes son
     \[
     P = xz, \quad Q = yz, \quad R = -(x^2+y^2).
@@ -1055,8 +1314,8 @@ F(u(x,y,z), v(x,y,z))=0.
     F(c_1,c_2) = F\left(\frac{x}{y}, x^2+y^2+z^2\right) = 0,
     \] 
     para $F$ arbitraria.
-  \end{sol}
-\end{example}
+  \end{solution}
+\end{solved}
 
 \subsection{Método de multiplicadores}
 
@@ -1078,10 +1337,10 @@ entonces se tiene que
 \alpha \, dx + \beta \, dy + \gamma \, dz = 0.
 \] 
 
-\begin{example}
+\begin{solved}
   Resolver la ecuación $(y-x) z_x + (y+x) z_y = (x^2+y^2) /
   z$.
-  \begin{sol}
+  \begin{solution}
     La ecuación subsidiaria está dada por
     \[
     \frac{dx}{y-x} = \frac{dy}{y+x} = \frac{z \,
@@ -1123,20 +1382,20 @@ entonces se tiene que
     F(c_1,c_2) = F\left(x^2 - y^2 +
       z^2, x^2 + 2xy - y^2\right) = 0.
     \] 
-  \end{sol}
-\end{example}
+  \end{solution}
+\end{solved}
 
-\begin{obs}
+\begin{remark}
   Si por ejemplo $R = 0$, entonces la ecuación subsidiaria
   es de la forma
   \[
   \frac{dx}{P} = \frac{dy}{Q} \quad \text{ y } \quad dz = 0.
   \] 
-\end{obs}
+\end{remark}
 
-\begin{example}
+\begin{solved}
   Resolver la ecuación $(x+z) z_x + (y+z) z_y = 0$.
-  \begin{sol}
+  \begin{solution}
     La ecuación subsidiaria es
     \[
     \frac{dx}{x+z} = \frac{dy}{y+z} \quad \text{ y } \quad
@@ -1158,13 +1417,13 @@ entonces se tiene que
     F\left(z, \frac{x+z}{y+z}\right) = 0,
     \] 
     para $F$ arbitraria.
-  \end{sol}
-\end{example}
+  \end{solution}
+\end{solved}
 
-\begin{example}
+\begin{solved}
   Resolver la ecuación $(3z-4y) z_x + (4x+5z) z_y = -5y -
   3x$.
-  \begin{sol}
+  \begin{solution}
     La ecuación subsidiaria es
     \[
     \frac{dx}{3z-4y} = \frac{dy}{4x+5z} = \frac{dz}{-5y-3x}.
@@ -1193,8 +1452,8 @@ entonces se tiene que
     \[
     F\left(x^2+y^2+z^2, -5x + 3y + 4z\right) = 0.
     \] 
-  \end{sol}
-\end{example}
+  \end{solution}
+\end{solved}
 
 \section{Problemas de Cauchy de primer orden}
 
@@ -1224,11 +1483,11 @@ v(x(t),y(t),z(t))$ y eliminando el parametro $t$ obtenemos
 la relación entre $c_1$ y $c_2$ tal que $F(u,v,) = 0$ para
 alguna función $F$.
 
-\begin{example}
+\begin{solved}
   Resolver la ecuación $(y+xz) z_x + (x+yz) z_y = z^2 - 1$ y
   que contenga la curva $\Gamma$ dada por $x = t, y = 1$ y
   $z = t^2$.
-  \begin{sol}
+  \begin{solution}
     La ecuación subsidiaria es
     \[
     \frac{dx}{y+xz} = \frac{dy}{x+yz} = \frac{dz}{z^2-1},
@@ -1286,13 +1545,13 @@ alguna función $F$.
     + \left(\frac{x+y}{z-1}\right)^2 \right] &=
         \left(\frac{x+y}{z-1}\right)^2.
     \end{align*}
-  \end{sol}
-\end{example}
+  \end{solution}
+\end{solved}
 
-\begin{example}
+\begin{solved}
   Resolver el problema de Cuachy: $yz z_x + xz z_y + 2xy =
   0$, con $\Gamma : x^2 + y^2 = 16$ y $z = 3$.
-  \begin{sol}
+  \begin{solution}
     La ecuación subsidiaria es
     \[
     \frac{dx}{yz} = \frac{dy}{xz} = \frac{dz}{-2xy},
@@ -1333,21 +1592,21 @@ alguna función $F$.
     \] 
     es la solución al problema de Cauchy, ver figura
     \ref{fig:cauchy-esfera-ejemplo}.
-    \begin{figure}[ht]
+    \begin{center}
       \centering
       \includegraphics[width=0.6\textwidth]{imgs/cauchy-esfera.png}
-      \caption{La esfera es la solución de la ecuación
+      \captionof{figure}{La esfera es la solución de la ecuación
       diferencial que contiene a la curva $\Gamma$.}
       \label{fig:cauchy-esfera-ejemplo}
-    \end{figure}
-  \end{sol}
-\end{example}
+    \end{center}
+  \end{solution}
+\end{solved}
 
-\begin{example}
+\begin{solved}
   Resolver el problema de Cauchy dado por la ecuación
   $(y-z)z_x + (z-x)z_y = x-y$ y la curva $\Gamma : x = t, y
   = 2t, z = 0$.
-  \begin{sol}
+  \begin{solution}
     La ecuación subsidiaria es
     \[
     \frac{dx}{y-z} = \frac{dy}{z-x} = \frac{dz}{x-y}.
@@ -1366,13 +1625,13 @@ alguna función $F$.
     \[
     5(x+y+z)^2 = 9(x^2+y^2+z^2).
     \] 
-  \end{sol}
-\end{example}
+  \end{solution}
+\end{solved}
 
-\begin{example}
+\begin{solved}
   Resolver el problema de Cauchy dado por $(x^2+y^2) z_x +
   2xy z_y = xz$ y $\Gamma : y^2 + z^2 = 4, x = 2$.
-  \begin{sol}
+  \begin{solution}
     La ecuación subsidiaria es
     \[
     \frac{dx}{x^2+y^2} = \frac{dy}{2xy} = \frac{dz}{xz},
@@ -1403,8 +1662,8 @@ alguna función $F$.
     \[
     x^2 - y^2 - z^2 = 0.
     \] 
-  \end{sol}
-\end{example}
+  \end{solution}
+\end{solved}
 
 \chapter{Ecuaciones de Segundo Orden}
 
@@ -1484,10 +1743,10 @@ z_1 = \exp\left(-\frac{c_1}{a_1} x\right) f(b_1x-a_1y),
 \quad \text{ y } \quad z_2 = \exp\left(-\frac{c_2}{a_2}
   x\right) g(b_2x - a_2y).
 \] 
-\begin{obs}
+\begin{remark}
   El caso en el que $L$ siempre es factorizable es cuando $L$
   es homogeneo, es decir, $L = AD_x^2 + 2BD_xD_y + CD_y^2$. 
-\end{obs}
+\end{remark}
 Para determinar la solución general de
 \ref{eq:ec_expr_diferencial}, se consideran dos casos:
 \begin{enumerate}
@@ -1507,10 +1766,10 @@ Para determinar la solución general de
     \] 
 \end{enumerate}
 
-\begin{example}
+\begin{solved}
   Resolver la ecuación homogenea de segundo orden $z_{xx} -
 z_{yy} + 2z_x + z = 0$.
-\begin{sol}
+\begin{solution}
   El operador está dado por
   \begin{align*}
     L &= D_x^2 - D_y^2 + 2D_x + 1\\
@@ -1534,13 +1793,13 @@ z_{yy} + 2z_x + z = 0$.
   \[
   z = z_1 + z_2 = e^{-x}f_1(x-y) + e^{-x}f_2(x+y).
   \] 
-\end{sol}
-\end{example}
+\end{solution}
+\end{solved}
 
-\begin{example}
+\begin{solved}
   Resolver la ecuación $2z_{xx} + z_{xy} - 6z_{yy} + 2z_x -
   3z_y = 0$.
-  \begin{sol}
+  \begin{solution}
     El operador es
     \[
     L = 2D_x^2 + D_xD_y - 6D_y^2 + 2D_x - 3D_y =
@@ -1568,8 +1827,8 @@ z_{yy} + 2z_x + z = 0$.
     \[
     z = z_1 + z_2 = f_1(3x+2y) + e^{-x}f_2(2x-y).
     \] 
-  \end{sol}
-\end{example}
+  \end{solution}
+\end{solved}
 
 % INICIA 9.PDF
 \subsection{Ecuación no homogenea}
@@ -1669,10 +1928,10 @@ z = z_h + z_p,
 \]
 tomando solo $z_p$.
 
-\begin{example}
+\begin{solved}
   Resuelva la ecuación $z_{xx} + 5z_{xy} + 6z_{yy} =
   \ln(y-2x)$.
-  \begin{sol}
+  \begin{solution}
     Primero obtenemos la solución homogenea. El operador es
     \[
     L = D_x^2 + 5D_xD_y + 6D_y^2 = (D_x+2D_y)(D_x+3D_y) =
@@ -1739,13 +1998,13 @@ tomando solo $z_p$.
     z = z_h + z_p = f(3x-y) + g(2x-y) +
     x(y-2x)[\ln(y-2x)-1].
     \] 
-  \end{sol}
-\end{example}
+  \end{solution}
+\end{solved}
 
-\begin{exe}
+\begin{exercise}
   Resuelva la ecuación $\displaystyle z_{xx} - 4z_{yy} = \frac{4x}{y^2} -
   \frac{y}{x^2}$.
-\end{exe}
+\end{exercise}
 % FIN 10.pdf
 % INICIO 11.pdf
 \subsection{Ecuación con coeficientes variables}
@@ -1780,10 +2039,10 @@ a z_{\xi\xi} + 2bz_{\xi\eta} + cz_{\eta\eta} + (d-a)z_\xi +
 \] 
 la cual es una ecuación de coeficientes constantes.
 
-\begin{example}
+\begin{solved}
   Resolver la ecuación $x^2z_{xx} + 2xyz_{xy} +
   y^2z_{yy}-xz_x-yz_y + z = x^2y^2$.
-  \begin{sol}
+  \begin{solution}
     Sea $\xi = \ln x$ y $\eta = \ln y$. Por lo anterior, la
     ecuación se transforma en
     \[
@@ -1821,25 +2080,25 @@ la cual es una ecuación de coeficientes constantes.
     z(x,y) = xf(\ln(x / y)) + x\ln(x)g(\ln(x / y)) +
     \frac{1}{9}x^2y^2.
     \] 
-  \end{sol}
-\end{example}
+  \end{solution}
+\end{solved}
 
-\begin{exe}
+\begin{exercise}
   Resolver la ecuación
   \[
   3x^2 z_{xx} - 2xy z_{xy} - y^2 z_{yy} + 4x z_x - 2y z_y =
   \sin(2x+3y).
   \] 
-\end{exe}
+\end{exercise}
 % FIN 11.pdf
 
 \chapter{Series y transformadas de Fourier}
 
 \section{Series de Fourier}
 
-\begin{defn}
+\begin{definition}
   Dos funciones son ortogonales en $[a,b]$ si $\int_a^bfg=0$.
-\end{defn}
+\end{definition}
 \begin{example}
   \begin{enumerate}
     \item si $f(x)=2x^2$ y $g(x)=4x^3$, ambas definidas en
@@ -1862,7 +2121,7 @@ la cual es una ecuación de coeficientes constantes.
   \end{enumerate}
 \end{example}
 
-\begin{defn}
+\begin{definition}
   Un conjunto infinito de funciones $\{\phi_n\}_{n=0}^\infty$ se
   dice que es ortogonal en $[a,b]$ si
   \begin{align*}
@@ -1873,7 +2132,7 @@ la cual es una ecuación de coeficientes constantes.
     \<\phi_n,\phi_n\> = \int_a^b \phi_n^2
   \]
   es $\norm{\phi_n}^{2}$, la norma cuadrada de $\phi_n$.
-\end{defn}
+\end{definition}
 
 \begin{example}
   \begin{enumerate}
@@ -1931,7 +2190,7 @@ Puede suceder que la función $f$ no tenga una descomposición
 \eqref{eq:fourier-gen} pero que, aún así,
 las integrales $c_n=\<f,\phi_n\>$ existan.
 
-\begin{defn}
+\begin{definition}
   Si $\{\phi_n\}_{n\geq 1}$ es un conjunto ortogonal de funciones
   integrables en $[a,b]$ y $f:[a,b]\to\R$ es una función
   tal que las integrales
@@ -1944,7 +2203,7 @@ las integrales $c_n=\<f,\phi_n\>$ existan.
   ,\]
   donde $c_n = \<f,\phi_n\>/\norm{\phi_n}^{2}$, se llama
   la serie de Fourier (generalizada) de $f$.
-\end{defn}
+\end{definition}
 
 \begin{example}
   Consideremos el conjunto de funciones
@@ -1971,7 +2230,7 @@ las integrales $c_n=\<f,\phi_n\>$ existan.
   Esta serie se llama serie de Fourier (trigonométrica) de $f$.
 \end{example}
 
-\begin{obs}
+\begin{remark}
 Notemos que, para $n\geq 1$,
 \begin{align*}
   a_n+ib_n
@@ -1980,9 +2239,9 @@ Notemos que, para $n\geq 1$,
   &= \frac{1}{L}\int_{-L}^L f(x)\exp(in\pi x/L)\,dx.
 \end{align*}
 A veces nos podemos ahorrar trabajo calculando una sola integral.
-\end{obs}
+\end{remark}
 
-\begin{exe}\label{ejemplo-fourier}
+\begin{exercise}\label{ejemplo-fourier}
   Determine la serie trigonométrica de Fourier de la función $f$
   definida en $[-1,1]$ como
   \[
@@ -1992,8 +2251,8 @@ A veces nos podemos ahorrar trabajo calculando una sola integral.
       x & 0<x\leq 1
     \end{cases}
   .\]
-\end{exe}
-\begin{sol}
+\end{exercise}
+\begin{solution}
   De \eqref{eq:serie-fourier} con $L=1$, tenemos
   \[
     \overline{f}(x) = c_0
@@ -2053,11 +2312,12 @@ A veces nos podemos ahorrar trabajo calculando una sola integral.
     \right]
   .\]
     
-\end{sol}
+\end{solution}
 
+\newpage
 \subsection{Funciones pares e impares}
 
-\begin{defn}
+\begin{definition}
   Sea $I=[-L,L]$ o $I=\R$.
   Decimos que una función $f:I\to\R$ es par si
   \[
@@ -2068,7 +2328,7 @@ A veces nos podemos ahorrar trabajo calculando una sola integral.
     f(-x) = -f(x)
   \]
   para todo $x\in I$.
-\end{defn}
+\end{definition}
 
 \begin{example}
   La función $\sin$ es impar y la función $\cos$ es par.
@@ -2144,7 +2404,7 @@ por lo cual
 \end{equation}
 Esta se llama serie en senos de $f$.
 
-\begin{example}
+\begin{solved}
   Determine la serie de Fourier de la función dada por
   \[
     f(x) =
@@ -2186,9 +2446,9 @@ Esta se llama serie en senos de $f$.
     1 + 4 \sum_{n=1}^{\infty}
     \frac{1-(-1)^{n}}{n^{2}\pi^{2}}\cos(n\pi x / 2)
   .\]
-\end{example}
+\end{solved}
 
-\begin{example}
+\begin{solved}
   Determine la serie de Fourier de la función dada por
   \[
     f(x) = \frac{|x|}{x} \quad \text{ en } [-\pi,\pi]
@@ -2214,7 +2474,7 @@ Esta se llama serie en senos de $f$.
     \frac{2}{\pi}\sum_{n=1}^{\infty}\frac{1-(-1)^{n}}{n}\sin(nx)
   .\]
   
-\end{example}
+\end{solved}
 
 \begin{theorem}[Convergencia de la serie de Fourier]
   Sean $f$ y $f'$ seccionalmente continuas en $[-L,L]$, teniendo $f$
@@ -2454,99 +2714,99 @@ con
   &= \frac{2}{L}\int_{0}^{L} f(x)\sin(2n\pi x/L)\,dx.
 \end{align*}
 
-\begin{example}
+\begin{solved}
   Considere la función $f(x)=x^{2}$ en $[0,\pi]$. Determine las
   series de $f$ en cosenos, en senos y trigonométrica.
-\end{example}
-\begin{sol}
-  Tenemos $L=\pi$. Para la serie de $f$ en cosenos, calculamos
-  \begin{align*}
-    c_0
-    &= \frac{1}{\pi}\int_{0}^{\pi}x^{2}\,dx \\
-    &= \frac{1}{\pi} \left[
-      \frac{x^{3}}{3}
-    \right]\Big|_{0}^{\pi} \\
-    &= \frac{\pi^{2}}{3}, \\
-    a_n
-    &= \frac{2}{\pi}\int_{0}^{\pi}x^{2}\cos(nx)\,dx \\
-    &= \frac{2}{\pi} \left[
-      x^{2}\frac{\sin(nx)}{n}
-      -2x\frac{-\cos(nx)}{n^{2}}
-      +2\frac{-\sin(nx)}{n^{3}}
-    \right]\Big|_{0}^{\pi} \\
-    &= \frac{2}{\pi} \left[
-      -2\pi\frac{-(-1)^{n}}{n^{2}}
-    \right] \\
-    &= \frac{4(-1)^{n}}{n^{2}}.
-  \end{align*}
-  Así, la extensión par $f_c$ de $f$ a $[-\pi,\pi]$ tiene serie de
-  Fourier
-  \[
-    \overline{f_c}(x)
-    =
-    \frac{\pi^{2}}{3}
-    +
-    4\sum_{n=1}^{\infty}\frac{(-1)^{n}}{n^{2}}\cos(nx)
-  .\]
-  
-  Ahora, para la serie de $f$ en senos, calculamos
-  \begin{align*}
-    b_n
-    &= \frac{2}{\pi}\int_{0}^{\pi}x^{2}\sin(nx)\,dx \\
-    &= \frac{2}{\pi} \left[
-      x^{2}\frac{-\cos(nx)}{n}
-      -2x\frac{-\sin(nx)}{n^{2}}
-      +2\frac{\cos(nx)}{n^{3}}
-    \right]\Big|_{0}^{\pi} \\
-    &= \frac{2}{\pi} \left[
-      \pi^{2}\frac{-(-1)^{n}}{n}+2\frac{(-1)^{n}-1}{n^{3}}
-    \right] \\
-    &= \frac{2}{\pi} \left[
-      \frac{(2-\pi^{2}n^{2})(-1)^{n}-2}{n^{3}}
-    \right].
-  \end{align*}
-  Así,
-  \[
-    \overline{f_s}(x)
-    =
-    \frac{2}{\pi}\sum_{n=1}^{\infty}
-      \frac{(2-\pi^{2}n^{2})(-1)^{n}-2}{n^{3}}
-      \sin(nx)
-  .\]
-  
-  Finalmente, calculemos la serie de su extensión periódica.
-  Tenemos
-  \begin{align*}
-    c_0
-    &= \frac{1}{\pi}\int_{0}^{\pi}x^{2}\,dx = \frac{\pi^{2}}{3}, \\
-    a_n+ib_n
-    &= \frac{2}{\pi}\int_{0}^{L}x^{2}e^{i 2nx}\,dx \\
-    &= \frac{2}{\pi} \left[
-      x^{2}\frac{e^{i 2nx}}{i 2n}
-      -2x\frac{e^{i 2nx}}{i^{2}4n^{2}}
-      +2 \frac{e^{i 2nx}}{i^{3} 8n^{3}}
-    \right]\Big|_{0}^{\pi} \\
-   &= \frac{2}{\pi} \left[
-     \pi^{2}\frac{1}{i 2n}
-     -2\pi \frac{1}{-4n^{2}}
-   \right] \\
-   &= \frac{1}{n^{2}}-i \frac{\pi}{n}.
-  \end{align*}
-  Así, $a_n=\frac{1}{n^{2}}$ y $b_n=-\frac{\pi}{n}$, por lo cual
-  \[
-    \overline{f_p}(x)
-    =
-    \frac{\pi^{2}}{3}
-    +
-    \sum_{n=1}^{\infty} \left[
-      \frac{1}{n^{2}}\cos(2nx)
-      -
-      \frac{\pi}{n}\sin(2nx)
-    \right]
-  .\]
-\end{sol}
+  \begin{solution}
+    Tenemos $L=\pi$. Para la serie de $f$ en cosenos, calculamos
+    \begin{align*}
+      c_0
+      &= \frac{1}{\pi}\int_{0}^{\pi}x^{2}\,dx \\
+      &= \frac{1}{\pi} \left[
+        \frac{x^{3}}{3}
+      \right]\Big|_{0}^{\pi} \\
+      &= \frac{\pi^{2}}{3}, \\
+      a_n
+      &= \frac{2}{\pi}\int_{0}^{\pi}x^{2}\cos(nx)\,dx \\
+      &= \frac{2}{\pi} \left[
+        x^{2}\frac{\sin(nx)}{n}
+        -2x\frac{-\cos(nx)}{n^{2}}
+        +2\frac{-\sin(nx)}{n^{3}}
+      \right]\Big|_{0}^{\pi} \\
+      &= \frac{2}{\pi} \left[
+        -2\pi\frac{-(-1)^{n}}{n^{2}}
+      \right] \\
+      &= \frac{4(-1)^{n}}{n^{2}}.
+    \end{align*}
+    Así, la extensión par $f_c$ de $f$ a $[-\pi,\pi]$ tiene serie de
+    Fourier
+    \[
+      \overline{f_c}(x)
+      =
+      \frac{\pi^{2}}{3}
+      +
+      4\sum_{n=1}^{\infty}\frac{(-1)^{n}}{n^{2}}\cos(nx)
+    .\]
+    
+    Ahora, para la serie de $f$ en senos, calculamos
+    \begin{align*}
+      b_n
+      &= \frac{2}{\pi}\int_{0}^{\pi}x^{2}\sin(nx)\,dx \\
+      &= \frac{2}{\pi} \left[
+        x^{2}\frac{-\cos(nx)}{n}
+        -2x\frac{-\sin(nx)}{n^{2}}
+        +2\frac{\cos(nx)}{n^{3}}
+      \right]\Big|_{0}^{\pi} \\
+      &= \frac{2}{\pi} \left[
+        \pi^{2}\frac{-(-1)^{n}}{n}+2\frac{(-1)^{n}-1}{n^{3}}
+      \right] \\
+      &= \frac{2}{\pi} \left[
+        \frac{(2-\pi^{2}n^{2})(-1)^{n}-2}{n^{3}}
+      \right].
+    \end{align*}
+    Así,
+    \[
+      \overline{f_s}(x)
+      =
+      \frac{2}{\pi}\sum_{n=1}^{\infty}
+        \frac{(2-\pi^{2}n^{2})(-1)^{n}-2}{n^{3}}
+        \sin(nx)
+    .\]
+    
+    Finalmente, calculemos la serie de su extensión periódica.
+    Tenemos
+    \begin{align*}
+      c_0
+      &= \frac{1}{\pi}\int_{0}^{\pi}x^{2}\,dx = \frac{\pi^{2}}{3}, \\
+      a_n+ib_n
+      &= \frac{2}{\pi}\int_{0}^{L}x^{2}e^{i 2nx}\,dx \\
+      &= \frac{2}{\pi} \left[
+        x^{2}\frac{e^{i 2nx}}{i 2n}
+        -2x\frac{e^{i 2nx}}{i^{2}4n^{2}}
+        +2 \frac{e^{i 2nx}}{i^{3} 8n^{3}}
+      \right]\Big|_{0}^{\pi} \\
+     &= \frac{2}{\pi} \left[
+       \pi^{2}\frac{1}{i 2n}
+       -2\pi \frac{1}{-4n^{2}}
+     \right] \\
+     &= \frac{1}{n^{2}}-i \frac{\pi}{n}.
+    \end{align*}
+    Así, $a_n=\frac{1}{n^{2}}$ y $b_n=-\frac{\pi}{n}$, por lo cual
+    \[
+      \overline{f_p}(x)
+      =
+      \frac{\pi^{2}}{3}
+      +
+      \sum_{n=1}^{\infty} \left[
+        \frac{1}{n^{2}}\cos(2nx)
+        -
+        \frac{\pi}{n}\sin(2nx)
+      \right]
+    .\]
+  \end{solution}
+\end{solved}
 
-\begin{example}
+\begin{solved}
   Determine la serie en cosenos y en senos de $f(x)=\sin(x)$ en
   $[0,\pi]$.
   Para $L=\pi$, tenemos
@@ -2642,7 +2902,7 @@ con
     \overline{f_s}(x)
     &= \sin(x).
   \end{align*}
-\end{example}
+\end{solved}
 
 \section{Transformadas de Fourier}
 
@@ -2737,7 +2997,7 @@ Nótese que para definir $\cal F_cf$ y $\cal F_sf$ solo se necesita que
 $f$ esté definida en $[0,\infty)$, en cuyo caso funcionan ambas
 fórmulas.
 
-\begin{example}
+\begin{solved}
   Calcule $\cal F\{f(x)\}$ para
   \[
     f(x)=
@@ -2747,19 +3007,19 @@ fórmulas.
     \end{cases}
   \]
   donde $b>0$.
-\end{example}
-\begin{sol}
-  Tenemos
-  \begin{align*}
-    \cal F\{f(x)\}
-    &= \int_{-\infty}^{\infty}f(x)e^{-i\omega x}\,dx \\
-    &= \int_{0}^{\infty}e^{-bx}e^{-i\omega x}\,dx \\
-    &= -\frac{1}{b+i\omega}e^{-(b+i\omega)x}\Big|_{0}^{\infty} \\
-    &= \frac{1}{b+i\omega}.
-  \end{align*}
-\end{sol}
+  \begin{solution}
+    Tenemos
+    \begin{align*}
+      \cal F\{f(x)\}
+      &= \int_{-\infty}^{\infty}f(x)e^{-i\omega x}\,dx \\
+      &= \int_{0}^{\infty}e^{-bx}e^{-i\omega x}\,dx \\
+      &= -\frac{1}{b+i\omega}e^{-(b+i\omega)x}\Big|_{0}^{\infty} \\
+      &= \frac{1}{b+i\omega}.
+    \end{align*}
+  \end{solution}
+\end{solved}
 
-\begin{example}
+\begin{solved}
   Calcule $F(\omega)=\cal F\{f(x)\}$ para
   \[
     f(x)
@@ -2769,30 +3029,30 @@ fórmulas.
       0 & \text{en otro caso.}
     \end{cases}
   .\]
-\end{example}
-\begin{sol}
-  Tenemos
-  \begin{align*}
-    F(\omega)
-    &= \int_{-\infty}^{\infty}f(x)e^{-i\omega x}\,dx \\
-    &= \int_{-\sqrt 2}^{0}-xe^{-i\omega x}\,dx
-      + \int_{0}^{\sqrt 2}xe^{-i\omega x}\,dx \\
-    &= \int_{0}^{\sqrt 2}xe^{i\omega x}\,dx
-      + \int_{0}^{\sqrt 2}xe^{-i\omega x}\,dx \\
-    &= 2\int_{0}^{\sqrt 2}x\cos(\omega x)\,dx \\
-    &= 2\left[
-      x\frac{\sin(\omega x)}{\omega}-\frac{-\cos(\omega
-      x)}{\omega^{2}}
-    \right]\Big|_{0}^{\sqrt 2} \\
-    &= 2\left[
-      \sqrt 2\frac{\sin(\sqrt 2\omega)}{\omega}
-      +\frac{\cos(\sqrt 2\omega)-1}{\omega^{2}}
-    \right] \\
-    &=
-      \frac{2\sqrt 2\omega\sin(\sqrt 2\omega)+2\cos(\sqrt 2\omega)-2}
-      {\omega^{2}}.
-  \end{align*}
-\end{sol}
+  \begin{solution}
+    Tenemos
+    \begin{align*}
+      F(\omega)
+      &= \int_{-\infty}^{\infty}f(x)e^{-i\omega x}\,dx \\
+      &= \int_{-\sqrt 2}^{0}-xe^{-i\omega x}\,dx
+        + \int_{0}^{\sqrt 2}xe^{-i\omega x}\,dx \\
+      &= \int_{0}^{\sqrt 2}xe^{i\omega x}\,dx
+        + \int_{0}^{\sqrt 2}xe^{-i\omega x}\,dx \\
+      &= 2\int_{0}^{\sqrt 2}x\cos(\omega x)\,dx \\
+      &= 2\left[
+        x\frac{\sin(\omega x)}{\omega}-\frac{-\cos(\omega
+        x)}{\omega^{2}}
+      \right]\Big|_{0}^{\sqrt 2} \\
+      &= 2\left[
+        \sqrt 2\frac{\sin(\sqrt 2\omega)}{\omega}
+        +\frac{\cos(\sqrt 2\omega)-1}{\omega^{2}}
+      \right] \\
+      &=
+        \frac{2\sqrt 2\omega\sin(\sqrt 2\omega)+2\cos(\sqrt 2\omega)-2}
+        {\omega^{2}}.
+    \end{align*}
+  \end{solution}
+\end{solved}
 
 \begin{theorem}[Algunas propiedades y fórmulas]
   Sea $F(\omega)=\cal F\{f(x)\}$.
@@ -2818,11 +3078,11 @@ fórmulas.
   \end{enumerate}
 \end{theorem}
 
-\begin{example}
+\begin{exercise}
   Determine $\cal F\{f(x)\}$ para $f(x)=e^{-bx}\sin(ax)U(x)$.
-\end{example}
+\end{exercise}
 
-\begin{example}
+\begin{solved}
   Calcule la transformada de Fourier en senos de
   \[
     f(x)=
@@ -2832,17 +3092,17 @@ fórmulas.
       0 & x>k
     \end{cases}
   .\]
-\end{example}
-\begin{sol}
-  Tenemos
-  \begin{align*}
-    \cal F_s\{f(x)\}
-    &= \int_{0}^{\infty}f(x)\sin(\omega x)\,dx \\
-    &= \int_{0}^{k}\sin(\omega x)\,dx \\
-    &= -\frac{\cos(\omega x)}{\omega}\Big|_{0}^{k} \\
-    &= \frac{1-\cos(\omega k)}{\omega}
-  \end{align*}
-\end{sol}
+  \begin{solution}
+    Tenemos
+    \begin{align*}
+      \cal F_s\{f(x)\}
+      &= \int_{0}^{\infty}f(x)\sin(\omega x)\,dx \\
+      &= \int_{0}^{k}\sin(\omega x)\,dx \\
+      &= -\frac{\cos(\omega x)}{\omega}\Big|_{0}^{k} \\
+      &= \frac{1-\cos(\omega k)}{\omega}
+    \end{align*}
+  \end{solution}
+\end{solved}
 
 \chapter{Problemas de frontera} % (Mie 10 nov 2021)
 
@@ -3506,9 +3766,9 @@ Es decir,
   \exp(-k(\tfrac{n\pi}{L})^2t)
 \end{align*}
 
-\begin{exe}
+\begin{exercise}
   Consideremos el caso particular de $L=5$, $k=1$, $f(x)=x$, $F(x,t)=x\sin t$.
-\end{exe}
+\end{exercise}
 
 \subsection{Problemas de vibraciones}
 
@@ -3773,15 +4033,15 @@ Imponiendo las condiciones $\phi(0)=\phi(L)=0$, tenemos
   + \frac{x}{c^2L}\int_{0}^{L}H(\xi)\,d\xi
 .\]
 
-\begin{exe}
+\begin{exercise}
   Consideremos el caso particular $L=\pi$, $c=1$, $h(x)=ax$, $f(x)=0$
   y $g(x)=x$.
-\end{exe}
+\end{exercise}
 
 % (26 nov 2021)
 \subsubsection{Vibraciones en una membrana rectangular}
 
-\todo{membrana rectangular}
+\todo{mem\-brana rectan\-gular}
 
 % (1 dic 2021)
 \subsubsection{Vibraciones en una membrana circular}
@@ -4203,7 +4463,7 @@ Ahora observemos que
   B_{nm} = \frac{2\int_{0}^{a} \int_{0}^{2\pi} f(r,\theta) J_n\left(\frac{\xi_{nm}}{a}r\right)\sin(n\theta) \, d\theta \, dr}{\pi a^2 J_{p\pm1}^2(\xi_{pq})}.
 \] Aplicando la segunda condición inicial $u_t(r,\theta,0) = g(r,\theta)$ y el haciendo el procdimineto anterior obtenemos los coeficientes $A_{nm}^{\ast}$, sin olvidarnos del factor $\frac{a}{c\xi_{nm}}$ que aparece en la derivada parcial respecto $t$.
 
-\begin{exe}
+\begin{exercise}
   Resolver la ecuación de calor en coordenadas polares.
   \[
     \frac{\partial u}{\partial t} = c\left(\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2u}{\partial y^2}\right),
@@ -4213,6 +4473,6 @@ Ahora observemos que
   \[
   \nabla^2 u = 0,
 \] la cual se le conoce como la ecuación de Laplace o la ecuación de calor indpendiente del tiempo. ¿Podemos deducir la solución para la ecuación de Lapalce a partir de la solución de la ecuación dependiente del tiempo ($u_t = c \nabla^2 u$)?
-\end{exe}
+\end{exercise}
 
 \end{document}
