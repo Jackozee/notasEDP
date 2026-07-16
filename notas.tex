@@ -67,6 +67,8 @@
 \DeclareMathOperator{\erf}{erf}
 \DeclareMathOperator{\sgn}{sgn}
 \DeclareMathOperator{\csch}{csch}
+\newcommand\const{\mathrm{const}}
+
 \title{Ecuaciones diferenciales parciales - Notas de clase}
 \author{Profesor: Martín Muñóz \\
 Notas: Jorge Alfredo Álvarez Contreras, Ernesto Camacho Ramírez}
@@ -704,19 +706,23 @@ la forma
   A(x,y) z_x + B(x,y) z_y + C(x,y) z = G(x,y),
 \end{equation}
 donde $A,B,C$ y $G$ son continuas en el plano.
-Primero veremos que, en el caso en que \(A=0\) o \(B=0\), la ecuación
-se puede resolver con métodos para EDOs.
-Después discutiremos, a grandes rasgos, cuál es la estrategia para
-reducir el caso general al caso en que \(A=0\) o \(B=0\).
-Veremos cómo llevar a cabo esta estrategia en el caso
-particular en que \(A,B,C\) son constantes, y en el caso en que
-\(A,B,C\) son variables pero \(G=0\). El caso en que \(A,B,C\) son
-variables y \(G\neq 0\) requiere aplicar técnicas de ``adivinación con
-fundamentos'', es decir, proponer una solución con una forma esperada,
-pero con coeficientes indeterminados, y tratar de obtener una
-ecuación para los coeficientes.
+Primero veremos que, cuando \(A=0\) o \(B=0\), la ecuación se reduce a
+una EDO lineal (\ref{ssec:una-derivada}) y,
+cuando \(C=G=0\), la ecuación se reduce a una EDO no lineal
+(\ref{ssec:homo-red}).
+Usando estas dos téncicas, veremos, a grandes rasgos,
+cómo resolver el caso general (\ref{ssec:ord1-general}).
+Después, veremos cómo se simplifica el
+procedimiento cuando \(A,B,C\) son constantes (\ref{ssec:cconst}).
+
+En muchas ocasiones, para obtener soluciones particulares de la
+ecuación no homogénea (\(G\neq 0\)) usando ``adivinación con
+fundamentos'', es decir, proponer una solución con una forma
+esperada, pero con coeficientes indeterminados, y tratar de obtener
+una ecuación para los coeficientes.
 
 \subsection{Caso reducible a una EDO lineal}
+\label{ssec:una-derivada}
 La ecuación más sencilla de resolver es cuando
 \ref{eqn:ed_lineal_1orden} contiene solo una derivada
 parcial $z_x$ ó $z_y$ ya que se puede manejar como una
@@ -728,34 +734,28 @@ ecuación diferencial lineal ordinaria de primer orden:
 cuya solución (bien conocida) es:
 \begin{equation}
   \label{eq:edolinord1sol}
-  y(x) = e^{-\int P(x) \, dx} \left[\int e^{\int P(x) \, dx}
-  Q(x) \, dx + C\right]
+  y = e^{-\int P \, dx} \left[\int e^{\int P \, dx}
+  Q \, dx + C\right]
 ,\end{equation}
-donde \(\int P(x)\,dx\) es cualquier primitiva de \(P\).
+donde \(\int P\,dx\) es cualquier primitiva de \(P\).
 Explícitamente, podemos escribir el siguiente resultado.
 \begin{proposition}
-  Consideremos la ecuación diferencial lineal de primer orden.
-  \begin{equation}
-    A(x,y) z_x + B(x,y) z_y + C(x,y) z = G(x,y),
-  \end{equation}
-  Si \(B=0\), entonces la ecuación tiene solución
-  \begin{equation}
-    \label{eq:sollinord-x}
-    z(x,y) = \exp\Big(-\int \frac{C(x,y)}{A(x,y)} \, dx\Big)
-    \left[\int \exp\Big(\int \frac{C(x,y)}{A(x,y)} \, dx\Big)
-    \frac{G(x,y)}{A(x,y)} \, dx + f(y)\right]
-  ,\end{equation}
-  donde \(\int (C / A)dx\) es una primitiva de \(C/A\) con respecto a
-  \(D_x\) y \(f(y)\) es una función arbitraria de \(y\).
-  Similarmente, si \(A=0\), entonces la ecuación tiene solución
-  \begin{equation}
-    \label{eq:sollinord-y}
-    z(x,y) = \exp\Big(-\int \frac{C(x,y)}{B(x,y)} \, dy\Big)
-    \left[\int \exp\Big(\int \frac{C(x,y)}{B(x,y)} \, dy\Big)
-    \frac{G(x,y)}{B(x,y)} \, dy + g(x)\right]
-  ,\end{equation}
-  donde \(\int C / B dy\) es una primitiva de \(C / B\) con respecto a
-  \(D_y\) y \(g(x)\) es una función arbitraria de \(x\).
+  Las ecuaciones diferenciales lineales de primer orden
+  \begin{align}
+    A(x,y) z_x + C(x,y) z &= G(x,y),
+                          &
+    B(x,y) z_y + C(x,y) z &= G(x,y),
+  \end{align}
+  tienen soluciones dadas por
+  \begin{align}
+    \label{eq:sollinord}
+    z &= e^{-\int\frac{C}{A}dx}
+    \left[\int e^{\int\frac{C}{A}dx} \tfrac{G}{A} \, dx + f(y)\right],
+      &
+    z &= e^{-\int\frac{C}{B}dy}
+    \left[\int e^{\int\frac{C}{B}dy} \tfrac{G}{B} \, dy + f(x)\right]
+  ,\end{align}
+  respectivamente. Aquí, \(f\) es una función arbitraria.
 \end{proposition}
 
 \begin{solved}
@@ -765,10 +765,10 @@ Explícitamente, podemos escribir el siguiente resultado.
     \begin{equation}
       A=4, \qquad B=0, \qquad C=-2x, \qquad G=xy,
     .\end{equation}
-    Como \(B=0\), podemos aplicar la fórmula \eqref{eq:sollinord-x}.
+    Como \(B=0\), podemos aplicar la fórmula \eqref{eq:sollinord}.
     Una primitiva de \(\frac{C}{A}=-\frac{x}{2}\) con respecto a
     \(D_x\) es \(-\frac{1}{4}x^{2}\).
-    De acuerdo a \eqref{eq:sollinord-x},
+    De acuerdo a \eqref{eq:sollinord},
     la solución está dada por
     \begin{align*}
       z(x,y) 
@@ -791,40 +791,84 @@ Explícitamente, podemos escribir el siguiente resultado.
   \emph{Solución:} \(z=x^{2}y-\frac{1}{3}y^{2}+g(x)\).
 \end{exercise}
 
-\subsection{Caso homogéneo reducido}
+\subsection{Ecuación homogénea reducida}
+\label{ssec:homo-red}
 
 Consideremos el caso en el que la ecuación
-\ref{eqn:ed_lineal_1orden} tiene \(G=0\) (es homogénea) y \(C=0\) (es
-reducida), así que es de la forma
+\ref{eqn:ed_lineal_1orden} es homogénea (tiene término \(G=0\))
+y reducida (tiene coeficiente \(C=0\)).
+Por lo tanto, es de la forma
 \begin{equation}
+  \label{eq:homo-red}
   A(x,y) z_x + B(x,y) z_y = 0
 .\end{equation}
-La idea para obtener la solución es obtener las curvas a lo largo de
-las cuales \(z\) es constante, es decir, donde se satisface \(dz=0\):
+Recordemos que, para cualquier función \(z=z(x,y)\), sobre las curvas
+de nivel \(z(x,y)=\const.\) se cumple la ecuación \(dz=0\), es
+decir:
 \begin{equation}
-  dz = z_x dx + z_y dy = 0
+  z_x dx + z_y dy = 0
 .\end{equation}
-Comparando ambas ecuaciones, vemos que
+Por otro lado, si \(z\) es una solución de \eqref{eq:homo-red},
+entonces sobre las curvas de nivel se cumple
 \begin{equation}
-  \frac{dy}{dx} = -\frac{z_x}{z_y} = \frac{B}{A}
-  \qquad \implies \qquad
-  \frac{dx}{A} = \frac{dy}{B}
+  \frac{dy}{dx} = -\frac{z_x}{z_y} = \frac{B(x,y)}{A(x,y)}
 .\end{equation}
-Esta es una EDO no lineal, que podemos intentar resolver con los
-métodos usuales.
+Por lo tanto, la ecuación de las curvas de nivel de \(z\) es
+\begin{equation}
+  B(x,y)dx - A(x,y)dy = 0
+.\end{equation}
+Esta es una EDO no lineal, a la que podemos aplicar los métodos
+usuales de ecuaciones diferenciales ordinarias.
+La solución de esta ecuación es una familia de curvas
+\(F(x,y)=\const\).
+Sin embargo, por construcción, estas son las curvas de nivel de \(z\),
+así que la diferencia \(z-F(x,y)\) también es una constante. Por lo
+tanto, la solución general de \eqref{eq:homo-red} es
+\begin{equation}
+  z=F(x,y)+c
+.\end{equation}
 
-\subsection{Estrategias generales para ecuaciones lineales de primer orden}
-\label{ssec:estrategias-ord1}
+\begin{solved}
+  Consideremos la ecuación homogénea reducida
+  \begin{equation}
+    \label{eq:ejemplohomored1}
+    xy \, z_x + (y^{2}+1)z_y = 0
+  .\end{equation}
+  Como vimos arriba, esta ecuación es equivalente a la EDO
+  \begin{equation}
+    (y^{2}+1)dx - xy \, dy = 0
+  .\end{equation}
+  Notemos que esta EDO es separable
+  \begin{equation}
+    \frac{y \, dy}{y^{2}+1} = \frac{dx}{x}
+  ,\end{equation}
+  y tiene solución
+  \begin{equation}
+    \frac{1}{2}\ln(y^{2}+1) = \ln x + \const
+  .\end{equation}
+  Multiplicando ambos lados por \(2\), tomando exponenciales y
+  despejando la constante, obtenemos la familia de curvas
+  \begin{equation}
+    \frac{y^{2}+1}{x^{2}} = \const
+  ,\end{equation}
+  por lo cual la solución a la EDP \eqref{eq:ejemplohomored1} es
+  \begin{equation}
+    z = \frac{y^{2}+1}{x^{2}} + c
+  .\end{equation}
+\end{solved}
 
-Ya vimos cómo resolver la ecuación lineal
+\subsection{Caso general}
+\label{ssec:ord1-general}
+
+Consideremos la ecuación
 \begin{equation}
   A(x,y) z_x + B(x,y) z_y + C(x,y) z = G(x,y),
 \end{equation}
-en el caso en que \(A=0\) o \(B=0\).
-Si tanto \(A\) como \(B\) son distintos a cero,
-la estrategia general es aplicar un cambio de coordenadas
-\((x,y)\to(\xi,\eta)\) para simplificar la ecuación al caso que ya
-sabemos resolver.
+Si \(A=0\) o \(B=0\), podemos aplicar las técnicas de
+\ref{ssec:una-derivada}, así que supongamos \(A,B\neq 0\).
+La estrategia general es aplicar un cambio de coordenadas
+\((x,y)\to(\xi,\eta)\) para que en la ecuación transformada aparezca
+solo una derivada parcial.
 Veamos cómo funciona esto. Dado un cambio de coordenadas
 \begin{equation}
   \left\{
@@ -860,17 +904,21 @@ o bien
   + C\cdot  z
   = G.
 \end{equation}
-La idea es encontrar un cambio de coordenadas adecuado para eliminar
-uno de los dos coeficientes de la ecuación transformada:
-\begin{equation}
-  A' = A(x,y)\xi_x + B(x,y)\xi_y 
-  \qquad\qquad
-  B' = A(x,y)\eta_x + B(x,y)\eta_y
-.\end{equation}
-También debemos asegurarnos de que el cambio de variables sea
-invertible, para lo cual es necesario que el jacobiano no se anule:
+Para eliminar uno de los coeficientes,
+debemos resolver una de las dos ecuaciones
+\begin{align}
+  \label{eq:coord-xi}
+  A(x,y)\xi_x + B(x,y)\xi_y &= 0,
+  \\
+  \label{eq:coord-eta}
+  A(x,y)\eta_x + B(x,y)\eta_y &= 0,
+\end{align}
+y luego debemos escoger la otra función de modo
+que el jacobiano de la transformación sea no singular:
 \begin{equation}
   \label{eq:jacobiano}
+  J
+  =
   \frac{\partial(\xi, \eta)}{\partial(x,y)}
   = \det
   \begin{bmatrix}
@@ -878,251 +926,113 @@ invertible, para lo cual es necesario que el jacobiano no se anule:
   \end{bmatrix}
   \neq 0.
 \end{equation}
-Por lo tanto, debemos resolver una de las dos ecuaciones diferenciales
+Por ejemplo, supongamos que queremos resolver la ecuación
+\eqref{eq:coord-eta} para \(\eta\).
+Como estamos en el caso homogéneo y reducido
+(ver \ref{ssec:homo-red})
+podemos interpretar \eqref{eq:coord-eta} como la ecuación de las
+curvas de nivel de \(\eta\):
 \begin{equation}
-  \label{eq:possible-changes}
-  \left\{
-    \begin{aligned}
-      A(x,y)\xi_x + B(x,y)\xi_y &= 0,
-      \\
-      A(x,y)\eta_x + B(x,y)\eta_y &= 0,
-    \end{aligned}
-  \right.
+  d\eta = \eta_xdx + \eta_y dy = 0.
 \end{equation}
-lo cual, la mayoría de las veces, esto es más sencillo que resolver la
-ecuación original. Por ejemplo, supongamos que obtenemos una solución
-\(\eta=\eta(x,y)\) para la segunda ecuación en
-\eqref{eq:possible-changes}, y que tenemos \(\eta_y\neq 0\).
-En este caso, la elección \(\xi=x\) asegura que el jacobiano
-\eqref{eq:jacobiano} no se anula, así que la transformación es
-invertible, digamos con inversa
+Escribiendo
+\begin{equation}
+  \frac{dx}{dy} = -\frac{\eta_y}{\eta_x} = \frac{A}{B}
+\end{equation}
+vemos que \(\eta_y\neq 0\) (pues \(A\neq 0\)), así que una vez
+encontrada la solución \(\eta=\eta(x,y)\),
+podemos escoger \(\xi=x\) para que el jacobiano sea
+\(J=\eta_y\neq 0\), lo cual asegura que la transformación es
+invertible.
+La transformación inversa se puede escribir como
 \begin{equation}
   \label{eq:cambioparticular}
   \left\{
     \begin{aligned}
       x &= \xi,
       \\
-      y &= \phi(\xi,\eta).
+      y &= \phi(\xi,\eta),
     \end{aligned}
   \right.
 \end{equation}
-De este modo, la ecuación transformada \eqref{eq:transformada-prev} se
+así que la ecuación transformada \eqref{eq:transformada-prev} se
 reduce a
 \begin{equation}
   \label{eq:transformada-simple}
-  A(\xi,\phi(\xi,\eta))z_\xi 
-  + C(\xi,\phi(\xi,\eta)) z
-  = G(\xi,\phi(\xi,\eta)).
+  Az_\xi + Cz = G.
 \end{equation}
-Como en la ecuación solo aparece la derivada \(z_\xi\),
-la podemos resolver usando la fórmula \eqref{eq:sollinord-x}, para
-obtener
+%\begin{equation}
+%  \label{eq:transformada-simple}
+%  A(\xi,\phi(\xi,\eta))z_\xi 
+%  + C(\xi,\phi(\xi,\eta)) z
+%  = G(\xi,\phi(\xi,\eta)).
+%\end{equation}
+Como aquí solo aparece la derivada \(z_\xi\),
+podemos usar la fórmula \eqref{eq:sollinord}, para
+obtener la solución en términos de \((\xi,\eta)\):
 \begin{equation}
   z
   =
-  \exp
-  \Big(
-    \!-\!\!\!
-    \int \frac{C(\xi,\phi(\xi,\eta))}{A(\xi,\phi(\xi,\eta))} \, d\xi
-  \Big)
+  e^{\int \frac{C}{A}d\xi}
   \left[
-    \int
-    \exp
-    \Big(
-      \int \frac{C(\xi,\phi(\xi,\eta))}{A(\xi,\phi(\xi,\eta))} \, d\xi
-    \Big)
-  \frac{G(\xi,\phi(\xi,\eta))}{A(\xi,\phi(\xi,\eta))} \, d\xi
+    \int e^{\int \frac{C}{A}d\xi} \tfrac{G}{A} \,d\xi
   +
   f(\eta)
   \right]
 .\end{equation}
-Finalmente, regresamos a las variables originales usando la
-transformación inversa \((\xi,\eta)\to(x,y)\).
-Primero cambiamos el nombre de las varibles de integración
-\begin{align}
-  z
-  &=
-  \exp
-  \Big(
-    \!-\!\!\!
-    \int^\xi \frac{C(v,\phi(v,\eta))}{A(v,\phi(v,\eta))} \, dv
-  \Big)
-  \left[
-    \int^\xi
-    \exp
-    \Big(
-      \int^{u} \frac{C(v,\phi(v,\eta))}{A(v,\phi(v,\eta))} \, dv
-    \Big)
-  \frac{G(u,\phi(u,\eta))}{A(u,\phi(u,\eta))} \, du
-  +
-  f(\eta)
-  \right]
-  \\
-  &=
-  \exp
-  \Big(
-    \!-\!\!\!
-    \int^\xi \frac{C(v,\phi(v,\eta))}{A(v,\phi(v,\eta))} \, dv
-  \Big)
-    \int^\xi\!\!
-    \exp
-    \Big(
-      \int^{u} \frac{C(v,\phi(v,\eta))}{A(v,\phi(v,\eta))} \, dv
-    \Big)
-  \frac{G(u,\phi(u,\eta))}{A(u,\phi(u,\eta))} \, du
-  \\
-  &\quad+
-  \exp
-  \Big(
-    \!-\!\!\!
-    \int^\xi \frac{C(v,\phi(v,\eta))}{A(v,\phi(v,\eta))} \, dv
-  \Big)
-  f(\eta)
-\end{align}
-y ahora sustituimos las apariciones de \(\eta\) usando el cambio de
-variable \eqref{eq:cambioparticular}:
-\begin{align}
-  z
-  &=
-  \exp
-  \Big(
-    \!-\!\!\!
-    \int^x \frac{C(v,\phi(v,\eta(v,y)))}{A(v,\phi(v,\eta(v,y)))} \, dv
-  \Big)
-    \int^x
-    \!\!\!\!
-    \exp
-    \Big(
-      \int^{u} \frac{C(v,\phi(v,\eta(v,y)))}{A(v,\phi(v,\eta(v,y)))} \, dv
-    \Big)
-  \frac{G(u,\phi(u,\eta(u,y)))}{A(u,\phi(u,\eta(u,y)))} \, du
-  \\
-  &\quad+
-  \exp
-  \Big(
-    \!-\!\!\!
-    \int^x \frac{C(v,\phi(v,\eta(v,y)))}{A(v,\phi(v,\eta(v,y)))} \, dv
-  \Big)
-  f(\eta(x,y))
-\end{align}
-la cual es la solución en términos de \((x,y)\).
+%\begin{equation}
+%  z
+%  =
+%  \exp
+%  \Big(
+%    \!-\!\!\!
+%    \int \frac{C(\xi,\phi(\xi,\eta))}{A(\xi,\phi(\xi,\eta))} \, d\xi
+%  \Big)
+%  \left[
+%    \int
+%    \exp
+%    \Big(
+%      \int \frac{C(\xi,\phi(\xi,\eta))}{A(\xi,\phi(\xi,\eta))} \, d\xi
+%    \Big)
+%  \frac{G(\xi,\phi(\xi,\eta))}{A(\xi,\phi(\xi,\eta))} \, d\xi
+%  +
+%  f(\eta)
+%  \right]
+%.\end{equation}
 
-Nótese que, como la ecuación es lineal, sus soluciones son de la forma
-\begin{equation}
-  z = z_p + z_h
-,\end{equation}
-donde \(z_p\) es una solución particular, y \(z_h\) es la solución
-general a la ecuación es homogénea asociada
-\begin{equation}
-  A(x,y)z_x + B(x,y)z_y + C(x,y)z = 0.
-\end{equation}
-En la solución general que obtuvimos arriba, podemos reconocer la
-solución a la parte homogénea
-\begin{equation}
-  z_h
-  =
-  \exp
-  \Big(
-    \!-\!\!\!
-    \int^x \frac{C(v,\phi(v,\eta(v,y)))}{A(v,\phi(v,\eta(v,y)))} \, dv
-  \Big)
-  f(\eta(x,y))
-\end{equation}
-y la solución particular
-\begin{equation}
-  \label{eq:part}
-  z_p
-  \!=\!
-  \exp
-  \Big(
-    \!-\!\!
-    \int^x \frac{C(v,\phi(v,\eta(v,y)))}{A(v,\phi(v,\eta(v,y)))} \, dv
-  \Big)
-  \!\!
-    \int^x
-    \!\!\!\!
-    \exp
-    \Big(
-      \int^{u} \frac{C(v,\phi(v,\eta(v,y)))}{A(v,\phi(v,\eta(v,y)))} \, dv
-    \Big)
-  \frac{G(u,\phi(u,\eta(u,y)))}{A(u,\phi(u,\eta(u,y)))} \, du
-.\end{equation}
-Sin embargo, el uso de esta ecuación para \(z_p\) podría resultar
-inconveniente. En su lugar, algunas veces es mas fácil obtener una
-solución particular usando el método de coeficientes indeterminados.
-
-En el resto de la sección, veremos cómo se simplifica este
-procedimiento general en algunos casos, por ejemplo, cuando \(A,B,C\)
-son constantes.
-Para ecuaciones de segundo orden también podemos hacer cambios de
-coordenadas que simplifiquen la ecuación. Lo veremos en la sección
-\ref{sec:lin-orden-2}.
+A continuación, en \ref{ssec:cconst}, veremos cómo llevar a cabo este
+procedimiento en el caso de que \(A,B,C\) son constantes.
+Luego, en \ref{ssec:cvar}, volveremos al caso general para hacer
+algunos ejemplos.
 
 \subsection{Coeficientes constantes}
 \label{ssec:cconst}
 
-Consideremos la ecuación
-\[
-A z_x + B z_y + C z = G(x,y),
-\]
+Veamos cómo se reduce el procedimiento general cuando la ecuación es
+de la forma
+\begin{equation}
+  \label{eq:cconst}
+  A z_x + B z_y + C z = G(x,y),
+\end{equation}
 con $A, B$ y $C$ constantes.
 Supondremos que \(A,B\neq 0\) (en otro caso, solo aparece una derivada
-parcial y podemos aplicar una de las fórmulas
-\eqref{eq:sollinord-x} o \eqref{eq:sollinord-y}).
-En este caso con coeficientes constantes,
-basta tomar un cambio de variable lineal:
+parcial, así que podemos usar la fórmula \eqref{eq:sollinord}).
+Como vimos arriba, basta encontrar un cambio de variable adecuado
+\((x,y)\to(\xi,\eta)\) para llevar la ecuación a la forma
 \begin{equation}
-  \left\{
-    \begin{aligned}
-      \xi &= c_{11}x + c_{12}y
-      \\
-      \eta &= c_{21}x + c_{22}y
-    \end{aligned}
-  \right.
-\end{equation}
-Sustituyendo las derivadas,
+  \label{eq:cconst-simple}
+  Az_\xi + Cz = G
+.\end{equation}
+Para hacer esta simplificación, tomamos \(\xi=x\),
+mientras que \(\eta\) es la solución de la ecuación
 \begin{equation}
-  \left\{
-    \begin{aligned}
-      z_x &= z_\xi \xi_x + z_\eta \eta_x
-      = c_{11} z_\xi + c_{21} z_\eta,
-      \\
-      z_y &= z_\xi \xi_y + z_\eta \eta_y
-      = c_{12} z_\xi + c_{22} z_\eta,
-    \end{aligned}
-  \right.
-\end{equation}
-la ecuación transformada a las nuevas coordenadas \((\xi,\eta)\),
-queda como
-\begin{align*}
-  A(c_{11} z_\xi + c_{21} z_\eta)
-  + B(c_{12} z_\xi + c_{22} z_\eta) + C z
-  &= G
-  \\
-  \iff
-  \quad
-  (A c_{11} + B c_{12}) z_\xi
-  + (A c_{21} + B c_{22}) z_\eta + C z
-  &= G,
-\end{align*}
-donde ahora $z = z(\xi, \eta)$.
-Para simplificar la ecuación, debemos eliminar uno de los
-coeficientes, es decir, debemos resolver una de las ecucaciones
-\begin{equation}
-  \left\{
-    \begin{aligned}
-      A c_{11} + B c_{12} &= 0
-      \\
-      A c_{21} + B c_{22} &= 0
-    \end{aligned}
-  \right.
-\end{equation}
-Por ejemplo, podemos resolver la segunda poniendo
-$c_{21} = B$ y $c_{22} = -A$.
-Para cuidar que el jacobiano
-\(\partial (\xi,\eta) / \partial (x,y) = \det(c_{ij})=-c_{11}A-c_{12}B\)
-no se anule, podemos elegir $c_{11} = 1$, $c_{12} = 0$.
-Luego, el cambio de variables elegido
+  \label{eq:coord-eta-cconst}
+  A\eta_x + B\eta_y = 0,
+.\end{equation}
+Como \(A,B\) son constantes, basta tomar \(\eta = c_1x+c_2y\),
+de modo que la ecuación \eqref{eq:coord-eta-cconst} se reduce a
+\(Ac_1 + Bc_2 = 0\), que podemos resolver tomando \(c_1=B\),
+\(c_2=-A\). Así, el cambio de variables que buscamos es
 \begin{equation}
   \label{eq:cambio-lin-cconst-1}
   \left\{
@@ -1133,43 +1043,235 @@ Luego, el cambio de variables elegido
     \end{aligned}
   \right.
 \end{equation}
-convierte la ecuación diferencial a la forma
-\[
-A z_\xi + C z = G(\xi ,\tfrac{1}{A}(B\xi-\eta)).
-\]
-De acuerdo a \eqref{eq:sollinord-x}, la solución para esta ecuación es
+Con esta elección de variables, la ecuación se reduce a la forma
+\eqref{eq:cconst-simple}, cuya solución está dada por
 \begin{equation}
-  z(\xi, \eta)
-  = e^{-\frac{C}{A} \xi}
+  \label{eq:cconst-sol-abreviada}
+  z
+  =
+  e^{\frac{C}{A}\xi}
   \left[
-    \frac{1}{A}\int e^{\frac{C}{A}\xi} G(\xi ,\tfrac{1}{A}(B\xi-\eta)) \,
+    \frac{1}{A}
+    \int e^{\frac{C}{A}\xi} G \,d\xi
+  +
+  f(\eta)
+  \right]
+.\end{equation}
+Nótese que la solución se puede separar como
+\begin{equation}
+  z = z_p + z_h
+,\end{equation}
+donde
+\begin{equation}
+  \label{eq:cconst-sol-part-trans} 
+  z_p
+  =
+  \frac{1}{A}
+  e^{\frac{C}{A}\xi}
+  \int e^{\frac{C}{A}\xi} G \,d\xi
+\end{equation}
+es una solución particular a la ecuación simplificada
+\eqref{eq:cconst-simple}, y donde
+\begin{equation}
+  \label{eq:cconst-sol-homo-trans} 
+  z_h = e^{\frac{C}{A}\xi} f(\eta)
+\end{equation}
+es la solución general a la ecuación homogénea asociada
+\begin{equation}
+  Az_\xi + Cz = 0
+.\end{equation}
+Realizando las integrales \eqref{eq:cconst-sol-part-trans},
+\eqref{eq:cconst-sol-homo-trans}, y volviendo a las variables
+originales, obtenemos la solución en términos de \((x,y)\).
+
+\begin{remark}
+  Aunque la fórmula \eqref{eq:cconst-sol-part-trans} nos da una manera
+  para obtener una solución particular \(z_p\), a veces es más
+  conveniente usar el método de coeficientes indeterminados.
+  Esto es particularmente útil cuando $G(x,y)$ es una
+  combinación de funciones elementales:
+  \[
+  \sin, \cos, \exp,
+  \]
+  con argumentos lineales en $x$ y en $y$, ó cuando $G$ es
+  un polinomio en $x$ y $y$.
+\end{remark}
+
+\begin{solved}
+  Resolver la ecuación $3 z_x - 2 z_y + 4z = 0$.
+  \begin{solution}
+    Notando que $A = 3$, $B = -2$ y $C = 4$,
+    vemos que el cambio de variable adecuado es
+    \begin{equation}
+      \left\{
+        \begin{aligned}
+          \xi &= x
+          \\
+          \eta &= -2x-3y
+        \end{aligned}
+      \right.
+    \end{equation}
+    Como la ecuación es homogénea, podemos usar directamente la
+    ecuación \eqref{eq:cconst-sol-homo-trans} y luego regresar el
+    cambio de variable:
+    \[
+    z = e^{-\frac{4}{3} \xi} f(\eta)
+    =  e^{-\frac{4}{3} x} f(-2x - 3y)
+    =  e^{-\frac{4}{3} x} g(2x + 3y),
+    \] 
+    donde definimos \(g(\eta)=f(-\eta)\).
+  \end{solution}
+\end{solved}
+
+\begin{solved}
+  Resolver la ecuación $2 z_x - 3 z_y + z = 5 e^{-2x - y} + xy$.
+  \begin{solution}
+    Los coeficientes son \(A=2\), \(B=-3\), \(C=1\), así que la
+    transformación adecuada es
+    \begin{equation}
+      \left\{
+        \begin{aligned}
+          \xi &= x
+          \\
+          \eta &= -3x-2y
+        \end{aligned}
+      \right.
+    \end{equation}
+    Para la parte homogénea de la solución, usamos
+    \eqref{eq:cconst-sol-homo-trans} y luego regresamos a las
+    variables originales:
+    \begin{equation}
+      z
+      = e^{\frac{1}{2}\xi}f(\eta)
+      = e^{\frac{1}{2}x}f(-3x-2y)
+      = e^{\frac{1}{2}x}g(3x+2y)
+    ,\end{equation}
+    donde definimos \(g(\eta)=f(-\eta)\).
+    Para la parte no homogénea, primero notamos que la transformación
+    inversa es
+    \begin{equation}
+      \left\{
+        \begin{aligned}
+          x &= \xi
+          \\
+          y &= -\tfrac{3}{2}\xi-\tfrac{1}{2}\eta
+        \end{aligned}
+      \right.
+    \end{equation}
+    así que la parte no homogénea es
+    \begin{align}
+      G
+      &= 5 e^{-2x - y} + xy \\
+      &= 5e^{-2\xi -(-\frac{3}{2}\xi-\frac{1}{2}\eta)}
+      +\xi(-\tfrac{3}{2}\xi-\tfrac{1}{2}\eta) \\
+      &= 5e^{-\frac{1}{2}\xi+\frac{1}{2}\eta}
+      -(\tfrac{3}{2}\xi^{2}+\tfrac{1}{2}\xi\eta)
+    ,\end{align}
+    
+    Por lo tanto, una solución particular está dada por
+    la ecuación \eqref{eq:cconst-sol-part-trans}:
+    \begin{align}
+      z_p
+      &= \frac{1}{A}e^{-\frac{C}{A}\xi}
+      \int e^{\frac{C}{A}\xi} G\,d\xi \\
+      &= \frac{1}{2}e^{-\frac{1}{2}\xi}
+      \int e^{\frac{1}{2}\xi}
+      (
+      5e^{-\frac{1}{2}\xi+\frac{1}{2}\eta}
+      -(\tfrac{3}{2}\xi^{2}+\tfrac{1}{2}\xi\eta)
+      )
+      \,d\xi \\
+      &= \frac{1}{2}e^{-\frac{1}{2}\xi}
+      \int 
+      (
+      5e^{\frac{1}{2}\eta}
+      -e^{\frac{1}{2}\xi}(\tfrac{3}{2}\xi^{2}+\tfrac{1}{2}\xi\eta)
+      )
+      \,d\xi \\
+      &= \frac{1}{2}e^{-\frac{1}{2}\xi}
+      \left[
+      5e^{\frac{1}{2}\eta}\xi
+      -e^{\frac{1}{2}\xi}(3\xi^{2}+\xi\eta-12\xi-2\eta+24)
+      \right] \\
+      &=
+      \frac{5}{2}e^{-\frac{1}{2}\xi+\frac{1}{2}\eta}\xi
+      -\frac{3}{2}\xi^{2}-\frac{1}{2}\xi\eta+6\xi+\eta-12
+    .\end{align}
+    Deshaciendo el cambio de variables, obtenemos
+    \begin{align}
+      z_p
+      &=
+      \frac{5}{2}e^{-\frac{1}{2}x+\frac{1}{2}(-3x-2y)}x
+      -\frac{3}{2}x^{2}-\frac{1}{2}x(-3x-2y)+6x+(-3x-2y)-12 \\
+      &=
+      \frac{5}{2}e^{-2x-y}x+xy+3x-2y-12.
+    \end{align}
+    Por lo tanto, la solución general es
+    \begin{equation}
+      z
+      =
+      e^{-\frac{1}{2} x}f(3x+2y)
+      +
+        \frac{5}{2} e^{-2x-y}x
+        + xy+3x-2y-12
+    .\end{equation}
+  \end{solution}
+\end{solved}
+
+\paragraph{Fórmula explícita}
+Arriba obtuvimos las integrales \eqref{eq:cconst-sol-part-trans} y
+\eqref{eq:cconst-sol-homo-trans} para obtener \(z_p\) y \(z_h\) en
+términos de \((\xi,\eta)\). En los ejemplos, primero usamos estas
+fórmulas y \emph{después} invertimos el cambio de variable.
+Por otro lado, también podemos invertir el cambio de variables
+\emph{antes de realizar la integral}, como sigue:
+usando el cambio de variable inverso
+\begin{equation}
+  \left\{
+    \begin{aligned}
+      x &= \xi,
+      \\
+      y &= \tfrac{B}{A}\xi-\tfrac{1}{A}\eta.
+    \end{aligned}
+  \right.
+\end{equation}
+vemos que la forma explícita de \eqref{eq:cconst-simple} es
+\begin{equation}
+  Az_\xi + Cz = G(\xi,\tfrac{B}{A}\xi-\tfrac{1}{A}\eta)
+,\end{equation}
+por lo cual la solución \eqref{eq:cconst-sol-abreviada} es,
+explícitamente,
+\begin{align}
+  z
+  &= e^{-\frac{C}{A} \xi}
+  \left[
+    \frac{1}{A}\int
+    e^{\frac{C}{A}\xi} G(\xi,\tfrac{B}{A}\xi-\tfrac{1}{A}\eta) \,
     d\xi + f(\eta)
   \right]
-,\end{equation}
-para una función arbitraria \(f\).
-Finalmente, deshacemos el cambio de variable.
-Primero, renombramos las variables de integración
-\begin{equation}
-  z(\xi,\eta)
-  = e^{-\frac{C}{A} \xi}
+  \\
+  &= e^{-\frac{C}{A} \xi}
   \left[
-    \frac{1}{A}\int^\xi e^{\frac{C}{A}u} G(u ,\tfrac{1}{A}(Bu-\eta)) \,
+    \frac{1}{A}\int^\xi_0
+    e^{\frac{C}{A}u} G(u ,\tfrac{B}{A}u-\tfrac{1}{A}\eta) \,
     du + f(\eta)
-  \right]
-\end{equation}
-y luego usamos las ecuaciones \eqref{eq:cambio-lin-cconst-1} para
-obtener la solución general en términos de \((x,y)\):
+  \right].
+\end{align}
+En esta forma, ya podemos hacer la sustitución \((\xi,\eta)\to(x,y)\)
+usando las ecuaciones \eqref{eq:cambio-lin-cconst-1}:
 \begin{equation}
   \label{eq:sol-gen-cconst}
   z(x,y)
   = e^{-\frac{C}{A} x}
   \left[
-    \frac{1}{A}\int^x e^{\frac{C}{A}u} G(u ,\tfrac{B}{A}(u-x)+y) \,
+    \frac{1}{A}\int^x_0 e^{\frac{C}{A}u} G(u ,\tfrac{B}{A}u-\tfrac{B}{A}x+y) \,
     du + f(Bx-Ay)
   \right]
 .\end{equation}
+Notemos que el límite inferior de la integral es irrelevante, pues el
+término que resulta se puede absorber dentro de la \(f\).
 Ponemos esto en una proposición:
-\begin{proposition}[Ecuaciones lineales de primer orden]
+\begin{proposition}
   La ecuación lineal de primer orden
   \[
   A z_x + B z_y + C z = G(x,y),
@@ -1183,8 +1285,8 @@ Ponemos esto en una proposición:
   \begin{equation}
     \label{eq:cconst-sol-part}
     z_p
-    = e^{-\frac{C}{A} x}
-      \frac{1}{A}\int^x e^{\frac{C}{A}u} G(u ,\tfrac{B}{A}(u-x)+y) \,
+    = \frac{1}{A}e^{-\frac{C}{A} x}
+      \int^x e^{\frac{C}{A}u} G(u ,\tfrac{B}{A}(u-x)+y) \,
       du
   \end{equation}
   es una solución particular a la ecuación, mientras que
@@ -1199,190 +1301,36 @@ Ponemos esto en una proposición:
   \end{equation}
 \end{proposition}
 
-\begin{remark}
-  Aunque la fórmula \eqref{eq:cconst-sol-part} nos da una manera
-  para obtener una solución particular, a veces es más fácil
-  usar el método de coeficientes indeterminados.
-  Esto es particularmente útil cuando $G(x,y)$ es una
-  combinación de funciones elementales:
-  \[
-  \sin, \cos, \exp,
-  \]
-  con argumentos lineales en $x$ y en $y$, ó cuando $G$ es
-  un polinomio en $x$ y $y$.
-\end{remark}
-
-\begin{solved}
-  Resolver la ecuación $3 z_x - 2 z_y + 4z = 0$.
-  \begin{solution}
-    La ecuación es homogénea, así que podemos usar directamente la
-    ecuación \eqref{eq:cconst-sol-homo}.
-    Notando que $A = 3$, $B = -2$ y $C = 4$, tenemos
-    \[
-    z(x,y) = e^{-\frac{4}{3} x} f(2x + 3y).
-    \] 
-  \end{solution}
-\end{solved}
-
-\begin{solved}
-  Resolver la ecuación $2 z_x - 3 z_y + z = 5 e^{-2x - y} + xy$.
-  \begin{solution}
-    La ecuación tiene coeficientes constantes \(A=2\), \(B=-3\),
-    \(C=1\), y parte no homogénea \(G(x,y)=5 e^{-2x - y} + xy\).
-    La solución general es de la forma
-    \begin{equation}
-      z = z_h + z_p
-    ,\end{equation}
-    donde usamos \eqref{eq:cconst-sol-homo} para obtener la solución
-    homogénea
-    \begin{equation}
-      z_h = e^{-\frac{1}{2} x}f(3x+2y).
-    \end{equation}
-    Una solución particular \(z_p\) se puede obtener usando la
-    ecuación \eqref{eq:cconst-sol-part}:
-    \begin{align}
-      z(x,y)
-      &= e^{-\frac{C}{A} x}
-        \frac{1}{A}\int^x e^{\frac{C}{A}u} G(u ,\tfrac{B}{A}(u-x)+y) \,
-        du
-      \\
-      &=
-      \frac{1}{2}e^{-\frac{1}{2} x}
-        \int^x e^{\frac{1}{2}u} G(u ,-\tfrac{3}{2}(u-x)+y) \, du
-      \\
-      &=
-      \frac{1}{2}e^{-\frac{1}{2} x}
-        \int^x
-        (5 e^{-\frac{3}{2}x-y}
-        + e^{\frac{1}{2}u}(-\tfrac{3}{2}(u-x)u+yu))
-        \, du
-      \\
-      &=
-      \frac{1}{2}e^{-\frac{1}{2} x}
-      \left[
-        5 e^{-\frac{3}{2}x-y}x
-        + e^{\frac{1}{2}x}(2xy+6x-4y-24)
-      \right]
-      \\
-      &=
-        \frac{5}{2} e^{-2x-y}x
-        + xy+3x-2y-12.
-    \end{align}
-    Por lo tanto, tenemos
-    \begin{equation}
-      z
-      =
-      e^{-\frac{1}{2} x}f(-3x-2y)
-      +
-        \frac{5}{2} e^{-2x-y}x
-        + xy+3x-2y-12
-    .\end{equation}
-  \end{solution}
-\end{solved}
-
-
-\begin{solved}
-  Resolver la ecuación $2 z_x - 3 z_y + z = 5 e^{-2x - y} +
-  xy$.
-  \begin{solution}
-    \begin{enumerate}
-      \item La solución de la ecuación homogenea $2 z_x - 3z_y + z =
-        0$ está dada por
-        \[
-        z(x,y) = f(3x + 2y) e^{-\frac{1}{2}x}.
-        \] 
-      \item Ahora obtenemos una solución particular para el
-        término $5e^{-2x-y}$. Para ésto proponemos una
-        solución de la forma
-        \[
-        z = A e^{-2x-y},
-        \] calculando las derivadas parciales obtenemos
-        \[
-        z_x = -2 A e^{-2x-y}, \quad z_y = -A e^{-2x-y},
-        \] sustituyendo en la ecuación
-        \begin{align*}
-          2\left(-2Ae^{-2x-y}\right) -
-          3\left(-Ae^{-2x-y}\right) + Ae^{-2x-y} &=
-          5e^{-2x-y}\\
-          \implies -4A + 3A + A &= 5\\
-          \implies 0 &= 5,
-        \end{align*}
-        lo cual es absurdo, por lo tanto la solución
-        propuesta no es adecuada, intentemos con $z = A x
-        e^{-2x-y}$, entonces
-        \[
-        z_x = Ae^{-2x-y} - 2Axe^{-2x-y}, \quad z_y =
-        -Axe^{-2x-y},
-        \] sustituyendo
-        \begin{align*}
-          2\left(Ae^{-2x-y}-2Axe^{-2x-y}\right) -
-          3\left(-Axe^{-2x-y}\right) + Axe^{-2x-y} &=
-          5e^{-2x-y}\\
-          \implies 2A - 4Ax + 3Ax + Ax &= 5\\
-          \implies A = \frac{5}{2},
-        \end{align*}
-        por lo tanto $z_{p_1} = \frac{5}{2} x e^{-2x-y}$. La
-        solución particular $z_{p_2}$ correspondiente al
-        término $xy$ se deja como ejercicio para el lector.
-    \end{enumerate}
-  \end{solution}
-\end{solved}
-
-\begin{exercise}
-  Resolver la ecuación de coeficientes constantes no
-  homogenea $z_x + 2 z_y = \sin x - 3 \cos y$.
-\end{exercise}
-
 \begin{solved}
   Resolver la ecuación $2z_x + z_y - 2z = \sin(4y-2x)e^{x}$.
-
   \begin{solution}
-    Primero resolvemos la ecuación homogenea correspondiente
-    $2z_x + z_y - 2z = 0$. Observemos que $A = 2, B = 1$ y
-    $C = -2$, entonces
+    Observemos que $A = 2, B = 1$ y $C = -2$.
+    De acuerdo a la ecuación \eqref{eq:cconst-sol-homo}, la solución
+    homogénea es
      \[
       z_h = f(x-2y)e^{x}
     .\] 
-    Ahora buscamos una solución particular de la forma
-    \[
-      z = [A \sin(4y-2x) + B \cos(4y-2x)]e^{x}
-    .\] Las derivadas parciales son
-    \begin{align*}
-      z_x &= [-2A\cos(4y-2x) + 2B\sin(4y-2x)]e^{x} +
-      [A\sin(4y-2x) + B\cos(4y-2x)]e^{x}\\
-      z_y &= [4A\cos(4y-2x) - 4B\sin(4y-2x)]e^{x}.
-    \end{align*}
-    Sustituyendo en la ecuación diferencial y simplificando
-    obtenemos
-    \begin{align*}
-      0 &= \sin(4y-2x)e^{x},
-    \end{align*}
-    lo cual es absurdo, por lo tanto debemos buscar una
-    solución particular de otra forma, digamos
-    \[
-    z = [A\sin(4y-2x) + B\cos(4y-2x)]x e^{x}
-    .\] Derivando
-    \begin{align*}
-      z_x &= [-2A\cos(4y-2x) + 2B\sin(4y-2x)]xe^{x}\\
-          &\quad+ [A\sin(4y-2x)+B\cos(4y-2x)](x+1)e^{x}\\
-      z_y &= [4A\cos(4y-2x) - 4B\sin(4y-2x)]xe^{x}.
-    \end{align*}
-    Sustityendo y simplificando obtenemos
-    \[
-      [2A\sin(4y-2x) + 2B\cos(4y-2x)]e^{x} = \sin(4y-2x)e^{x}
-    ,\] 
-    por lo tanto $B = 0$ y $A = \frac{1}{2}$, así la
-    solución particular es
-    \[
-    z_p = \frac{1}{2}\sin(4y-2x)xe^{x}
-    .\]
-    Se sigue que la solución general de la ecuación
-    diferencial está dada por
+    Usando \eqref{eq:cconst-sol-part}, podemos obtener una solución
+    particular como sigue:
+    \begin{align}
+      z_p
+      &= \frac{1}{2} e^{x}
+      \int^x e^{-u} G(u ,\tfrac{1}{2}(u-x)+y) \, du \\
+      &= \frac{1}{2} e^{x}
+      \int^x e^{-u} \sin(2u-2x+4y-2u)e^{u} \, du \\
+      &= \frac{1}{2} e^{x} \int^x \sin(4y-2x) \, du \\
+      &= \frac{1}{2}xe^{x}\sin(4y-2x).
+    \end{align}
+    Por lo tanto, la solución general es
     \[
     z = f(x-2y)e^{x} + \frac{1}{2}\sin(4y-2x)xe^{x}
     .\] 
   \end{solution}
 \end{solved}
+
+\begin{exercise}
+  Resolver la ecuación $z_x + 2 z_y = \sin x - 3 \cos y$.
+\end{exercise}
 
 \begin{exercise}
   Resolver la ecuación $3z_x - 4z_y + 6z = 4e^{2x+3y}$.
@@ -1391,111 +1339,158 @@ Ponemos esto en una proposición:
 \subsection{Coeficientes variables}
 \label{ssec:cvar}
 
-Consideremos la ecuación
+Volvamos al caso general de la ecuación
 \begin{equation}
-  \label{eqn:ec_homo_coef_var}
-  A(x,y) z_x + B(x,y) z_y + C(x,y) z = 0,
-\end{equation} 
-donde $A,B$ y $C$ funciones continuas en alguna región del
-plano. Como discutimos en \ref{ssec:estrategias-ord1}, el método
-para resolver la ecuación consiste en encontrar un cambio de
-coordenadas
+  \label{eq:cvar}
+  A(x,y)z_x + B(x,y)z_y + C(x,y)z = G(x,y)
+\end{equation}
+donde \(A,B\neq 0\).
+Recordemos que la estrategia es poner la ecuación en la forma
 \begin{equation}
+  \label{eq:cvar-simple}
+  Az_\xi + Cz = G
+\end{equation}
+usando el cambio de variables \((x,y)\to(\xi,\eta)\), donde
+\(\xi=x\) y donde \(\eta\) es la solución a la ecuación
+\begin{equation}
+  A(x,y)\eta_x + B(x,y)\eta_y = 0
+.\end{equation}
+Una vez encontrada \(\eta\), podemos sustituir la transformación
+inversa
+\begin{equation}
+  \label{eq:trans-inversa}
   \left\{
     \begin{aligned}
-      \xi &= \xi(x,y)
+      x &= \xi
       \\
-      \eta &= \eta(x,y),
-    \end{aligned}
-  \right.
-  \quad\implies\quad
-  \left\{
-    \begin{aligned}
-      z_x &= z_\xi \xi_x + z_\eta \eta_x
-      \\
-      z_y &= z_\xi \xi_y + z_\eta \eta_y,
+      y &= \phi(\xi,\eta)
     \end{aligned}
   \right.
 \end{equation}
-con jacobiano no nulo
-$\frac{\partial(\xi,\eta)}{\partial(x,y)} \neq 0$,
-de modo que, en la ecuación transformada
-\begin{align*}
-  A(z_\xi \xi_x + z_\eta \eta_x) + B(z_\xi \xi_y + z_\eta
-  \eta_y) + Cz &= 0\\
-  \iff\quad
-  (A\xi_x + B \xi_y)z_\xi
-  + (A\eta_x + B\eta_y)z_\eta + Cz &= 0,
-\end{align*}
-(en donde ahora $A,B$ y $C$ son funciones de $\xi, \eta$)
-alguno de los dos coeficientes se anule, es decir, de modo que se
-satisfaga alguna de las ecuaciones
+en \eqref{eq:cvar} para obtener la ecuación simplificada
+\eqref{eq:cvar-simple}, cuya solución es
 \begin{equation}
-  \label{eq:cambios-posibles}
-  \left\{
-    \begin{aligned}
-      A\xi_x + B\xi_y = 0,
-      \\
-      A\eta_x + B\eta_y = 0.
-    \end{aligned}
-  \right.
+  z = e^{-\int \frac{C}{A}d\xi}
+  \left[
+    \int e^{\int \frac{C}{A}d\xi} \tfrac{G}{A}\,d\xi
+    +
+    f(\eta)
+  \right]
+.\end{equation}
+Nótese que la solución general se puede escribir como la suma
+\begin{equation}
+  z = z_p + z_h
+,\end{equation}
+donde
+\begin{equation}
+  \label{eq:cvar-part-trans}
+  z_p = e^{-\int \frac{C}{A}d\xi}
+    \int e^{\int \frac{C}{A}d\xi} \tfrac{G}{A}\,d\xi
 \end{equation}
-Una vez resuelta una de las dos ecuaciones, obtenemos una de las
-funciones \(\xi,\eta\), y luego escogemos la otra de modo que el
-jacobiano sea no nulo. En \ref{ssec:cconst} vimos que, cuando \(A,B\)
-son constantes, un cambio de coordenadas lineal fue suficiente.
-En este caso, donde \(A,B\) son arbitrarias, debemos tomar un
-cambio de variables más general. Por ejemplo, digamos que queremos
-resolver la segunda ecuación en \ref{eq:cambios-posibles}:
-\[
-A\eta_x + B\eta_y = 0.
-\] 
-Para esto, reescribamos
+es una solución particular a la ecuación transformada
+\eqref{eq:cvar-simple}, y donde
 \begin{equation}
-  \label{eqn:ec_homo_coef_var_xi_eta}
-  \frac{\eta_x}{\eta_y} = -\frac{B}{A}.
-\end{equation} 
-Ahora suponga que $A \neq 0$ y consideremos la ecuación
-diferencial ordinaria
-\[
-\frac{dy}{dx} = \frac{A}{B},
-\] 
-cuya solución es $\eta(x,y) = k$ con $\eta_y \neq 0$. Ésta
-función satisface \ref{eqn:ec_homo_coef_var_xi_eta}, ya que
-\[
-\eta_x \, dx + \eta_y \, dy = 0 \implies \frac{dy}{dx} =
--\frac{\eta_x}{\eta_y} = \frac{B}{A}.
-\] 
-De ésta manera la ecuación queda como
-\[
-  (A \xi_x + B \xi_y)z_\xi + C z = 0.
-\] 
-Para que el jacobiano \(\partial (\xi,\eta) / \partial (x,y)\) no se
-anule, elíjase a $\xi$ como $\xi = x$.
-Entonces obtenemos la ecuación diferencial
-\[
-A z_\xi + C z = 0 \iff z_\xi + \frac{C}{A} z = 0,
-\]
-cuya solución es
-\[
-z(\xi,\eta) = f(\eta) e^{-\int \frac{C}{A} \, d\xi}
-.\] 
-Volviendo a las variables \(x,y\) anteriores, obtenemos la solución a
-la ecuación original.
+  \label{eq:cvar-homo-trans}
+  z_h = e^{-\int \frac{C}{A}d\xi} f(\eta)
+\end{equation}
+es la solución general a la ecuación homogénea asociada
+\begin{equation}
+  Az_\xi + Cz = 0
+.\end{equation}
+Como en el caso de coeficientes constantes, a veces resulta más
+conveniente resolver las integrales \eqref{eq:cvar-part-trans}  y
+\eqref{eq:cvar-homo-trans} en términos de las variables \((\xi,\eta)\)
+y posteriormente regresar a las variables originales \((x,y)\).
 
+En cualquier caso, también podemos dar una fórmula para \emph{primero}
+expresar las integrales para \(z_p,z_h\) en términos de las variables
+originales \((x,y)\), y hasta entonces realizar las integrales.
+Si deseamos hacer esto, primero usamos el cambio de variable inverso
+\eqref{eq:trans-inversa} para escribir la forma
+explícita de \eqref{eq:cvar-simple}
+\begin{equation}
+  A(\xi,\phi(\xi,\eta))z_\xi + C(\xi,\phi(\xi,\eta))z
+  =
+  G(\xi,\phi(\xi,\eta))
+,\end{equation}
+de modo que las formas explícitas de \(z_p\) y \(z_h\) son
+\begin{align}
+  z_p
+  &=
+  \exp
+  \Big(
+    \!-\!\!\!
+    \int \frac{C(\xi,\phi(\xi,\eta))}{A(\xi,\phi(\xi,\eta))} \, d\xi
+  \Big)
+    \int
+    \exp
+    \Big(
+      \int \frac{C(\xi,\phi(\xi,\eta))}{A(\xi,\phi(\xi,\eta))} \, d\xi
+    \Big)
+  \frac{G(\xi,\phi(\xi,\eta))}{A(\xi,\phi(\xi,\eta))} \, d\xi \\
+  &= \exp
+  \Big(
+    \!-\!\!\!
+    \int^\xi \frac{C(v,\phi(v,\eta))}{A(v,\phi(v,\eta))} \, dv
+  \Big)
+    \int^\xi
+    \exp
+    \Big(
+      \int^{u} \frac{C(v,\phi(v,\eta))}{A(v,\phi(v,\eta))} \, dv
+    \Big)
+  \frac{G(u,\phi(u,\eta))}{A(u,\phi(u,\eta))} \, du
+  \\
+  z_h
+  &=
+  \exp
+  \Big(
+    \!-\!\!\!
+    \int \frac{C(\xi,\phi(\xi,\eta))}{A(\xi,\phi(\xi,\eta))} \, d\xi
+  \Big)
+  f(\eta) \\
+  &=
+  \exp
+  \Big(
+    \!-\!\!\!
+    \int^\xi \frac{C(v,\phi(v,\eta))}{A(v,\phi(v,\eta))} \, dv
+  \Big)
+  f(\eta)
+\end{align}
+donde expresamos las integrales indefinidas en su forma definida.
+Finalmente, sustituimos \(\xi\) y \(\eta\) usando las ecuaciones
+\eqref{eq:cambioparticular}:
+\begin{align}
+  \label{eq:sol-gen-part}
+  z_p
+  &\!=\!
+  \exp
+  \Big(
+    \!-\!\!
+    \int^x \frac{C(v,\phi(v,\eta(v,y)))}{A(v,\phi(v,\eta(v,y)))} \, dv
+  \Big)
+  \!\!
+    \int^x
+    \!\!\!\!
+    \exp
+    \Big(
+      \int^{u} \frac{C(v,\phi(v,\eta(v,y)))}{A(v,\phi(v,\eta(v,y)))} \, dv
+    \Big)
+  \frac{G(u,\phi(u,\eta(u,y)))}{A(u,\phi(u,\eta(u,y)))} \, du
+  \\
+  z_h
+  &=
+  \exp
+  \Big(
+    \!-\!\!\!
+    \int^x \frac{C(v,\phi(v,\eta(v,y)))}{A(v,\phi(v,\eta(v,y)))} \, dv
+  \Big)
+  f(\eta(x,y))
+  \label{eq:sol-gen-homo}
+\end{align}
 \begin{remark}
-  Notemos que la transformación cumple con el requisito:
-  \[
-  \frac{\partial(\xi,\eta)}{\partial(x,y)} = 
-  \begin{vmatrix}
-    \xi_x & \xi_y\\
-    \eta_x & \eta_y
-  \end{vmatrix} = 
-  \begin{vmatrix}
-    1 & 0\\
-    \eta_x & \eta_y
-  \end{vmatrix} = \eta_y \neq 0
-  .\] 
+  Aunque la fórmula \eqref{eq:sol-gen-part} nos da una manera de
+  calcular \(z_p\), algunas veces es mas fácil encontrar una solución
+  particular usando el método de coeficientes indeterminados.
 \end{remark}
 
 \begin{solved}
@@ -1656,7 +1651,7 @@ de la forma
 ,\end{equation}
 donde \(z_h\) es la solución a la ecuación homogénea correspondiente y
 \(z_p\) es una solución particular.
-Podemos obtener \(z_h\) usando los métodos de \ref{ssec:cvar}.
+Podemos obtener \(z_h\) usando los métodos de \ref{ssec:ord1-general}.
 Sin embargo, para obtener la solución particular \(z_p\) no hay un
 método infalible, así que solo queda intentar reducirla a un caso
 conocido, o, con mucha suerte, usando coeficientes indeterminados.
