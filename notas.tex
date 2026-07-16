@@ -955,8 +955,8 @@ La transformación inversa se puede escribir como
     \end{aligned}
   \right.
 \end{equation}
-así que la ecuación transformada \eqref{eq:transformada-prev} se
-reduce a
+así que la ecuación transformada
+\eqref{eq:transformada-prev} se reduce a
 \begin{equation}
   \label{eq:transformada-simple}
   Az_\xi + Cz = G.
@@ -1416,10 +1416,9 @@ explícita de \eqref{eq:cvar-simple}
 de modo que las formas explícitas de \(z_p\) y \(z_h\) son
 \begin{align}
   z_p
-  &=
-  \exp
+  &= \exp
   \Big(
-    \!-\!\!\!
+    \!-\!\!
     \int \frac{C(\xi,\phi(\xi,\eta))}{A(\xi,\phi(\xi,\eta))} \, d\xi
   \Big)
     \int
@@ -1427,37 +1426,19 @@ de modo que las formas explícitas de \(z_p\) y \(z_h\) son
     \Big(
       \int \frac{C(\xi,\phi(\xi,\eta))}{A(\xi,\phi(\xi,\eta))} \, d\xi
     \Big)
-  \frac{G(\xi,\phi(\xi,\eta))}{A(\xi,\phi(\xi,\eta))} \, d\xi \\
-  &= \exp
-  \Big(
-    \!-\!\!\!
-    \int^\xi \frac{C(v,\phi(v,\eta))}{A(v,\phi(v,\eta))} \, dv
-  \Big)
-    \int^\xi
-    \exp
-    \Big(
-      \int^{u} \frac{C(v,\phi(v,\eta))}{A(v,\phi(v,\eta))} \, dv
-    \Big)
-  \frac{G(u,\phi(u,\eta))}{A(u,\phi(u,\eta))} \, du
+  \frac{G(\xi,\phi(\xi,\eta))}{A(\xi,\phi(\xi,\eta))} \, d\xi,
   \\
   z_h
   &=
   \exp
   \Big(
-    \!-\!\!\!
+    \!-\!\!
     \int \frac{C(\xi,\phi(\xi,\eta))}{A(\xi,\phi(\xi,\eta))} \, d\xi
   \Big)
-  f(\eta) \\
-  &=
-  \exp
-  \Big(
-    \!-\!\!\!
-    \int^\xi \frac{C(v,\phi(v,\eta))}{A(v,\phi(v,\eta))} \, dv
-  \Big)
-  f(\eta)
+  f(\eta).
 \end{align}
-donde expresamos las integrales indefinidas en su forma definida.
-Finalmente, sustituimos \(\xi\) y \(\eta\) usando las ecuaciones
+Expresando las integrales indefinidas en su forma definida, podemos
+sustituir \(\xi\) y \(\eta\) usando las ecuaciones
 \eqref{eq:cambioparticular}:
 \begin{align}
   \label{eq:sol-gen-part}
@@ -1481,17 +1462,20 @@ Finalmente, sustituimos \(\xi\) y \(\eta\) usando las ecuaciones
   &=
   \exp
   \Big(
-    \!-\!\!\!
+    \!-\!\!
     \int^x \frac{C(v,\phi(v,\eta(v,y)))}{A(v,\phi(v,\eta(v,y)))} \, dv
   \Big)
   f(\eta(x,y))
   \label{eq:sol-gen-homo}
 \end{align}
+
 \begin{remark}
   Aunque la fórmula \eqref{eq:sol-gen-part} nos da una manera de
   calcular \(z_p\), algunas veces es mas fácil encontrar una solución
   particular usando el método de coeficientes indeterminados.
 \end{remark}
+
+
 
 \begin{solved}
   Resolver la ecuación $xy z_x - x^2 z_y - yz = 0$.
